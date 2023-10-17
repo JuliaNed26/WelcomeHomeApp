@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WelcomeHomeModels
+namespace WelcomeHomeModels.Models
 {
     [Table("Establishments")]
     public class Establishment

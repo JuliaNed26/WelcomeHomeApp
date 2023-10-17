@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WelcomeHomeModels
+namespace WelcomeHomeModels.Models
 {
     public class UserCategory
     {
