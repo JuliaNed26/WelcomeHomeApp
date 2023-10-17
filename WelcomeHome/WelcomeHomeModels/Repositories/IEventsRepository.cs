@@ -7,7 +7,7 @@ using WelcomeHomeModels.Models;
 
 namespace WelcomeHomeModels.Repositories
 {
-    public interface IEventsRepository //: IDisposable
+    public interface IEventsRepository 
     {
         IEnumerable<Event> GetEvents();
 
