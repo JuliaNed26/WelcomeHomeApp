@@ -1,4 +1,4 @@
-﻿namespace WelcomeHomeModels
+﻿namespace WelcomeHomeModels.Models
 {
     public class Country
     {

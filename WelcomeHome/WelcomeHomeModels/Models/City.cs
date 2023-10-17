@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WelcomeHomeModels
+namespace WelcomeHomeModels.Models
 {
     [Table("Cities")]
     public class City

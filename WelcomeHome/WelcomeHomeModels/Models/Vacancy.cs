@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WelcomeHomeModels
+namespace WelcomeHomeModels.Models
 {
     public class Vacancy
     {
@@ -17,7 +17,7 @@ namespace WelcomeHomeModels
         public Establishment Establishment { get; set; } = null!;
         public string PageURL { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
-        public string? OtherContacts { get; set; } 
+        public string? OtherContacts { get; set; }
 
     }
 }

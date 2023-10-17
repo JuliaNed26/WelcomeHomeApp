@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WelcomeHomeModels
+namespace WelcomeHomeModels.Models
 {
     public class Volunteer
     {
@@ -18,9 +18,9 @@ namespace WelcomeHomeModels
         public string PhoneNumber { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Telegram { get; set; } = "";
-        public string? Document {  get; set; }
+        public string? Document { get; set; }
         public Establishment? Establishment { get; set; }
-        public Contract Contract { get; set; } 
+        public Contract Contract { get; set; }
         public List<Event>? Events { get; set; }
     }
 }

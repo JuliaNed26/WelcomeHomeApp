@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WelcomeHomeModels
+namespace WelcomeHomeModels.Models
 {
-    public class EventType
+    public class EstablishmentType
     {
         [Key]
         public int Id { get; set; }
