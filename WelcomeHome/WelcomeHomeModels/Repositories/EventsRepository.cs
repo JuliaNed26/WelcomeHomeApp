@@ -6,7 +6,7 @@ using WelcomeHomeModels.Models;
 
 namespace WelcomeHomeModels.Repositories
 {
-    public class EventsRepository : IEventsRepository//, IDisposable
+    public class EventsRepository : IEventsRepository
     {
         private DatabaseContext _context;
 
@@ -68,26 +68,6 @@ namespace WelcomeHomeModels.Repositories
         //{
         //    var result = _context.Events.FirstOrDefault(e=>e.Id == id).Volunteers;
         //    return result.ToList();
-        //}
-
-        //private bool disposed = false;
-
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (!this.disposed)
-        //    {
-        //        if (disposing)
-        //        {
-        //            _context.Dispose();
-        //        }
-        //    }
-        //    this.disposed = true;
-        //}
-
-        //public void Dispose()
-        //{
-        //    Dispose(true);
-        //    GC.SuppressFinalize(this);
         //}
     }
 }
