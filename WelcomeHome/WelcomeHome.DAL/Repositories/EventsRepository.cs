@@ -45,6 +45,7 @@ namespace WelcomeHome.DAL.Repositories
             existingEvent.Description = editedEvent.Description;
             existingEvent.EstablishmentId = editedEvent.EstablishmentId;
             existingEvent.EventTypeId = editedEvent.EventTypeId;
+            existingEvent.VolunteerId = editedEvent.VolunteerId;
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
