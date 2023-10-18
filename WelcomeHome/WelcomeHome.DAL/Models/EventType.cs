@@ -7,5 +7,10 @@ namespace WelcomeHome.DAL.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; } = null!;
+        public List<Event> Events { get; set; }
+        public EventType()
+        {
+            Events = new List<Event>();
+        }
     }
 }

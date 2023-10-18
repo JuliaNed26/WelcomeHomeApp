@@ -19,5 +19,7 @@ public sealed class WelcomeHomeDbContext : DbContext
 		modelBuilder.Entity<User>()
 			        .HasIndex(u => u.Email)
 			        .IsUnique();
-	}
+
+
+    }
 }

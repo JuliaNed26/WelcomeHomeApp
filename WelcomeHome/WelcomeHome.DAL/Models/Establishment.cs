@@ -15,5 +15,10 @@ namespace WelcomeHome.DAL.Models
         public string? PageURL { get; set; }
         public string? PhoneNumber { get; set; }
         public string? OtherContacts { get; set; }
+        public List<Event> Events { get; set; }
+        public Establishment()
+        {
+            Events = new List<Event>();
+        }
     }
 }
