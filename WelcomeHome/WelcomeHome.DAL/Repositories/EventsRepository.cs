@@ -5,9 +5,9 @@ namespace WelcomeHome.DAL.Repositories
 {
     public class EventsRepository : IEventsRepository
     {
-        private DatabaseContext _context;
+        private WelcomeHomeDbContext _context;
 
-        public EventsRepository(DatabaseContext context)
+        public EventsRepository(WelcomeHomeDbContext context)
         {
             this._context = context;
         }

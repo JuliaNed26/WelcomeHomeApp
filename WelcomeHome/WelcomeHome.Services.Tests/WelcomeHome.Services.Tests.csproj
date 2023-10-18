@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WelcomeHome\WelcomeHomeWebAPI.csproj" />
+    <ProjectReference Include="..\WelcomeHome.Services\WelcomeHome.Services.csproj" />
   </ItemGroup>
 
 </Project>
