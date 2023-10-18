@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WelcomeHomeTests", "WelcomeHomeTests\WelcomeHomeTests.csproj", "{A1B5992F-1148-4221-82CA-448794C4588A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WelcomeHome.Services.Tests", "WelcomeHome.Services.Tests\WelcomeHome.Services.Tests.csproj", "{A1B5992F-1148-4221-82CA-448794C4588A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WelcomeHomeModels", "WelcomeHomeModels\WelcomeHomeModels.csproj", "{EB04D49C-474E-4904-B329-1CDD6DF40461}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WelcomeHome.DAL", "WelcomeHome.DAL\WelcomeHome.DAL.csproj", "{EB04D49C-474E-4904-B329-1CDD6DF40461}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WelcomeHomeWebApi", "WelcomeHomeWebApi\WelcomeHomeWebApi.csproj", "{A904AF26-44BB-42FA-BA1D-812D9FCB4C71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WelcomeHome.Web", "WelcomeHome.Web\WelcomeHome.Web.csproj", "{A904AF26-44BB-42FA-BA1D-812D9FCB4C71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
