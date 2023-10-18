@@ -18,14 +18,8 @@ namespace WelcomeHome.DAL.Repositories
 
         public Event? GetEventById(int id)
         {
-            //return _context.Events.Find(id);
             return _context.Events.FirstOrDefault(e => e.Id == id);
         }
-
-        //public IEnumerable<Event> GetEventsByType(int typeId)
-        //{
-        //    return _context.Events.Where(e => e.EventTypeId == typeId).ToList();
-        //}
 
         public void AddEvent(Event newEvent)
         {
@@ -34,7 +28,6 @@ namespace WelcomeHome.DAL.Repositories
 
         public void DeleteEvent(int id)
         {
-            //var existingEvent = _context.Events.Find(id);
             var existingEvent = _context.Events.FirstOrDefault(e => e.Id == id);
             if (existingEvent != null)
             {
@@ -48,7 +41,6 @@ namespace WelcomeHome.DAL.Repositories
 
         public void UpdateEvent(int id, Event editedEvent)
         {
-            //var existingEvent = _context.Events.Find(id);
             var existingEvent = _context.Events.FirstOrDefault(e => e.Id == id);
             if (existingEvent != null)
             {
@@ -59,11 +51,5 @@ namespace WelcomeHome.DAL.Repositories
                 existingEvent.EventTypeId = editedEvent.EventTypeId;
             }
         }
-
-        //public IEnumerable<Volunteer> GetEventHosts(int id)
-        //{
-        //    var result = _context.Events.FirstOrDefault(e=>e.Id == id).Volunteers;
-        //    return result.ToList();
-        //}
     }
 }
