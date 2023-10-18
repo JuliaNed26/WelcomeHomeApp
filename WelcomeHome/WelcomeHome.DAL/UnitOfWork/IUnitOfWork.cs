@@ -1,11 +1,10 @@
 ﻿using WelcomeHome.DAL.Repositories;
-using WelcomeHomeModels.Repositories;
 
 namespace WelcomeHome.DAL.UnitOfWork;
 
 public interface IUnitOfWork
 {
-	public IEventsRepository EventRepository { get; }
+	public Lazy<IEventsRepository> EventRepository { get; }
 
-	public IUserRepository UserRepository { get; }
+	public Lazy<IUserRepository> UserRepository { get; }
 }

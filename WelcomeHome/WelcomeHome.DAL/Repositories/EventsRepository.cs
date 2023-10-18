@@ -1,5 +1,4 @@
 ﻿using WelcomeHome.DAL.Models;
-using WelcomeHomeModels.Repositories;
 
 namespace WelcomeHome.DAL.Repositories
 {
