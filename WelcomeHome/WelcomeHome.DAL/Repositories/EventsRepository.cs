@@ -1,4 +1,5 @@
 ﻿using WelcomeHome.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WelcomeHome.DAL.Repositories
 {
@@ -11,45 +12,41 @@ namespace WelcomeHome.DAL.Repositories
             this._context = context;
         }
 
-        public IEnumerable<Event> GetEvents()
+        public async Task<IEnumerable<Event>> GetEventsAsync()
         {
-            return _context.Events.ToList();
+            return await _context.Events.ToListAsync().ConfigureAwait(false);
         }
 
-        public Event? GetEventById(int id)
+        public async Task<Event?> GetEventByIdAsync(int id)
         {
-            return _context.Events.FirstOrDefault(e => e.Id == id);
+            return await _context.Events.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
         }
 
-        public void AddEvent(Event newEvent)
+        public async Task AddEvent(Event newEvent)
         {
-            _context.Events.Add(newEvent);
+            await _context.Events.AddAsync(newEvent).ConfigureAwait(false);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public void DeleteEvent(int id)
+        public async Task DeleteEvent(int id)
         {
-            var existingEvent = _context.Events.FirstOrDefault(e => e.Id == id);
-            if (existingEvent != null)
-            {
-                _context.Events.Remove(existingEvent);
-            }
-            else
-            {
-                throw new KeyNotFoundException("Event with this Id not found");
-            }
+            var existingEvent = await _context.Events.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
+            _context.Events.Remove(existingEvent);
+
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public void UpdateEvent(int id, Event editedEvent)
+        public async Task UpdateEvent(int id, Event editedEvent)
         {
-            var existingEvent = _context.Events.FirstOrDefault(e => e.Id == id);
-            if (existingEvent != null)
-            {
-                existingEvent.Name = editedEvent.Name;
-                existingEvent.Date = editedEvent.Date;
-                existingEvent.Description = editedEvent.Description;
-                existingEvent.EstablishmentId = editedEvent.EstablishmentId;
-                existingEvent.EventTypeId = editedEvent.EventTypeId;
-            }
+            var existingEvent = await _context.Events.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
+
+            existingEvent.Name = editedEvent.Name;
+            existingEvent.Date = editedEvent.Date;
+            existingEvent.Description = editedEvent.Description;
+            existingEvent.EstablishmentId = editedEvent.EstablishmentId;
+            existingEvent.EventTypeId = editedEvent.EventTypeId;
+
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }
