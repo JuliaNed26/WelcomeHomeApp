@@ -1,4 +1,4 @@
-namespace WelcomeHomeTests
+namespace WelcomeHome.Services.Tests
 {
 	public class Tests
 	{

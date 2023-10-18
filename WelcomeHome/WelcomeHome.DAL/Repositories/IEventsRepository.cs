@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WelcomeHomeModels.Models;
+using WelcomeHome.DAL.Models;
 
 namespace WelcomeHomeModels.Repositories
 {

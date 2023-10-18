@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data;
-using WelcomeHomeModels.Models;
+﻿using WelcomeHome.DAL.Models;
+using WelcomeHomeModels.Repositories;
 
-namespace WelcomeHomeModels.Repositories
+namespace WelcomeHome.DAL.Repositories
 {
     public class EventsRepository : IEventsRepository
     {

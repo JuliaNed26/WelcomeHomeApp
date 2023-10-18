@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WelcomeHomeModels.Models
+namespace WelcomeHome.DAL.Models
 {
     public class EventType
     {
