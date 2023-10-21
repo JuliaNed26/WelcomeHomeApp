@@ -19,7 +19,7 @@ public sealed class UserRepository : IUserRepository
 			           .Select(u => u);
 	}
 
-	public async Task<User?> GetByIdAsync(int id)
+	public async Task<User> GetByIdAsync(int id)
 	{
 		return await _context.Users
 			                 .AsNoTracking()
