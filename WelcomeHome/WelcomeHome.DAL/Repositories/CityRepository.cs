@@ -54,9 +54,9 @@ public sealed class CityRepository : ICityRepository
 
 	public async Task DeleteAsync(int id)
 	{
-		var foundUser = await _context.Users.SingleAsync(u => u.Id == id).ConfigureAwait(false);
+		var foundCity = await _context.Cities.SingleAsync(c => c.Id == id).ConfigureAwait(false);
 
-		_context.Users.Remove(foundUser);
+		_context.Cities.Remove(foundCity);
 		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}
 
