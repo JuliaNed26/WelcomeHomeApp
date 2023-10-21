@@ -9,4 +9,6 @@ public interface IUnitOfWork
 	public IUserRepository UserRepository { get; }
 
 	public ICityRepository CityRepository { get; }
+
+	public ICountryRepository CountryRepository { get; }
 }
