@@ -8,7 +8,6 @@ namespace WelcomeHome.DAL.Models
     {
         [Key]
         public int Id { get; set; }
-        public string UserName { get; set; } = null!;
         public byte[] PasswordHash { get; set; } = null!;
         public byte[] PasswordSalt { get; set; } = null!;
         public string FullName { get; set; } = null!;
