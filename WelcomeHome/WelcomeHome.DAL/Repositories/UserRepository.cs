@@ -12,19 +12,18 @@ public sealed class UserRepository : IUserRepository
 		_context = context;
 	}
 
-	public async Task<IEnumerable<User>> GetAllAsync()
+	public IEnumerable<User> GetAll()
 	{
-		return await _context.Users
-			                 .AsNoTracking()
-			                 .ToListAsync()
-			                 .ConfigureAwait(false);
+		return _context.Users
+			           .AsNoTracking()
+			           .Select(u => u);
 	}
 
 	public async Task<User?> GetByIdAsync(int id)
 	{
 		return await _context.Users
 			                 .AsNoTracking()
-			                 .SingleOrDefaultAsync(u => u.Id == id)
+			                 .SingleAsync(u => u.Id == id)
 			                 .ConfigureAwait(false);
 	}
 

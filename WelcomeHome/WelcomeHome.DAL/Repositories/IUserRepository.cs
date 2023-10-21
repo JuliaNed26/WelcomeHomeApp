@@ -4,7 +4,7 @@ namespace WelcomeHome.DAL.Repositories;
 
 public interface IUserRepository
 {
-	Task<IEnumerable<User>> GetAllAsync();
+	IEnumerable<User> GetAll();
 
 	Task<User?> GetByIdAsync(int id);
 
