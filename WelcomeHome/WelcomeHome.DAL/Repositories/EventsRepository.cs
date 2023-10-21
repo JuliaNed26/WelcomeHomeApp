@@ -12,33 +12,33 @@ namespace WelcomeHome.DAL.Repositories
             this._context = context;
         }
 
-        public async Task<IEnumerable<Event>> GetEventsAsync()
+        public async Task<IEnumerable<Event>> GetAllAsync()
         {
             return await _context.Events.ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<Event?> GetEventByIdAsync(int id)
+        public async Task<Event?> GetByIdAsync(Guid id)
         {
             return await _context.Events.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
         }
 
-        public async Task AddEvent(Event newEvent)
+        public async Task Add(Event newEvent)
         {
             await _context.Events.AddAsync(newEvent).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteEvent(int id)
+        public async Task Delete(Guid id)
         {
-            var existingEvent = await _context.Events.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
+            var existingEvent = await _context.Events.SingleAsync(e => e.Id == id).ConfigureAwait(false);
             _context.Events.Remove(existingEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task UpdateEvent(int id, Event editedEvent)
+        public async Task Update(Guid id, Event editedEvent)
         {
-            var existingEvent = await _context.Events.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
+            var existingEvent = await _context.Events.SingleAsync(e => e.Id == id).ConfigureAwait(false);
 
             existingEvent.Name = editedEvent.Name;
             existingEvent.Date = editedEvent.Date;

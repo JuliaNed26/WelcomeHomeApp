@@ -5,15 +5,15 @@ namespace WelcomeHome.DAL.Repositories
 {
     public interface IEventsRepository 
     {
-        Task<IEnumerable<Event>> GetEventsAsync();
+        Task<IEnumerable<Event>> GetAllAsync();
 
-        Task<Event?> GetEventByIdAsync(int id);
+        Task<Event?> GetByIdAsync(Guid id);
 
-        Task AddEvent(Event newEvent);
+        Task Add(Event newEvent);
 
-        Task DeleteEvent(int id);
+        Task Delete(Guid id);
 
-        Task UpdateEvent(int id, Event editedEvent);
+        Task Update(Guid id, Event editedEvent);
     }
 }
 
