@@ -14,8 +14,10 @@ namespace WelcomeHome.DAL.Models
         public string Email { get; set; } = null!;
         public string Telegram { get; set; } = "";
         public string? Document { get; set; }
+        public int? EstablishmentId { get; set; }
+        public int ContractId { get; set; }
         public Establishment? Establishment { get; set; }
         public Contract Contract { get; set; }
-        public List<Event>? Events { get; set; }
+        public ICollection<Event>? Events { get; set; }
     }
 }
