@@ -18,6 +18,10 @@ public sealed class WelcomeHomeDbContext : DbContext
 
 	public DbSet<Country> Countries { get; set; }
 
+	public DbSet<Contract> Contracts { get; set; }
+
+	public DbSet<Volunteer> Volunteers { get; set; }
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.Entity<User>()
