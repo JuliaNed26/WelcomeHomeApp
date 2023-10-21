@@ -5,7 +5,7 @@ namespace WelcomeHome.DAL.Repositories;
 
 public sealed class UserRepository : IUserRepository
 {
-	private WelcomeHomeDbContext _context;
+	private readonly WelcomeHomeDbContext _context;
 
 	public UserRepository(WelcomeHomeDbContext context)
 	{

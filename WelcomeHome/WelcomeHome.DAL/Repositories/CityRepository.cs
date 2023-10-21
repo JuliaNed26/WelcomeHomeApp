@@ -5,7 +5,7 @@ namespace WelcomeHome.DAL.Repositories;
 
 public sealed class CityRepository : ICityRepository
 {
-	private WelcomeHomeDbContext _context;
+	private readonly WelcomeHomeDbContext _context;
 
 	public CityRepository(WelcomeHomeDbContext context)
 	{
