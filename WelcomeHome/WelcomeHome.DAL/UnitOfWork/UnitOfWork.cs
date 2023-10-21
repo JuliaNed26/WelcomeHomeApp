@@ -8,6 +8,7 @@ public sealed class UnitOfWork : IUnitOfWork
 	private readonly Lazy<IUserRepository> _userRepository;
 	private readonly Lazy<ICityRepository> _cityRepository;
 	private readonly Lazy<ICountryRepository> _countryRepository;
+	private readonly Lazy<IContractRepository> _contractRepository;
 
 	public UnitOfWork(WelcomeHomeDbContext context)
 	{
@@ -15,6 +16,7 @@ public sealed class UnitOfWork : IUnitOfWork
 		_userRepository = new Lazy<IUserRepository>(() => new UserRepository(context));
 		_cityRepository = new Lazy<ICityRepository>(() => new CityRepository(context));
 		_countryRepository = new Lazy<ICountryRepository>(() => new CountryRepository(context));
+		_contractRepository = new Lazy<IContractRepository>(() => new ContractRepository(context));
 	}
 
 	public IEventsRepository EventRepository => _eventRepository.Value;
@@ -24,4 +26,6 @@ public sealed class UnitOfWork : IUnitOfWork
 	public ICityRepository CityRepository => _cityRepository.Value;
 
 	public ICountryRepository CountryRepository => _countryRepository.Value;
+
+	public IContractRepository ContractRepository => _contractRepository.Value;
 }

@@ -11,4 +11,6 @@ public interface IUnitOfWork
 	public ICityRepository CityRepository { get; }
 
 	public ICountryRepository CountryRepository { get; }
+
+	public IContractRepository ContractRepository { get; }
 }
