@@ -13,4 +13,6 @@ public interface IUnitOfWork
 	public ICountryRepository CountryRepository { get; }
 
 	public IContractRepository ContractRepository { get; }
+
+	public IVolunteerRepository VolunteerRepository { get; }
 }
