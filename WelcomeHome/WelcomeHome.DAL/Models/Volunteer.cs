@@ -6,7 +6,6 @@ namespace WelcomeHome.DAL.Models
     {
         [Key]
         public int Id { get; set; }
-        public string UserName { get; set; } = null!;
         public byte[] PasswordHash { get; set; } = null!;
         public byte[] PasswordSalt { get; set; } = null!;
         public string FullName { get; set; } = null!;
@@ -17,7 +16,7 @@ namespace WelcomeHome.DAL.Models
         public int? EstablishmentId { get; set; }
         public int ContractId { get; set; }
         public Establishment? Establishment { get; set; }
-        public Contract Contract { get; set; }
+        public Contract? Contract { get; set; }
         public ICollection<Event>? Events { get; set; }
     }
 }
