@@ -7,7 +7,7 @@ namespace WelcomeHome.DAL.Models
     public class User
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string UserName { get; set; } = null!;
         public byte[] PasswordHash { get; set; } = null!;
         public byte[] PasswordSalt { get; set; } = null!;
