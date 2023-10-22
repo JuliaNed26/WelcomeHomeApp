@@ -10,6 +10,8 @@ namespace WelcomeHome.DAL.Models
         public string Description { get; set; } = null!;
         public float Amount { get; set; }
         public string Documents { get; set; } = null!;
+        public int EstablishmentId {  get; set; }
+        public int UserCategoryId { get; set; }
         public Establishment Establishment { get; set; } = null!;
         public UserCategory UserCategory { get; set; } = null!;
     }
