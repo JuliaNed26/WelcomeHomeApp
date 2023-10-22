@@ -13,8 +13,9 @@ public sealed class WelcomeHomeDbContext : DbContext
 	public DbSet<Event> Events { get; set; }
     public DbSet<Course> Courses { get; set; }
 	public DbSet<User> Users { get; set; }
-    public DbSet<EventType> EventsTypes { get; set; }
+    public DbSet<EventType> EventTypes { get; set; }
     public DbSet<Establishment> Establishments { get; set; }
+    public DbSet<EstablishmentType> EstablishmentTypes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
