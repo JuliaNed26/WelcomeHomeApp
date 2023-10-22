@@ -13,7 +13,7 @@ namespace WelcomeHome.DAL.Repositories
 
         Task Delete(Guid id);
 
-        Task Update(Guid id, Event editedEvent);
+        Task Update(Event editedEvent);
     }
 }
 
