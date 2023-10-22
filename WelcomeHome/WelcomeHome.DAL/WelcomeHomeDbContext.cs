@@ -42,7 +42,7 @@ public sealed class WelcomeHomeDbContext : DbContext
 
         modelBuilder.Entity<Establishment>().HasOne(e => e.EstablishmentType)
                                     .WithMany(et => et.Establishments)
-                                    .HasForeignKey(e => e.EstablishmentId)
+                                    .HasForeignKey(e => e.EstablishmentTypeId)
                                     .OnDelete(DeleteBehavior.Cascade);
     }
 }
