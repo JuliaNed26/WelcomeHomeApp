@@ -11,7 +11,7 @@ public sealed class UnitOfWork : IUnitOfWork
 		_context = context;
 	}
 
-	public Lazy<IEventsRepository> EventRepository => new Lazy<IEventsRepository>(() => new EventsRepository(_context));
+	public Lazy<IEventRepository> EventRepository => new Lazy<IEventRepository>(() => new EventRepository(_context));
 
 	public Lazy<IUserRepository> UserRepository => new Lazy<IUserRepository>(() => new UserRepository(_context));
 }

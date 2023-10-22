@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WelcomeHome.DAL.Repositories
 {
-    public class EventsRepository : IEventsRepository
+    public class EventRepository : IEventRepository
     {
         private WelcomeHomeDbContext _context;
 
-        public EventsRepository(WelcomeHomeDbContext context)
+        public EventRepository(WelcomeHomeDbContext context)
         {
             this._context = context;
         }

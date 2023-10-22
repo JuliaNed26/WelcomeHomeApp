@@ -3,7 +3,7 @@ using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
-    public interface IEventsRepository 
+    public interface IEventRepository 
     {
         Task<IEnumerable<Event>> GetAllAsync();
 
