@@ -14,8 +14,7 @@ public sealed class WelcomeHomeDbContext : DbContext
 
 	public DbSet<User> Users { get; set; }
 
-
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.Entity<User>()
 			        .HasIndex(u => u.Email)
