@@ -10,8 +10,8 @@ namespace WelcomeHome.DAL.Models
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;
-        public int EstablishmentTypeId { get; set; }
-        public int CityId { get; set; }
+        public Guid EstablishmentTypeId { get; set; }
+        public Guid CityId { get; set; }
         public string? PageURL { get; set; }
         public string? PhoneNumber { get; set; }
         public string? OtherContacts { get; set; }

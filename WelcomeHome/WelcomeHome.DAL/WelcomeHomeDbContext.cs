@@ -17,6 +17,7 @@ public sealed class WelcomeHomeDbContext : DbContext
     public DbSet<Establishment> Establishments { get; set; }
     public DbSet<EstablishmentType> EstablishmentTypes { get; set; }
     public DbSet<SocialPayment> SocialPayments { get; set; }
+    public DbSet<UserCategory> UserCategories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -50,6 +51,11 @@ public sealed class WelcomeHomeDbContext : DbContext
         modelBuilder.Entity<SocialPayment>().HasOne(sp => sp.Establishment)
                                             .WithMany(e => e.SocialPayments)
                                             .HasForeignKey(sp => sp.EstablishmentId)
+                                            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<SocialPayment>().HasOne(sp => sp.UserCategory)
+                                            .WithMany(uc => uc.SocialPayments)
+                                            .HasForeignKey(sp => sp.UserCategoryId)
                                             .OnDelete(DeleteBehavior.Cascade);
     }
 }
