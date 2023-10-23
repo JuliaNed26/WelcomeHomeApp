@@ -56,7 +56,8 @@ namespace WelcomeHome.DAL.Repositories
                                          .ConfigureAwait(false);
 
             foundUserCategory.Name = foundUserCategory.Name;
-            foundUserCategory.SocialPayments = userCategory.SocialPayments;
+            //чи потрібно оновлювати соц виплати?
+            //foundUserCategory.SocialPayments = userCategory.SocialPayments;
             _context.UserCategories.Update(foundUserCategory);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
