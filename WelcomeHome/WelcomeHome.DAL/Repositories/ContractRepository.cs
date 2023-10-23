@@ -20,12 +20,12 @@ public sealed class ContractRepository : IContractRepository
 			           .Select(c => c);
 	}
 
-	public async Task<Contract> GetByIdAsync(int id)
+	public async Task<Contract?> GetByIdAsync(int id)
 	{
 		return await _context.Contracts
 			                 .Include(c => c.Volunteer)
 			                 .AsNoTracking()
-			                 .SingleAsync(c => c.Id == id)
+			                 .SingleOrDefaultAsync(c => c.Id == id)
 			                 .ConfigureAwait(false);
 	}
 

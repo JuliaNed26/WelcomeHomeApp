@@ -4,7 +4,7 @@ namespace WelcomeHome.DAL.Repositories;
 
 public interface IVolunteerRepository
 {
-	Task<Volunteer> GetByIdAsync(int id);
+	Task<Volunteer?> GetByIdAsync(int id);
 
 	IEnumerable<Volunteer> GetAll();
 

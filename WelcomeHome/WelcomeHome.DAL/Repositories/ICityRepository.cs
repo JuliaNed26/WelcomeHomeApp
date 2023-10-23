@@ -4,7 +4,7 @@ namespace WelcomeHome.DAL.Repositories;
 
 public interface ICityRepository
 {
-	Task<City> GetByIdAsync(int id);
+	Task<City?> GetByIdAsync(int id);
 
 	IEnumerable<City> GetAll();
 

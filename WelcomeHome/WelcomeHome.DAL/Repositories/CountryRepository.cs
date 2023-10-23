@@ -20,12 +20,12 @@ public sealed class CountryRepository : ICountryRepository
 			           .Select(c => c);
 	}
 
-	public async Task<Country> GetByIdAsync(int id)
+	public async Task<Country?> GetByIdAsync(int id)
 	{
 		return await _context.Countries
 			                 .Include(c => c.Cities)
 			                 .AsNoTracking()
-			                 .SingleAsync(c => c.Id == id)
+			                 .SingleOrDefaultAsync(c => c.Id == id)
 			                 .ConfigureAwait(false);
 	}
 

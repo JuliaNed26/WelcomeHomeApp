@@ -20,12 +20,12 @@ public sealed class VolunteerRepository : IVolunteerRepository
 			           .Select(v => v);
 	}
 
-	public async Task<Volunteer> GetByIdAsync(int id)
+	public async Task<Volunteer?> GetByIdAsync(int id)
 	{
 		return await _context.Volunteers
 			                 .Include(v => v.Establishment)
 							 .AsNoTracking()
-			                 .SingleAsync(v => v.Id == id)
+			                 .SingleOrDefaultAsync(v => v.Id == id)
 			                 .ConfigureAwait(false);
 	}
 

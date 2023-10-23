@@ -4,7 +4,7 @@ namespace WelcomeHome.DAL.Repositories;
 
 public interface IContractRepository
 {
-	Task<Contract> GetByIdAsync(int id);
+	Task<Contract?> GetByIdAsync(int id);
 
 	IEnumerable<Contract> GetAll();
 

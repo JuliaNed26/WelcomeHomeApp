@@ -19,11 +19,11 @@ public sealed class UserRepository : IUserRepository
 			           .Select(u => u);
 	}
 
-	public async Task<User> GetByIdAsync(int id)
+	public async Task<User?> GetByIdAsync(int id)
 	{
 		return await _context.Users
 			                 .AsNoTracking()
-			                 .SingleAsync(u => u.Id == id)
+			                 .SingleOrDefaultAsync(u => u.Id == id)
 			                 .ConfigureAwait(false);
 	}
 
@@ -41,7 +41,6 @@ public sealed class UserRepository : IUserRepository
 
 		foundUser.Email = user.Email;
 		foundUser.FullName = user.FullName;
-		foundUser.UserName = user.UserName;
 		foundUser.PhoneNumber = user.PhoneNumber;
 		foundUser.PasswordHash = user.PasswordHash;
 		foundUser.PasswordSalt = user.PasswordSalt;
