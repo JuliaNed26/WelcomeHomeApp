@@ -20,7 +20,7 @@ public sealed class UnitOfWork : IUnitOfWork
 		_contractRepository = new Lazy<IContractRepository>(() => new ContractRepository(context));
 		_volunteerRepository = new Lazy<IVolunteerRepository>(() => new VolunteerRepository(context));
 	}
-
+  
 	public IEventsRepository EventRepository => _eventRepository.Value;
 
 	public IUserRepository UserRepository => _userRepository.Value;
