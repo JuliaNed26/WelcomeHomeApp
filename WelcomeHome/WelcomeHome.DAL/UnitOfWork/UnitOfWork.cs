@@ -4,7 +4,7 @@ namespace WelcomeHome.DAL.UnitOfWork;
 
 public sealed class UnitOfWork : IUnitOfWork
 {
-	private readonly Lazy<IEventsRepository> _eventRepository;
+	private readonly Lazy<IEventRepository> _eventRepository;
 	private readonly Lazy<IUserRepository> _userRepository;
 	private readonly Lazy<ICityRepository> _cityRepository;
 	private readonly Lazy<ICountryRepository> _countryRepository;
@@ -13,7 +13,7 @@ public sealed class UnitOfWork : IUnitOfWork
 
 	public UnitOfWork(WelcomeHomeDbContext context)
 	{
-		_eventRepository = new Lazy<IEventsRepository>(() => new EventsRepository(context));
+		_eventRepository = new Lazy<IEventRepository>(() => new EventRepository(context));
 		_userRepository = new Lazy<IUserRepository>(() => new UserRepository(context));
 		_cityRepository = new Lazy<ICityRepository>(() => new CityRepository(context));
 		_countryRepository = new Lazy<ICountryRepository>(() => new CountryRepository(context));
@@ -21,7 +21,7 @@ public sealed class UnitOfWork : IUnitOfWork
 		_volunteerRepository = new Lazy<IVolunteerRepository>(() => new VolunteerRepository(context));
 	}
   
-	public IEventsRepository EventRepository => _eventRepository.Value;
+	public IEventRepository EventRepository => _eventRepository.Value;
 
 	public IUserRepository UserRepository => _userRepository.Value;
 
