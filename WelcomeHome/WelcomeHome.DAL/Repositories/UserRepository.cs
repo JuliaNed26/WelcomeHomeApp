@@ -5,22 +5,21 @@ namespace WelcomeHome.DAL.Repositories;
 
 public sealed class UserRepository : IUserRepository
 {
-	private WelcomeHomeDbContext _context;
+	private readonly WelcomeHomeDbContext _context;
 
 	public UserRepository(WelcomeHomeDbContext context)
 	{
 		_context = context;
 	}
 
-	public async Task<IEnumerable<User>> GetAllAsync()
+	public IEnumerable<User> GetAll()
 	{
-		return await _context.Users
-			                 .AsNoTracking()
-			                 .ToListAsync()
-			                 .ConfigureAwait(false);
+		return _context.Users
+			           .AsNoTracking()
+			           .Select(u => u);
 	}
 
-	public async Task<User?> GetByIdAsync(int id)
+	public async Task<User?> GetByIdAsync(Guid id)
 	{
 		return await _context.Users
 			                 .AsNoTracking()
@@ -42,7 +41,6 @@ public sealed class UserRepository : IUserRepository
 
 		foundUser.Email = user.Email;
 		foundUser.FullName = user.FullName;
-		foundUser.UserName = user.UserName;
 		foundUser.PhoneNumber = user.PhoneNumber;
 		foundUser.PasswordHash = user.PasswordHash;
 		foundUser.PasswordSalt = user.PasswordSalt;
@@ -51,7 +49,7 @@ public sealed class UserRepository : IUserRepository
 		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}
 
-	public async Task DeleteAsync(int id)
+	public async Task DeleteAsync(Guid id)
 	{
 		var foundUser = await _context.Users.SingleAsync(u => u.Id == id).ConfigureAwait(false);
 

@@ -8,10 +8,10 @@ namespace WelcomeHome.DAL.Models
     {
         [Key]
         public Guid Id { get; set; }
+        public Guid VolunteerId { get; set; }
         public Volunteer Volunteer { get; set; } = null!;
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
         public string URL { get; set; }
-
     }
 }

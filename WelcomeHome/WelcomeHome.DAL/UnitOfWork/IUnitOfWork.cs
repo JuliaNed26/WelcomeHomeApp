@@ -4,7 +4,15 @@ namespace WelcomeHome.DAL.UnitOfWork;
 
 public interface IUnitOfWork
 {
-	public Lazy<IEventRepository> EventRepository { get; }
+	public IEventsRepository EventRepository { get; }
 
-	public Lazy<IUserRepository> UserRepository { get; }
+	public IUserRepository UserRepository { get; }
+
+	public ICityRepository CityRepository { get; }
+
+	public ICountryRepository CountryRepository { get; }
+
+	public IContractRepository ContractRepository { get; }
+
+	public IVolunteerRepository VolunteerRepository { get; }
 }
