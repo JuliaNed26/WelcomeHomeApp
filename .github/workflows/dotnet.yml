@@ -20,9 +20,17 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore ./WelcomeHome/WelcomeHomeWebApi/WelcomeHomeWebAPI.csproj
-    - name: Build
-      run: dotnet build WelcomeHome/WelcomeHomeWebApi/WelcomeHomeWebAPI.csproj --configuration Release
+    - name: Restore dependencies - DAL
+      run: dotnet restore ./WelcomeHome/WelcomeHome.DAL/WelcomeHome.DAL.csproj
+    - name: Restore dependencies - Services
+      run: dotnet restore ./WelcomeHome/WelcomeHome.Services/WelcomeHome.Services.csproj
+    - name: Restore dependencies - Web
+      run: dotnet restore ./WelcomeHome/WelcomeHome.Web/WelcomeHome.Web.csproj
+    - name: Build - DAL
+      run: dotnet build WelcomeHome/WelcomeHome.DAL/WelcomeHome.DAL.csproj --configuration Release
+    - name: Build - Services
+      run: dotnet build WelcomeHome/WelcomeHome.Services/WelcomeHome.Services.csproj --configuration Release
+    - name: Build - Web
+      run: dotnet build WelcomeHome/WelcomeHome.Web/WelcomeHome.Web.csproj --configuration Release
     - name: Test
-      run: dotnet test WelcomeHome/WelcomeHomeTests/WelcomeHomeTests.csproj --configuration Release --verbosity normal
+      run: dotnet test WelcomeHome/WelcomeHome.Services.Tests/WelcomeHome.Services.Tests.csproj --configuration Release --verbosity normal
