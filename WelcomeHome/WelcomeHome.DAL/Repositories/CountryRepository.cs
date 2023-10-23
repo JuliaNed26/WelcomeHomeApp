@@ -20,7 +20,7 @@ public sealed class CountryRepository : ICountryRepository
 			           .Select(c => c);
 	}
 
-	public async Task<Country?> GetByIdAsync(int id)
+	public async Task<Country?> GetByIdAsync(Guid id)
 	{
 		return await _context.Countries
 			                 .Include(c => c.Cities)
@@ -47,7 +47,7 @@ public sealed class CountryRepository : ICountryRepository
 		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}
 
-	public async Task DeleteAsync(int id)
+	public async Task DeleteAsync(Guid id)
 	{
 		var foundCountry = await _context.Countries.SingleAsync(c => c.Id == id).ConfigureAwait(false);
 

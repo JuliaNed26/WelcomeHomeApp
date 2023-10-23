@@ -4,7 +4,7 @@ namespace WelcomeHome.DAL.Repositories;
 
 public interface ICountryRepository
 {
-	Task<Country?> GetByIdAsync(int id);
+	Task<Country?> GetByIdAsync(Guid id);
 
 	IEnumerable<Country> GetAll();
 
@@ -12,5 +12,5 @@ public interface ICountryRepository
 
 	Task UpdateAsync(Country country);
 
-	Task DeleteAsync(int id);
+	Task DeleteAsync(Guid id);
 }

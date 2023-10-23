@@ -19,7 +19,7 @@ public sealed class UserRepository : IUserRepository
 			           .Select(u => u);
 	}
 
-	public async Task<User?> GetByIdAsync(int id)
+	public async Task<User?> GetByIdAsync(Guid id)
 	{
 		return await _context.Users
 			                 .AsNoTracking()
@@ -49,7 +49,7 @@ public sealed class UserRepository : IUserRepository
 		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}
 
-	public async Task DeleteAsync(int id)
+	public async Task DeleteAsync(Guid id)
 	{
 		var foundUser = await _context.Users.SingleAsync(u => u.Id == id).ConfigureAwait(false);
 

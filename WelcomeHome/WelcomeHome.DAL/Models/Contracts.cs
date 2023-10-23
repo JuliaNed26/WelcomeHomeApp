@@ -7,8 +7,8 @@ namespace WelcomeHome.DAL.Models
     public class Contract
     {
         [Key]
-        public int Id { get; set; }
-        public int VolunteerId { get; set; }
+        public Guid Id { get; set; }
+        public Guid VolunteerId { get; set; }
         public Volunteer Volunteer { get; set; } = null!;
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
