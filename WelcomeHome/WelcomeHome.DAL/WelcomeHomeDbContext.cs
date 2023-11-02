@@ -34,6 +34,8 @@ public sealed class WelcomeHomeDbContext : DbContext
 
 	public DbSet<Volunteer> Volunteers { get; set; }
 
+    public DbSet<Vacancy> Vacancies {  get; set; }
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.Entity<User>()
