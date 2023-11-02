@@ -1,0 +1,1 @@
+?INSERT INTO dbo.Countries (Id, Name) VALUES (NEWID(), 'Ukraine');

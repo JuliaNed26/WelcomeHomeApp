@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WelcomeHome.DAL.Models;
+using WelcomeHome.DAL.Scripts;
 
 namespace WelcomeHome.DAL;
 
@@ -7,7 +8,12 @@ public sealed class WelcomeHomeDbContext : DbContext
 {
 	public WelcomeHomeDbContext(DbContextOptions<WelcomeHomeDbContext> options)
 	{
-		Database.EnsureCreated();
+		var dbCreated = Database.EnsureCreated();
+		if (dbCreated)
+		{
+			var connectionString = Database.GetConnectionString()!;
+			SeedWithPredefinedData(connectionString);
+		}
 	}
 
 	public DbSet<Event> Events { get; set; }
@@ -95,4 +101,16 @@ public sealed class WelcomeHomeDbContext : DbContext
 			                       .WithOne(ps => ps.Step)
 			                       .HasForeignKey(ps => ps.StepId);
 	}
+
+	private static void SeedWithPredefinedData(string connectionString)
+	{
+		var solutionDirectoryPath = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.FullName;
+
+		string countriesSeedScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\CountriesSeed.sql");
+		SqlScriptExecutor.Execute(countriesSeedScriptPath, connectionString);
+
+		string citiesSeedScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\CitiesSeed.sql");
+		SqlScriptExecutor.Execute(citiesSeedScriptPath, connectionString);
+	}
+
 }
