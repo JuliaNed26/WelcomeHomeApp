@@ -40,6 +40,10 @@ public sealed class WelcomeHomeDbContext : DbContext
 
     public DbSet<StepDocument> StepsDocuments { get; set; }
 
+	public DbSet<SocialPayout> SocialPayouts { get; set; }
+
+	public DbSet<PaymentStep> PaymentSteps { get; set; }
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.Entity<User>()
@@ -76,10 +80,19 @@ public sealed class WelcomeHomeDbContext : DbContext
 	                               .WithOne(sd => sd.Step)
 	                               .HasForeignKey(sd => sd.StepId);
 
-		modelBuilder.Entity<StepDocument>().HasAlternateKey(sd => new { sd.StepId, sd.DocumentId, sd.ToReceive });
-
 		modelBuilder.Entity<EstablishmentType>().HasMany(et => et.Steps)
 			                                    .WithOne(s => s.EstablishmentType)
 			                                    .HasForeignKey(s => s.EstablishmentTypeId);
+
+		modelBuilder.Entity<SocialPayout>().HasMany(sp => sp.UserCategories)
+			                               .WithMany(uc => uc.SocialPayouts);
+
+		modelBuilder.Entity<SocialPayout>().HasMany(sp => sp.PaymentSteps)
+			                               .WithOne(ps => ps.SocialPayout)
+			                               .HasForeignKey(ps => ps.SocialPayoutId);
+
+		modelBuilder.Entity<Step>().HasMany(s => s.PaymentSteps)
+			                       .WithOne(ps => ps.Step)
+			                       .HasForeignKey(ps => ps.StepId);
 	}
 }

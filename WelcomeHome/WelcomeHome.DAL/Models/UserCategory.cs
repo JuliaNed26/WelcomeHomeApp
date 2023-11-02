@@ -7,5 +7,6 @@ namespace WelcomeHome.DAL.Models
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
+        public ICollection<SocialPayout>? SocialPayouts { get; set; }
     }
 }
