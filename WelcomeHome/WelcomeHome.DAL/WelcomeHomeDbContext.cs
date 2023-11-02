@@ -36,14 +36,15 @@ public sealed class WelcomeHomeDbContext : DbContext
 
     public DbSet<Document> Documents { get; set; }
 
+    public DbSet<Step> Steps { get; set; }
+
+    public DbSet<StepDocument> StepsDocuments { get; set; }
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.Entity<User>()
 			        .HasIndex(u => u.Email)
 			        .IsUnique();
-
-        modelBuilder.Entity<Event>().HasIndex(e => e.Id)
-                            .IsUnique();
 
         modelBuilder.Entity<Event>().HasOne(e => e.Volunteer)
                                     .WithMany(v => v.Events)
@@ -66,5 +67,19 @@ public sealed class WelcomeHomeDbContext : DbContext
                                     .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Document>().HasIndex(d => d.Name).IsUnique();
-    }
+
+        modelBuilder.Entity<Document>().HasMany(d => d.StepDocuments)
+	                                   .WithOne(sd => sd.Document)
+	                                   .HasForeignKey(sd => sd.DocumentId);
+
+		modelBuilder.Entity<Step>().HasMany(s => s.StepDocuments)
+	                               .WithOne(sd => sd.Step)
+	                               .HasForeignKey(sd => sd.StepId);
+
+		modelBuilder.Entity<StepDocument>().HasAlternateKey(sd => new { sd.StepId, sd.DocumentId, sd.ToReceive });
+
+		modelBuilder.Entity<EstablishmentType>().HasMany(et => et.Steps)
+			                                    .WithOne(s => s.EstablishmentType)
+			                                    .HasForeignKey(s => s.EstablishmentTypeId);
+	}
 }
