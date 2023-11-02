@@ -12,19 +12,17 @@ public sealed class WelcomeHomeDbContext : DbContext
 
 	public DbSet<Event> Events { get; set; }
   
-  public DbSet<Course> Courses { get; set; }
+    public DbSet<Course> Courses { get; set; }
   
 	public DbSet<User> Users { get; set; }
   
-  public DbSet<EventType> EventTypes { get; set; }
-  
-  public DbSet<Establishment> Establishments { get; set; }
-  
-  public DbSet<EstablishmentType> EstablishmentTypes { get; set; }
-  
-  public DbSet<SocialPayment> SocialPayments { get; set; }
-  
-  public DbSet<UserCategory> UserCategories { get; set; }
+    public DbSet<EventType> EventTypes { get; set; }
+    
+    public DbSet<Establishment> Establishments { get; set; }
+    
+    public DbSet<EstablishmentType> EstablishmentTypes { get; set; }
+    
+    public DbSet<UserCategory> UserCategories { get; set; }
 
 	public DbSet<City> Cities { get; set; }
 
@@ -35,6 +33,8 @@ public sealed class WelcomeHomeDbContext : DbContext
 	public DbSet<Volunteer> Volunteers { get; set; }
 
     public DbSet<Vacancy> Vacancies {  get; set; }
+
+    public DbSet<Document> Documents { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -65,14 +65,6 @@ public sealed class WelcomeHomeDbContext : DbContext
                                     .HasForeignKey(e => e.EstablishmentTypeId)
                                     .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<SocialPayment>().HasOne(sp => sp.Establishment)
-                                            .WithMany(e => e.SocialPayments)
-                                            .HasForeignKey(sp => sp.EstablishmentId)
-                                            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<SocialPayment>().HasOne(sp => sp.UserCategory)
-                                            .WithMany(uc => uc.SocialPayments)
-                                            .HasForeignKey(sp => sp.UserCategoryId)
-                                            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<Document>().HasIndex(d => d.Name).IsUnique();
     }
 }
