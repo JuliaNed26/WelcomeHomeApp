@@ -16,7 +16,8 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 	public IEnumerable<SocialPayout> GetAll()
 	{
 		return _dbContext.SocialPayouts
-			             .Include(p => p.PaymentSteps)
+			             .AsNoTracking()
+						 .Include(p => p.PaymentSteps)
 			             .ThenInclude(ps => ps.Step)
 			             .Select(sp => sp);
 	}
@@ -24,7 +25,8 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 	public async Task<SocialPayout?> GetAsync(Guid id)
 	{
 		return await _dbContext.SocialPayouts
-			                   .Include(p => p.PaymentSteps)
+			                   .AsNoTracking()
+							   .Include(p => p.PaymentSteps)
 			                   .ThenInclude(ps => ps.Step)
 			                   .FirstOrDefaultAsync(p => p.Id == id)
 			                   .ConfigureAwait(false);
