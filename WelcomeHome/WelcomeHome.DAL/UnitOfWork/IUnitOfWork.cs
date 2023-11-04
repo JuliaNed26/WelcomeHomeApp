@@ -15,4 +15,6 @@ public interface IUnitOfWork
 	public IContractRepository ContractRepository { get; }
 
 	public IVolunteerRepository VolunteerRepository { get; }
+
+	public ISocialPayoutRepository SocialPayoutRepository { get; }
 }
