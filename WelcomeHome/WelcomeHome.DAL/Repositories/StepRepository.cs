@@ -28,29 +28,30 @@ public sealed class StepRepository : IStepRepository
 			                   .AsNoTracking()
 							   .Include(s => s.StepDocuments)
 			                   .ThenInclude(sd => sd.Document)
-			                   .FirstOrDefaultAsync(s => s.Id == id);
+			                   .FirstOrDefaultAsync(s => s.Id == id)
+			                   .ConfigureAwait(false);
 	}
 
 	public async Task AddAsync(Step step)
 	{
 		step.Id = Guid.NewGuid();
 
-		await _dbContext.Steps.AddAsync(step);
-		await _dbContext.SaveChangesAsync();
+		await _dbContext.Steps.AddAsync(step).ConfigureAwait(false);
+		await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 	}
 
 	public async Task UpdateAsync(Step step)
 	{
 		_dbContext.Steps.Update(step);
-		await _dbContext.SaveChangesAsync();
+		await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 	}
 
 	public async Task DeleteAsync(Guid id)
 	{
-		var step = await _dbContext.Steps.FindAsync(id) 
-		           ?? throw new NotFoundException($"Step with Id {id} not found for deletion.");
+		var step = await _dbContext.Steps.FindAsync(id).ConfigureAwait(false)
+				   ?? throw new NotFoundException($"Step with Id {id} not found for deletion.");
 
 		_dbContext.Steps.Remove(step);
-		await _dbContext.SaveChangesAsync();
+		await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 	}
 }
