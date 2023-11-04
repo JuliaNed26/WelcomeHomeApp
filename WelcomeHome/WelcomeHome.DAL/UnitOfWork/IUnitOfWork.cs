@@ -19,4 +19,6 @@ public interface IUnitOfWork
 	public ISocialPayoutRepository SocialPayoutRepository { get; }
 
 	public IStepRepository StepRepository { get; }
+
+	public IDocumentRepository DocumentRepository { get; }
 }
