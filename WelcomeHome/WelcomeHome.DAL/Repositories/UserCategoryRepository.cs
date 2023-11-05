@@ -34,7 +34,7 @@ namespace WelcomeHome.DAL.Repositories
         public IEnumerable<UserCategory> GetAll()
         {
             return _context.UserCategories
-                .Include(u => u.SocialPayments)
+                .Include(u => u.SocialPayouts)
                 .AsNoTracking()
                 .Select(u => u);
         }
@@ -42,7 +42,7 @@ namespace WelcomeHome.DAL.Repositories
         public async Task<UserCategory?> GetByIdAsync(Guid id)
         {
             return await _context.UserCategories
-                .Include(u => u.SocialPayments)
+                .Include(u => u.SocialPayouts)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(u => u.Id == id)
                 .ConfigureAwait(false);

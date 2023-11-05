@@ -18,7 +18,6 @@ namespace WelcomeHome.DAL.Models
         public City City { get; set; } = null!;
         public EstablishmentType EstablishmentType { get; set; } = null!;
         public ICollection<Event>? Events { get; set; }
-        public ICollection<SocialPayment>? SocialPayments { get; set; }
 
     }
 }

@@ -17,7 +17,6 @@ namespace WelcomeHome.DAL.Repositories
             return _context.Establishments.Include(e => e.Events)
                                           .Include(e => e.City)
                                           .Include(e => e.EstablishmentType)
-                                          .Include(e => e.SocialPayments)
                                           .AsNoTracking()
                                           .Select(e => e);
         }
@@ -27,7 +26,6 @@ namespace WelcomeHome.DAL.Repositories
             return await _context.Establishments.Include(e => e.Events)
                                                 .Include(e => e.City)
                                                 .Include(e => e.EstablishmentType)
-                                                .Include(e => e.SocialPayments)
                                                 .FirstOrDefaultAsync(e => e.Id == id)
                                                 .ConfigureAwait(false);
         }

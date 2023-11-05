@@ -15,4 +15,10 @@ public interface IUnitOfWork
 	public IContractRepository ContractRepository { get; }
 
 	public IVolunteerRepository VolunteerRepository { get; }
+
+	public ISocialPayoutRepository SocialPayoutRepository { get; }
+
+	public IStepRepository StepRepository { get; }
+
+	public IDocumentRepository DocumentRepository { get; }
 }
