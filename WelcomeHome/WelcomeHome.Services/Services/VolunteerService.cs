@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace WelcomeHome.Services.Services
 {
-    internal class VolunteerService
+    public class VolunteerService
     {
+        public VolunteerService()
+        {
+        }
+
     }
 }
