@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.DAL.UnitOfWork;
+using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.Services.Services
 {
@@ -29,10 +30,10 @@ namespace WelcomeHome.Services.Services
 
             var volunteerEntity = _mapper.Map<Volunteer>(newVolunteer);
             volunteerEntity.Id = Guid.NewGuid();
-
+            await _unitOfWork.VolunteerRepository.AddAsync(volunteerEntity);
+            await AddContract(volunteerEntity.Id);
             //await _exceptionHandlerMediator.HandleAndThrowAsync(() => _unitOfWork.VolunteerRepository.AddAsync(volunteerEntity)).ConfigureAwait(false);
 
-            await _unitOfWork.VolunteerRepository.AddAsync(volunteerEntity);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -70,5 +71,18 @@ namespace WelcomeHome.Services.Services
 
             await _unitOfWork.VolunteerRepository.UpdateAsync(volunteerEntity);
         }
+
+
+        private async void AddContract(Guid volunteerId)
+        {
+            Contract contract = new Contract
+            {
+                VolunteerId = volunteerId,
+                DateStart = DateTime.Now,
+                DateEnd = DateTime.MaxValue,
+            };
+            await this._unitOfWork.ContractRepository.AddAsync(contract);
+        }
+
     }
 }
