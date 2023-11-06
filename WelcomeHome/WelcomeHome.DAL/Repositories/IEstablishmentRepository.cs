@@ -13,10 +13,10 @@ namespace WelcomeHome.DAL.Repositories
 
         Task<Establishment?> GetByIdAsync(Guid id);
 
-        Task Add(Establishment newEstablishment);
+        Task AddAsync(Establishment newEstablishment);
 
-        Task Delete(Guid id);
+        Task DeleteAsync(Guid id);
 
-        Task Update(Establishment editedEstablishment);
+        Task UpdateAsync(Establishment editedEstablishment);
     }
 }
