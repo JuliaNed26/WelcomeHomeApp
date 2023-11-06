@@ -15,7 +15,8 @@ namespace WelcomeHome.Services.Services
         private readonly IMapper _mapper;
         //private readonly DataExceptionsHandlerMediator _exceptionHandlerMediator;
 
-        public VolunteerService(IUnitOfWork unitOfWork, IMapper mapper, Func<Type/*, DataExceptionsHandlerMediator> exceptionHandlerMediatorFactory*/)
+        public VolunteerService(IUnitOfWork unitOfWork, IMapper mapper
+            /*, Func<Type, DataExceptionsHandlerMediator> exceptionHandlerMediatorFactory*/)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -71,7 +72,6 @@ namespace WelcomeHome.Services.Services
 
             await _unitOfWork.VolunteerRepository.UpdateAsync(volunteerEntity);
         }
-
 
         private async void AddContract(Guid volunteerId)
         {

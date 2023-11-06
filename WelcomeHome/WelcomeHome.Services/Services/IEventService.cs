@@ -7,17 +7,17 @@ using WelcomeHome.Services.DTO;
 
 namespace WelcomeHome.Services.Services
 {
-    public interface IVolunteerService
+    public interface IEventService
     {
         int GetCount();
 
-        Task<VolunteerOutDTO> GetAsync(Guid id);
+        Task<EventOutDTO> GetAsync(Guid id);
 
-        IEnumerable<VolunteerOutDTO> GetAll();
+        IEnumerable<EventOutDTO> GetAll();
 
-        Task AddAsync(VolunteerInDTO newVolunteer);
+        Task AddAsync(EventInDTO newEvent);
 
-        Task UpdateAsync(VolunteerInDTO volunteerWithUpdateInfo);
+        Task UpdateAsync(EventInDTO eventWithUpdateInfo);
 
         Task DeleteAsync(Guid id);
     }

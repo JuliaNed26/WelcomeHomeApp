@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace WelcomeHome.Services.DTO
 {
-    public class UserDTO
+    public class UserOutDTO
     {
-        [Required]
         public string FullName { get; set; } = null!;
-        [Required]
+
         public string PhoneNumber { get; set; } = null!;
-        [Required, EmailAddress]
+
         public string Email { get; set; } = null!;
     }
 }
