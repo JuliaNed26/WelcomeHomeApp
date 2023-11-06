@@ -21,4 +21,6 @@ public interface IUnitOfWork
 	public IStepRepository StepRepository { get; }
 
 	public IDocumentRepository DocumentRepository { get; }
+	public IEstablishmentRepository EstablishmentRepository { get; }
+    public IEstablishmentTypeRepository EstablishmentTypeRepository { get; }
 }
