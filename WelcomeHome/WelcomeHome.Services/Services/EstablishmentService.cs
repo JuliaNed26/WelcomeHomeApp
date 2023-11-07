@@ -17,15 +17,10 @@ public sealed class EstablishmentService : IEstablishmentService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<int> GetCountAsync()
-    {
-        var allEstablishments = await _unitOfWork.EstablishmentRepository.GetAllAsync();
-        return allEstablishments.Count();
-    }
-
     public async Task<EstablishmentOutDTO> GetAsync(Guid id)
     {
-        var foundEstablishment = await _unitOfWork.EstablishmentRepository.GetByIdAsync(id).ConfigureAwait(false);
+        var foundEstablishment = await _unitOfWork.EstablishmentRepository.GetByIdAsync(id).ConfigureAwait(false) 
+            ?? throw new Exception("Establishment was not found");
         var result = ConvertOutDTO(foundEstablishment);
         return result;
     }
@@ -34,12 +29,8 @@ public sealed class EstablishmentService : IEstablishmentService
     {
         var establishments = await _unitOfWork.EstablishmentRepository.GetAllAsync();
 
-        var result = new List<EstablishmentOutDTO>();
-        //тимчасове рішення
-        foreach (var es in establishments)
-        {
-            result.Add(ConvertOutDTO(es));
-        }
+        var result = establishments.Select(e => ConvertOutDTO(e));
+
         return result;
     }
 
@@ -52,13 +43,8 @@ public sealed class EstablishmentService : IEstablishmentService
             ?? throw new Exception("Establishment type was not found");
 
         var establishments = await _unitOfWork.EstablishmentRepository.GetAllAsync();
-        var establishmentsByType = establishments.Where(e => e.EstablishmentTypeId == typeId);
-        var result = new List<EstablishmentOutDTO>();
-        foreach (var es in establishmentsByType)
-        {
-            result.Add(ConvertOutDTO(es));
-        }
-        return result;
+        var establishmentsByType = establishments.Where(e => e.EstablishmentTypeId == typeId).Select(e => ConvertOutDTO(e));
+        return establishmentsByType;
     }
 
     public async Task<IEnumerable<EstablishmentOutDTO>> GetByCityAsync(Guid cityId)
@@ -70,13 +56,8 @@ public sealed class EstablishmentService : IEstablishmentService
             ?? throw new Exception("City was not found");
 
         var establishments = await _unitOfWork.EstablishmentRepository.GetAllAsync();
-        var establishmentsByCity = establishments.Where(e => e.CityId == cityId);
-        var result = new List<EstablishmentOutDTO>();
-        foreach (var es in establishmentsByCity)
-        {
-            result.Add(ConvertOutDTO(es));
-        }
-        return result;
+        var establishmentsByCity = establishments.Where(e => e.CityId == cityId).Select(e => ConvertOutDTO(e));
+        return establishmentsByCity;
     }
 
     public async Task<IEnumerable<EstablishmentOutDTO>> GetByTypeAndCityAsync(Guid typeId, Guid cityId)
@@ -110,7 +91,7 @@ public sealed class EstablishmentService : IEstablishmentService
 
     public async Task DeleteAsync(Guid id)
     {
-        await _unitOfWork.EstablishmentRepository.DeleteAsync(id)).ConfigureAwait(false);
+        await _unitOfWork.EstablishmentRepository.DeleteAsync(id).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<EstablishmentType>> GetAllEstablishmentTypesAsync()
