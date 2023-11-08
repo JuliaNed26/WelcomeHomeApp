@@ -6,7 +6,7 @@ public interface IDocumentRepository
 {
 	IEnumerable<Document> GetAll();
 
-	Task<Document?> GetAsync(Guid id);
+	Task<Document?> GetByIdAsync(Guid id);
 
 	Task AddAsync(Document document);
 

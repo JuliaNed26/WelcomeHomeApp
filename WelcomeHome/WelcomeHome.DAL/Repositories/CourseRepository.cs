@@ -12,7 +12,7 @@ namespace WelcomeHome.DAL.Repositories
             this._context = context;
         }
 
-        public async Task<IEnumerable<Course>> GetAllAsync()
+        public IEnumerable<Course> GetAll()
         {
             return _context.Courses.Select(e => e);
         }

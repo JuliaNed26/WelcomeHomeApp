@@ -12,7 +12,7 @@ namespace WelcomeHome.DAL.Repositories
             this._context = context;
         }
 
-        public async Task<IEnumerable<EstablishmentType>> GetAllAsync()
+        public IEnumerable<EstablishmentType> GetAll()
         {
             return _context.EstablishmentTypes.Include(et => et.Establishments)
                                               .AsNoTracking()

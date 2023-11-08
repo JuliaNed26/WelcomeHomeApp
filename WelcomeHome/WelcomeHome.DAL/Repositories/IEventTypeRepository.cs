@@ -10,7 +10,7 @@ namespace WelcomeHome.DAL.Repositories
 {
     public interface IEventTypeRepository
     {
-        Task<IEnumerable<EventType>> GetAllAsync();
+        IEnumerable<EventType> GetAll();
 
         Task<EventType?> GetByIdAsync(Guid id);
         Task Add(EventType newEventType);

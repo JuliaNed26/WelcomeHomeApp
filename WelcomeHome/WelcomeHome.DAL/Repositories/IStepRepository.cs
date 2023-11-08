@@ -6,7 +6,7 @@ public interface IStepRepository
 {
 	IEnumerable<Step> GetAll();
 
-	Task<Step?> GetAsync(Guid id);
+	Task<Step?> GetByIdAsync(Guid id);
 
 	Task AddAsync(Step step);
 

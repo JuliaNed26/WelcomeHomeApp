@@ -9,7 +9,7 @@ namespace WelcomeHome.DAL.Repositories
 {
     public interface IEstablishmentTypeRepository
     {
-        Task<IEnumerable<EstablishmentType>> GetAllAsync();
+        IEnumerable<EstablishmentType> GetAll();
 
         Task<EstablishmentType?> GetByIdAsync(Guid id);
         Task Add(EstablishmentType newEstablishmentType);

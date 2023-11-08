@@ -6,7 +6,7 @@ public interface ISocialPayoutRepository
 {
 	IEnumerable<SocialPayout> GetAll();
 
-	Task<SocialPayout?> GetAsync(Guid id);
+	Task<SocialPayout?> GetByIdAsync(Guid id);
 
 	Task AddWithStepsAsync(SocialPayout socialPayout, IEnumerable<Guid> stepIds);
 
