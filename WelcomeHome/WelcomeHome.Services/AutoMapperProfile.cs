@@ -15,6 +15,7 @@ namespace WelcomeHome.Services
         {
             CreateMap<Establishment, EstablishmentOutDTO>();
             CreateMap<EstablishmentInDTO, Establishment>();
+            CreateMap<EstablishmentType, EstablishmentTypeOutDTO>();
         }
     }
 }
