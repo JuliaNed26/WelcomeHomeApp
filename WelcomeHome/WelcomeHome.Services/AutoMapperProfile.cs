@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WelcomeHome.DAL.Models;
+using WelcomeHome.Services.DTO;
 
 namespace WelcomeHome.Services
 {
@@ -11,7 +13,8 @@ namespace WelcomeHome.Services
     {
         public AutoMapperProfile()
         {
-            
+            CreateMap<Establishment, EstablishmentOutDTO>();
+            CreateMap<EstablishmentInDTO, Establishment>();
         }
     }
 }
