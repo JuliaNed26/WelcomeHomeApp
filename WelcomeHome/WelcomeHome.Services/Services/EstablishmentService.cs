@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.ComponentModel;
 using System.Text;
 using System.Xml;
@@ -11,25 +12,26 @@ namespace WelcomeHome.Services.Services;
 public sealed class EstablishmentService : IEstablishmentService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public EstablishmentService(IUnitOfWork unitOfWork)
+    public EstablishmentService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<EstablishmentOutDTO> GetAsync(Guid id)
     {
         var foundEstablishment = await _unitOfWork.EstablishmentRepository.GetByIdAsync(id).ConfigureAwait(false) 
             ?? throw new Exception("Establishment was not found");
-        var result = ConvertOutDTO(foundEstablishment);
-        return result;
+        return _mapper.Map<EstablishmentOutDTO>(foundEstablishment);
     }
 
     public async Task<IEnumerable<EstablishmentOutDTO>> GetAllAsync()
     {
         var establishments = await _unitOfWork.EstablishmentRepository.GetAllAsync();
 
-        var result = establishments.Select(e => ConvertOutDTO(e));
+        var result = establishments.Select(e => _mapper.Map<EstablishmentOutDTO>(e));
 
         return result;
     }
@@ -43,7 +45,7 @@ public sealed class EstablishmentService : IEstablishmentService
             ?? throw new Exception("Establishment type was not found");
 
         var establishments = await _unitOfWork.EstablishmentRepository.GetAllAsync();
-        var establishmentsByType = establishments.Where(e => e.EstablishmentTypeId == typeId).Select(e => ConvertOutDTO(e));
+        var establishmentsByType = establishments.Where(e => e.EstablishmentTypeId == typeId).Select(e => _mapper.Map<EstablishmentOutDTO>(e));
         return establishmentsByType;
     }
 
@@ -56,7 +58,7 @@ public sealed class EstablishmentService : IEstablishmentService
             ?? throw new Exception("City was not found");
 
         var establishments = await _unitOfWork.EstablishmentRepository.GetAllAsync();
-        var establishmentsByCity = establishments.Where(e => e.CityId == cityId).Select(e => ConvertOutDTO(e));
+        var establishmentsByCity = establishments.Where(e => e.CityId == cityId).Select(e => _mapper.Map<EstablishmentOutDTO>(e));
         return establishmentsByCity;
     }
 
@@ -76,17 +78,12 @@ public sealed class EstablishmentService : IEstablishmentService
 
     public async Task AddAsync(EstablishmentInDTO newEstablishment)
     {
-        var establishmentEntity = await ConvertInDTOAsync(newEstablishment);
-
-        await _unitOfWork.EstablishmentRepository.AddAsync(establishmentEntity).ConfigureAwait(false);
-
+        await _unitOfWork.EstablishmentRepository.AddAsync(_mapper.Map<Establishment>(newEstablishment)).ConfigureAwait(false);
     }
 
     public async Task UpdateAsync(EstablishmentInDTO updatedEstablishment)
     {
-        var establishmentEntity = await ConvertInDTOAsync(updatedEstablishment);
-
-        await _unitOfWork.EstablishmentRepository.UpdateAsync(establishmentEntity).ConfigureAwait(false);
+        await _unitOfWork.EstablishmentRepository.UpdateAsync(_mapper.Map<Establishment>(updatedEstablishment)).ConfigureAwait(false);
     }
 
     public async Task DeleteAsync(Guid id)
@@ -94,48 +91,14 @@ public sealed class EstablishmentService : IEstablishmentService
         await _unitOfWork.EstablishmentRepository.DeleteAsync(id).ConfigureAwait(false);
     }
 
-    public async Task<IEnumerable<EstablishmentType>> GetAllEstablishmentTypesAsync()
+    public async Task<IEnumerable<EstablishmentTypeOutDTO>> GetAllEstablishmentTypesAsync()
     {
-        return await _unitOfWork.EstablishmentTypeRepository.GetAllAsync().ConfigureAwait(false);
-    }
+        var establishmentTypes = await _unitOfWork.EstablishmentTypeRepository.GetAllAsync().ConfigureAwait(false);
 
-    private EstablishmentOutDTO ConvertOutDTO(Establishment establishment)
-    {
-        EstablishmentOutDTO result = new EstablishmentOutDTO()
-        {
-            Name = establishment.Name,
-            Address = establishment.Address,
-            PageURL = establishment.PageURL,
-            PhoneNumber = establishment.PhoneNumber,
-            OtherContacts = establishment.OtherContacts,
-            Events = establishment.Events,
-            City = establishment.City,
-            EstablishmentType = establishment.EstablishmentType
-        };
+        var result = establishmentTypes.Select(e => _mapper.Map<EstablishmentTypeOutDTO>(e));
+
         return result;
     }
-    private async Task<Establishment> ConvertInDTOAsync(EstablishmentInDTO establishmentIn)
-    {
-        var city = await _unitOfWork.CityRepository
-                             .GetByIdAsync(establishmentIn.CityId)
-                             .ConfigureAwait(false)
-                              ?? throw new Exception("City was not found");
-        var type = await _unitOfWork.EstablishmentTypeRepository
-                           .GetByIdAsync(establishmentIn.EstablishmentTypeId)
-                           .ConfigureAwait(false)
-                            ?? throw new Exception("Establishment type was not found");
 
-
-        var result = new Establishment()
-        {
-            Name = establishmentIn.Name,
-            Address = establishmentIn.Address,
-            PageURL = establishmentIn.PageURL,
-            PhoneNumber = establishmentIn.PhoneNumber,
-            OtherContacts = establishmentIn.OtherContacts,
-            City = city,
-            EstablishmentType = type
-        };
-        return result;
-    }
+   
 }

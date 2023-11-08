@@ -26,7 +26,7 @@ namespace WelcomeHome.Services.Services
         Task UpdateAsync(EstablishmentInDTO updatedEstablishment);
         Task DeleteAsync(Guid id);
 
-        Task<IEnumerable<EstablishmentType>> GetAllEstablishmentTypesAsync();
+        Task<IEnumerable<EstablishmentTypeOutDTO>> GetAllEstablishmentTypesAsync();
 
     }
 }
