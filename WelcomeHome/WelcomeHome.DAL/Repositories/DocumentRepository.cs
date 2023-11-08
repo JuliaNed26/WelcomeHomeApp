@@ -17,7 +17,7 @@ public sealed class DocumentRepository : IDocumentRepository
 		return _dbContext.Documents.Select(d => d);
 	}
 
-	public async Task<Document?> GetAsync(Guid id)
+	public async Task<Document?> GetByIdAsync(Guid id)
 	{
 		return await _dbContext.Documents.FindAsync(id).ConfigureAwait(false);
 	}

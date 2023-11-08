@@ -20,61 +20,38 @@ public sealed class EstablishmentService : IEstablishmentService
         _mapper = mapper;
     }
 
+    //TODO: Add exceptions
+
     public async Task<EstablishmentOutDTO> GetAsync(Guid id)
     {
-        var foundEstablishment = await _unitOfWork.EstablishmentRepository.GetByIdAsync(id).ConfigureAwait(false) 
-            ?? throw new Exception("Establishment was not found");
+        var foundEstablishment = await _unitOfWork.EstablishmentRepository.GetByIdAsync(id).ConfigureAwait(false);
         return _mapper.Map<EstablishmentOutDTO>(foundEstablishment);
     }
 
-    public async Task<IEnumerable<EstablishmentOutDTO>> GetAllAsync()
+    public IEnumerable<EstablishmentOutDTO> GetAll()
     {
-        var establishments = await _unitOfWork.EstablishmentRepository.GetAllAsync();
-
-        var result = establishments.Select(e => _mapper.Map<EstablishmentOutDTO>(e));
-
-        return result;
+        return _unitOfWork.EstablishmentRepository.GetAll()
+                                                  .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
     }
 
-    public async Task<IEnumerable<EstablishmentOutDTO>> GetByEstablishmentTypeAsync(Guid typeId)
+    public IEnumerable<EstablishmentOutDTO> GetByEstablishmentType(Guid typeId)
     {
-        _ = await _unitOfWork.EstablishmentTypeRepository
-                             .GetByIdAsync(typeId)
-                             .ConfigureAwait(false)
-            //тут поміняти на свої ексепшини
-            ?? throw new Exception("Establishment type was not found");
-
-        var establishments = await _unitOfWork.EstablishmentRepository.GetAllAsync();
-        var establishmentsByType = establishments.Where(e => e.EstablishmentTypeId == typeId).Select(e => _mapper.Map<EstablishmentOutDTO>(e));
-        return establishmentsByType;
+        return _unitOfWork.EstablishmentRepository.GetAll()
+                                                  .Where(e => e.EstablishmentTypeId == typeId)
+                                                  .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
     }
 
-    public async Task<IEnumerable<EstablishmentOutDTO>> GetByCityAsync(Guid cityId)
+    public IEnumerable<EstablishmentOutDTO> GetByCity(Guid cityId)
     {
-        _ = await _unitOfWork.CityRepository
-                             .GetByIdAsync(cityId)
-                             .ConfigureAwait(false)
-            //exceptions
-            ?? throw new Exception("City was not found");
-
-        var establishments = await _unitOfWork.EstablishmentRepository.GetAllAsync();
-        var establishmentsByCity = establishments.Where(e => e.CityId == cityId).Select(e => _mapper.Map<EstablishmentOutDTO>(e));
-        return establishmentsByCity;
+        return _unitOfWork.EstablishmentRepository.GetAll()
+                                                  .Where(e => e.CityId == cityId)
+                                                  .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
     }
 
-    public async Task<IEnumerable<EstablishmentOutDTO>> GetByTypeAndCityAsync(Guid typeId, Guid cityId)
+    public IEnumerable<EstablishmentOutDTO> GetByTypeAndCity(Guid typeId, Guid cityId)
     {
-        var byType = await GetByEstablishmentTypeAsync(typeId);
-
-        _ = await _unitOfWork.CityRepository
-                             .GetByIdAsync(cityId)
-                             .ConfigureAwait(false)
-            //exceptions
-            ?? throw new Exception("City was not found");
-
-        return byType.Where(e => e.City.Id == cityId);
+        return GetByEstablishmentType(typeId).Where(e => e.City.Id == cityId);
     }
-
 
     public async Task AddAsync(EstablishmentInDTO newEstablishment)
     {
@@ -91,14 +68,9 @@ public sealed class EstablishmentService : IEstablishmentService
         await _unitOfWork.EstablishmentRepository.DeleteAsync(id).ConfigureAwait(false);
     }
 
-    public async Task<IEnumerable<EstablishmentTypeOutDTO>> GetAllEstablishmentTypesAsync()
+    public IEnumerable<EstablishmentTypeOutDTO> GetAllEstablishmentTypes()
     {
-        var establishmentTypes = await _unitOfWork.EstablishmentTypeRepository.GetAllAsync().ConfigureAwait(false);
-
-        var result = establishmentTypes.Select(e => _mapper.Map<EstablishmentTypeOutDTO>(e));
-
-        return result;
+        return _unitOfWork.EstablishmentTypeRepository.GetAll()
+                                                      .Select(e => _mapper.Map<EstablishmentTypeOutDTO>(e));
     }
-
-   
 }

@@ -9,7 +9,7 @@ namespace WelcomeHome.DAL.Repositories
 {
     public interface ICourseRepository
     {
-        Task<IEnumerable<Course>> GetAllAsync();
+        IEnumerable<Course> GetAll();
 
         Task<Course?> GetByIdAsync(Guid id);
 

@@ -22,7 +22,7 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 			             .Select(sp => sp);
 	}
 
-	public async Task<SocialPayout?> GetAsync(Guid id)
+	public async Task<SocialPayout?> GetByIdAsync(Guid id)
 	{
 		return await _dbContext.SocialPayouts
 			                   .AsNoTracking()

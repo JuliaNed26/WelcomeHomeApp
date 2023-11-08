@@ -5,7 +5,7 @@ namespace WelcomeHome.DAL.Repositories
 {
     public interface IEventRepository 
     {
-        Task<IEnumerable<Event>> GetAllAsync();
+        IEnumerable<Event> GetAll();
 
         Task<Event?> GetByIdAsync(Guid id);
 

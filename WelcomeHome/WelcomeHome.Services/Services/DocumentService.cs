@@ -22,20 +22,19 @@ namespace WelcomeHome.Services.Services
         }
 
         //TODO: Add exceptions
+        //TODO: Add stedDocument repository
+        //TODO: Add getByStep methods
 
         public async Task<DocumentOutDTO> GetAsync(Guid id)
         {
-            var foundDocument = await _unitOfWork.DocumentRepository.GetAsync(id).ConfigureAwait(false);
+            var foundDocument = await _unitOfWork.DocumentRepository.GetByIdAsync(id).ConfigureAwait(false);
             return _mapper.Map<DocumentOutDTO>(foundDocument);
         }
 
         public IEnumerable<DocumentOutDTO> GetAll()
         {
-            var documents = _unitOfWork.DocumentRepository.GetAll();
-
-            var result = documents.Select(d => _mapper.Map<DocumentOutDTO>(d));
-
-            return result;
+            return _unitOfWork.DocumentRepository.GetAll()
+                                                 .Select(d => _mapper.Map<DocumentOutDTO>(d));
         }
 
         public async Task AddAsync(DocumentInDTO newDocument)
@@ -52,6 +51,5 @@ namespace WelcomeHome.Services.Services
         {
             await _unitOfWork.DocumentRepository.DeleteAsync(id).ConfigureAwait(false);
         }
-
     }
 }

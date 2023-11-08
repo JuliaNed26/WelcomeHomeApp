@@ -12,7 +12,7 @@ namespace WelcomeHome.DAL.Repositories
             this._context = context;
         }
 
-        public async Task<IEnumerable<Event>> GetAllAsync()
+        public IEnumerable<Event> GetAll()
         {
             return _context.Events.Include(e => e.Establishment)
                                   .Include(e=>e.EventType)

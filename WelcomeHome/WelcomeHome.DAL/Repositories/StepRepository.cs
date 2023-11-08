@@ -22,7 +22,7 @@ public sealed class StepRepository : IStepRepository
 			             .Select(s => s);
 	}
 
-	public async Task<Step?> GetAsync(Guid id)
+	public async Task<Step?> GetByIdAsync(Guid id)
 	{
 		return await _dbContext.Steps
 			                   .AsNoTracking()
