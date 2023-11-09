@@ -104,7 +104,7 @@ public sealed class WelcomeHomeDbContext : DbContext
 
 	private static void SeedWithPredefinedData(string connectionString)
 	{
-		var solutionDirectoryPath = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.FullName;
+		var solutionDirectoryPath = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent!.FullName;
 
 		string countriesSeedScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\CountriesSeed.sql");
 		SqlScriptExecutor.Execute(countriesSeedScriptPath, connectionString);

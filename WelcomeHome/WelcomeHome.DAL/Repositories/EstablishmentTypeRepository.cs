@@ -26,7 +26,7 @@ namespace WelcomeHome.DAL.Repositories
                                                     .ConfigureAwait(false);
         }
 
-        public async Task Add(EstablishmentType newEstablishmentType)
+        public async Task AddAsync(EstablishmentType newEstablishmentType)
         {
 
             await _context.EstablishmentTypes.AddAsync(newEstablishmentType).ConfigureAwait(false);
@@ -34,7 +34,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var existingEstablishmentType = await _context.EstablishmentTypes.SingleAsync(et => et.Id == id).ConfigureAwait(false);
             _context.EstablishmentTypes.Remove(existingEstablishmentType);
@@ -42,7 +42,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Update(EstablishmentType editedEstablishmentType)
+        public async Task UpdateAsync(EstablishmentType editedEstablishmentType)
         {
             var existingEstablishmentType = await _context.EstablishmentTypes.SingleAsync(et => et.Id == editedEstablishmentType.Id).ConfigureAwait(false);
 

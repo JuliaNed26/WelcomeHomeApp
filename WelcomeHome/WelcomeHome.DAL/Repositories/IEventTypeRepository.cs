@@ -13,10 +13,10 @@ namespace WelcomeHome.DAL.Repositories
         IEnumerable<EventType> GetAll();
 
         Task<EventType?> GetByIdAsync(Guid id);
-        Task Add(EventType newEventType);
+        Task AddAsync(EventType newEventType);
 
-        Task Delete(Guid id);
+        Task DeleteAsync(Guid id);
 
-        Task Update(Event editedEventType);
+        Task UpdateAsync(Event editedEventType);
     }
 }

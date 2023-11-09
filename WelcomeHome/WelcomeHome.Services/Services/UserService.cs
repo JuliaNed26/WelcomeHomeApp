@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO;
@@ -12,16 +11,17 @@ namespace WelcomeHome.Services.Services
     internal class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork unitOfWork)
+		public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task AddAsync(UserInDTO newUser)
         { 
-            var userEntity = ConvertInDTOIntoEntity(newUser);
-            await _unitOfWork.UserRepository.AddAsync(userEntity);
+            await _unitOfWork.UserRepository.AddAsync(_mapper.Map<User>(newUser));
         }
 
         public async Task DeleteAsync(Guid id)
@@ -32,16 +32,15 @@ namespace WelcomeHome.Services.Services
         public IEnumerable<UserOutDTO> GetAll()
         {
             var users = _unitOfWork.UserRepository.GetAll();
-            return users.Select(user => ConvertEntityIntoOutDTO(user));
+            return users.Select(user => _mapper.Map<UserOutDTO>(user));
         }
 
         public async Task<UserOutDTO> GetAsync(Guid id)
         {
-            var foundUser = await _unitOfWork.UserRepository.GetByIdAsync(id);
-            if (foundUser == null)
-                throw new Exception("No user with such id");
-
-            return ConvertEntityIntoOutDTO(foundUser);
+	        var foundUser = await _unitOfWork.UserRepository.GetByIdAsync(id);
+	        return foundUser == null
+		        ? throw new Exception("No user with such id")
+		        : _mapper.Map<UserOutDTO>(foundUser);
         }
 
         public int GetCount()
@@ -52,44 +51,7 @@ namespace WelcomeHome.Services.Services
 
         public async Task UpdateAsync(UserOutDTO userWithUpdateInfo)
         {
-            var userEntity = ConvertOutDTOIntoEntity(userWithUpdateInfo);
-            await _unitOfWork.UserRepository.UpdateAsync(userEntity);
-        }
-
-        private User ConvertInDTOIntoEntity(UserInDTO dto)
-        {
-            User entity = new User
-            {
-                Id = Guid.NewGuid(),
-                FullName = dto.FullName,
-                PhoneNumber = dto.PhoneNumber,
-                Email = dto.Email,
-            };
-            return entity;
-        }
-
-        private UserOutDTO ConvertEntityIntoOutDTO(User entity)
-        {
-            UserOutDTO dto = new UserOutDTO
-            {
-                Id = entity.Id,
-                FullName = entity.FullName,
-                PhoneNumber = entity.PhoneNumber,
-                Email = entity.Email,
-            };
-            return dto;
-        }
-
-        private User ConvertOutDTOIntoEntity(UserOutDTO dto)
-        {
-            User entity = new User
-            {
-                Id = dto.Id,
-                FullName = dto.FullName,
-                PhoneNumber = dto.PhoneNumber,
-                Email = dto.Email,
-            };
-            return entity;
+            await _unitOfWork.UserRepository.UpdateAsync(_mapper.Map<User>(userWithUpdateInfo));
         }
     }
 }

@@ -1,9 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO;
@@ -21,9 +16,9 @@ namespace WelcomeHome.Services.Services
             _mapper = mapper;
         }
 
-        //TODO: Add exceptions
-        //TODO: Add stedDocument repository
-        //TODO: Add getByStep methods
+        //TODO: AddAsync exceptions
+        //TODO: AddAsync stedDocument repository
+        //TODO: AddAsync getByStep methods
 
         public async Task<DocumentOutDTO> GetAsync(Guid id)
         {

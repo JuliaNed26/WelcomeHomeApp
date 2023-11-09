@@ -26,7 +26,7 @@ namespace WelcomeHome.DAL.Repositories
                                             .ConfigureAwait(false);
         }
 
-        public async Task Add(EventType newEventType)
+        public async Task AddAsync(EventType newEventType)
         {
 
             await _context.EventTypes.AddAsync(newEventType).ConfigureAwait(false);
@@ -34,7 +34,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var existingEventType = await _context.EventTypes.SingleAsync(et => et.Id == id).ConfigureAwait(false);
             _context.EventTypes.Remove(existingEventType);
@@ -42,7 +42,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Update(Event editedEventType)
+        public async Task UpdateAsync(Event editedEventType)
         {
             var existingEventType = await _context.EventTypes.SingleAsync(et => et.Id == editedEventType.Id).ConfigureAwait(false);
 

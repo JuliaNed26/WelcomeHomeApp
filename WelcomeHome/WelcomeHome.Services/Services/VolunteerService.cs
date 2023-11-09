@@ -1,27 +1,24 @@
-﻿namespace WelcomeHome.Services.Services
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using WelcomeHome.DAL.Models;
-    using WelcomeHome.DAL.UnitOfWork;
-    using WelcomeHome.Services.DTO;
+﻿using AutoMapper;
+using WelcomeHome.DAL.Models;
+using WelcomeHome.DAL.UnitOfWork;
+using WelcomeHome.Services.DTO;
 
+namespace WelcomeHome.Services.Services
+{
     public class VolunteerService : IVolunteerService
     {
         private readonly IUnitOfWork _unitOfWork;
-        
-        public VolunteerService(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+
+		public VolunteerService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task AddAsync(VolunteerInDTO newVolunteer)
         {
-            var volunteerEntity = this.ConvertInDTOIntoEntity(newVolunteer);
-            await this._unitOfWork.VolunteerRepository.AddAsync(volunteerEntity);
+            await _unitOfWork.VolunteerRepository.AddAsync(_mapper.Map<Volunteer>(newVolunteer));
         }
 
         public async Task DeleteAsync(Guid id)
@@ -32,18 +29,15 @@
         public IEnumerable<VolunteerOutDTO> GetAll()
         {
             var volunteers = _unitOfWork.VolunteerRepository.GetAll();
-            return volunteers.Select(volunteer => ConvertEntityIntoOutDTO(volunteer));
+            return volunteers.Select(volunteer => _mapper.Map<VolunteerOutDTO>(volunteer));
         }
 
         public async Task<VolunteerOutDTO> GetAsync(Guid id)
         {
-            var foundVolunteer = await _unitOfWork.VolunteerRepository.GetByIdAsync(id);
-            if (foundVolunteer == null)
-            {
-                throw new Exception("No volunteer with such id");
-            }
-
-            return this.ConvertEntityIntoOutDTO(foundVolunteer);
+	        var foundVolunteer = await _unitOfWork.VolunteerRepository.GetByIdAsync(id);
+	        return foundVolunteer == null
+		        ? throw new Exception("No volunteer with such id")
+		        : _mapper.Map<VolunteerOutDTO>(foundVolunteer);
         }
 
         public int GetCount()
@@ -54,54 +48,7 @@
 
         public async Task UpdateAsync(VolunteerOutDTO volunteerWithUpdateInfo)
         {
-            var volunteerEntity = ConvertOutDTOIntoEntity(volunteerWithUpdateInfo);
-
-            await _unitOfWork.VolunteerRepository.UpdateAsync(volunteerEntity);
-        }
-
-        private Volunteer ConvertInDTOIntoEntity(VolunteerInDTO dto)
-        {
-            Volunteer volunteerEntity = new Volunteer
-            {
-                Id = Guid.NewGuid(),
-                FullName = dto.FullName,
-                PhoneNumber = dto.PhoneNumber,
-                Email = dto.Email,
-                Telegram = dto.Telegram,
-                Document = dto.Document,
-                EstablishmentId = dto.EstablishmentId,
-            };
-            return volunteerEntity;
-        }
-
-        private VolunteerOutDTO ConvertEntityIntoOutDTO (Volunteer entity)
-        {
-            VolunteerOutDTO dto = new VolunteerOutDTO
-            {
-                Id = entity.Id,
-                FullName = entity.FullName,
-                PhoneNumber = entity.PhoneNumber,
-                Email = entity.Email,
-                Telegram = entity.Telegram,
-                Document = entity.Document,
-                EstablishmentId = entity.EstablishmentId
-            };
-            return dto;
-        }
-
-        private Volunteer ConvertOutDTOIntoEntity(VolunteerOutDTO dto)
-        {
-            Volunteer entity = new Volunteer
-            {
-                Id = dto.Id,
-                FullName = dto.FullName,
-                PhoneNumber = dto.PhoneNumber,
-                Email = dto.Email,
-                Telegram = dto.Telegram,
-                Document = dto.Document,
-                EstablishmentId = dto.EstablishmentId
-            };
-            return entity;
+            await _unitOfWork.VolunteerRepository.UpdateAsync(_mapper.Map<Volunteer>(volunteerWithUpdateInfo));
         }
     }
 }

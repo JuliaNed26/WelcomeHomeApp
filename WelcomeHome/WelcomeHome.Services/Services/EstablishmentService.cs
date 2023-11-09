@@ -20,7 +20,7 @@ public sealed class EstablishmentService : IEstablishmentService
         _mapper = mapper;
     }
 
-    //TODO: Add exceptions
+    //TODO: AddAsync exceptions
 
     public async Task<EstablishmentOutDTO> GetAsync(Guid id)
     {

@@ -9,11 +9,11 @@ namespace WelcomeHome.DAL.Repositories
 
         Task<Event?> GetByIdAsync(Guid id);
 
-        Task Add(Event newEvent);
+        Task AddAsync(Event newEvent);
 
-        Task Delete(Guid id);
+        Task DeleteAsync(Guid id);
 
-        Task Update(Event editedEvent);
+        Task UpdateAsync(Event editedEvent);
     }
 }
 

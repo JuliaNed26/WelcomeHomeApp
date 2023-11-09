@@ -13,10 +13,10 @@ namespace WelcomeHome.DAL.Repositories
 
         Task<Course?> GetByIdAsync(Guid id);
 
-        Task Add(Course newCourse);
+        Task AddAsync(Course newCourse);
 
-        Task Delete(Guid id);
+        Task DeleteAsync(Guid id);
 
-        Task Update(Course editedCourse);
+        Task UpdateAsync(Course editedCourse);
     }
 }

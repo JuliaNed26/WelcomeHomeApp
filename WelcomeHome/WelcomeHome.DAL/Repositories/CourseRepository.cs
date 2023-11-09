@@ -22,14 +22,14 @@ namespace WelcomeHome.DAL.Repositories
             return await _context.Courses.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
         }
 
-        public async Task Add(Course newCourse)
+        public async Task AddAsync(Course newCourse)
         {
             await _context.Courses.AddAsync(newCourse).ConfigureAwait(false);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var existingCourse = await _context.Courses.SingleAsync(c => c.Id == id).ConfigureAwait(false);
             _context.Courses.Remove(existingCourse);
@@ -37,7 +37,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Update(Course editedCourse)
+        public async Task UpdateAsync(Course editedCourse)
         {
             var existingCourse = await _context.Courses.SingleAsync(e => e.Id == editedCourse.Id).ConfigureAwait(false);
 

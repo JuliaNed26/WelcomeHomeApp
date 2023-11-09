@@ -18,6 +18,15 @@ namespace WelcomeHome.Services
             CreateMap<EstablishmentType, EstablishmentTypeOutDTO>();
             CreateMap<Document, DocumentOutDTO>();
             CreateMap<DocumentInDTO, Document>();
+            CreateMap<EventInDTO, Event>();
+            CreateMap<Event, EventOutDTO>();
+            CreateMap<EventOutDTO, Event>();
+            CreateMap<UserInDTO, User>();
+            CreateMap<User, UserOutDTO>();
+            CreateMap<UserOutDTO, User>();
+            CreateMap<VolunteerInDTO, Volunteer>();
+            CreateMap<Volunteer, VolunteerOutDTO>();
+            CreateMap<VolunteerOutDTO, Volunteer>();
         }
     }
 }
