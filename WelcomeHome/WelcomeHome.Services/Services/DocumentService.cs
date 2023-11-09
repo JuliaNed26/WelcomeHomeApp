@@ -38,6 +38,22 @@ namespace WelcomeHome.Services.Services
             return result;
         }
 
+        public IEnumerable<DocumentOutDTO> GetByStepNeeded(Guid stepId)
+        {
+            var byStep = _unitOfWork.DocumentRepository.GetAll()
+                                                       .Where(d => d.StepDocuments
+                                                       .Any(ds => ds.StepId == stepId && ds.ToReceive == false));
+            return byStep.Select(d => _mapper.Map<DocumentOutDTO>(d));
+        }
+
+        public IEnumerable<DocumentOutDTO> GetByStepReceived(Guid stepId)
+        {
+            var byStep = _unitOfWork.DocumentRepository.GetAll()
+                                                       .Where(d => d.StepDocuments
+                                                       .Any(ds => ds.StepId == stepId && ds.ToReceive == true));
+            return byStep.Select(d => _mapper.Map<DocumentOutDTO>(d));
+        }
+
         public async Task AddAsync(DocumentInDTO newDocument)
         {
             await _unitOfWork.DocumentRepository.AddAsync(_mapper.Map<Document>(newDocument)).ConfigureAwait(false);

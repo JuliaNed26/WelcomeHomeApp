@@ -13,6 +13,10 @@ namespace WelcomeHome.Services.Services
 
         IEnumerable<DocumentOutDTO> GetAll();
 
+        IEnumerable<DocumentOutDTO> GetByStepNeeded(Guid stepId);
+
+        IEnumerable<DocumentOutDTO> GetByStepReceived(Guid stepId);
+
         Task AddAsync(DocumentInDTO newDocument);
 
         Task UpdateAsync(DocumentInDTO updatedDocument);
