@@ -13,20 +13,16 @@ namespace WelcomeHome.Services.Services
     public class EventService : IEventService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        //private readonly DataExceptionsHandlerMediator _exceptionHandlerMediator;
 
-        public EventService(IUnitOfWork unitOfWork, IMapper mapper
-           /*, Func<Type, DataExceptionsHandlerMediator> exceptionHandlerMediatorFactory*/)
+        public EventService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            //_exceptionHandlerMediator = exceptionHandlerMediatorFactory(GetType());
         }
 
-        public Task AddAsync(EventInDTO newEvent)
+        public async Task AddAsync(EventInDTO newEvent)
         {
-            throw new NotImplementedException();
+            Event eventEntity = ConvertInDTOIntoEntity(newEvent);
+            await _unitOfWork.EventRepository.AddAsync(newEvent);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -37,13 +33,17 @@ namespace WelcomeHome.Services.Services
         public IEnumerable<EventOutDTO> GetAll()
         {
             var events = _unitOfWork.EventRepository.GetAll();
-            return events.Select(_event => _mapper.Map<EventOutDTO>(_event));
+
+            return events.Select(e => ConvertEntityIntoOutDTO(e));
         }
 
         public async Task<EventOutDTO> GetAsync(Guid id)
         {
             var foundEvent = await _unitOfWork.EventRepository.GetByIdAsync(id);
-            return _mapper.Map<UserOutDTO>(foundEvent);
+            if (foundEvent == null)
+                throw new Exception("No event with such id");
+
+            return ConvertEntityIntoOutDTO(foundEvent);
         }
 
         public int GetCount()
@@ -52,11 +52,56 @@ namespace WelcomeHome.Services.Services
             return allEvents.Count();
         }
 
-        public async Task UpdateAsync(EventInDTO eventWithUpdateInfo)
+        public async Task UpdateAsync(EventOutDTO eventWithUpdateInfo)
         {
-            var eventEntity = _mapper.Map<Volunteer>(eventWithUpdateInfo);
+            var eventEntity = ConvertOutDTOIntoEntity(eventWithUpdateInfo);
 
-            await _unitOfWork.VolunteerRepository.UpdateAsync(eventEntity);
+            await _unitOfWork.EventRepository.UpdateAsync(eventEntity);
+        }
+
+        private Event ConvertInDTOIntoEntity(EventInDTO dto)
+        {
+            Event entity = new Event
+            {
+                Id = Guid.NewGuid(),
+                Date = dto.Date,
+                Name = dto.Name,
+                Description = dto.Description,
+                EstablishmentId = dto.EstablishmentId,
+                EventTypeId = dto.EventTypeId,
+                VolunteerId = dto.VolunteerId,
+            };
+            return entity;
+        }
+
+        private EventOutDTO ConvertEntityIntoOutDTO(Event entity)
+        {
+            EventOutDTO dto = new EventOutDTO
+            {
+                Id = entity.Id,
+                Date = entity.Date,
+                Name = entity.Name,
+                Description = entity.Description,
+                EstablishmentId = entity.EstablishmentId,
+                EventTypeId = entity.EventTypeId,
+                VolunteerId = entity.VolunteerId,
+            };
+            return dto;
+        }
+
+        private Event ConvertOutDTOIntoEntity(EventOutDTO dto)
+        {
+            Event entity = new Event
+            {
+                Id = dto.Id,
+                Date = dto.Date,
+                Name = dto.Name,
+                Description = dto.Description,
+                EstablishmentId = dto.EstablishmentId,
+                EventTypeId = dto.EventTypeId,
+                VolunteerId = dto.VolunteerId,
+            };
+            return entity;
         }
     }
 }

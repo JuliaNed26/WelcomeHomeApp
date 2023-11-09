@@ -17,7 +17,7 @@ namespace WelcomeHome.Services.Services
 
         Task AddAsync(VolunteerInDTO newVolunteer);
 
-        Task UpdateAsync(VolunteerInDTO volunteerWithUpdateInfo);
+        Task UpdateAsync(VolunteerOutDTO volunteerWithUpdateInfo);
 
         Task DeleteAsync(Guid id);
     }

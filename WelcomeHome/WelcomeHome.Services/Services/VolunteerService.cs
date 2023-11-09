@@ -1,58 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WelcomeHome.Services.DTO;
-using WelcomeHome.DAL.UnitOfWork;
-using WelcomeHome.DAL.Models;
-
-namespace WelcomeHome.Services.Services
+﻿namespace WelcomeHome.Services.Services
 {
-    public class VolunteerService: IVolunteerService
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using WelcomeHome.DAL.Models;
+    using WelcomeHome.DAL.UnitOfWork;
+    using WelcomeHome.Services.DTO;
+
+    public class VolunteerService : IVolunteerService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        //private readonly DataExceptionsHandlerMediator _exceptionHandlerMediator;
-
-        public VolunteerService(IUnitOfWork unitOfWork, IMapper mapper
-            /*, Func<Type, DataExceptionsHandlerMediator> exceptionHandlerMediatorFactory*/)
+        
+        public VolunteerService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            //_exceptionHandlerMediator = exceptionHandlerMediatorFactory(GetType());
         }
 
         public async Task AddAsync(VolunteerInDTO newVolunteer)
         {
-            //ми це будемо реалізовувати?
-            //var validator = ValidatorFactory.GetValidatorForModel(newVolunteer) as AbstractValidator<VolunteerInDTO>;
-            //await validator.ValidateAndThrowAsync(newVolunteer).ConfigureAwait(false);
-
-            var volunteerEntity = _mapper.Map<Volunteer>(newVolunteer);
-            volunteerEntity.Id = Guid.NewGuid();
-            await _unitOfWork.VolunteerRepository.AddAsync(volunteerEntity);
-            await AddContract(volunteerEntity.Id);
-            //await _exceptionHandlerMediator.HandleAndThrowAsync(() => _unitOfWork.VolunteerRepository.AddAsync(volunteerEntity)).ConfigureAwait(false);
-
+            var volunteerEntity = this.ConvertInDTOIntoEntity(newVolunteer);
+            await this._unitOfWork.VolunteerRepository.AddAsync(volunteerEntity);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            //await _exceptionHandlerMediator.HandleAndThrowAsync(() => _unitOfWork.VolunteerRepository.DeleteAsync(id)).ConfigureAwait(false);
             await _unitOfWork.VolunteerRepository.DeleteAsync(id);
         }
 
         public IEnumerable<VolunteerOutDTO> GetAll()
         {
             var volunteers = _unitOfWork.VolunteerRepository.GetAll();
-            return volunteers.Select(volunteer => _mapper.Map<VolunteerOutDTO>(volunteer));
+            return volunteers.Select(volunteer => ConvertEntityIntoOutDTO(volunteer));
         }
 
         public async Task<VolunteerOutDTO> GetAsync(Guid id)
         {
             var foundVolunteer = await _unitOfWork.VolunteerRepository.GetByIdAsync(id);
-            return _mapper.Map<VolunteerOutDTO>(foundVolunteer);
+            if (foundVolunteer == null)
+            {
+                throw new Exception("No volunteer with such id");
+            }
+
+            return this.ConvertEntityIntoOutDTO(foundVolunteer);
         }
 
         public int GetCount()
@@ -61,28 +52,56 @@ namespace WelcomeHome.Services.Services
             return allVolunteers.Count();
         }
 
-        public async Task UpdateAsync(VolunteerInDTO volunteerWithUpdateInfo)
+        public async Task UpdateAsync(VolunteerOutDTO volunteerWithUpdateInfo)
         {
-            //var validator = ValidatorFactory.GetValidatorForModel(volunteerWithUpdateInfo) as AbstractValidator<VolunteerInDTO>;
-            //await validator.ValidateAndThrowAsync(volunteerWithUpdateInfo).ConfigureAwait(false);
-
-            var volunteerEntity = _mapper.Map<Volunteer>(volunteerWithUpdateInfo);
-
-            //await _exceptionHandlerMediator.HandleAndThrowAsync(() => _unitOfWork.VolunteerRepository.UpdateAsync(volunteerEntity)).ConfigureAwait(false);
+            var volunteerEntity = ConvertOutDTOIntoEntity(volunteerWithUpdateInfo);
 
             await _unitOfWork.VolunteerRepository.UpdateAsync(volunteerEntity);
         }
 
-        private async void AddContract(Guid volunteerId)
+        private Volunteer ConvertInDTOIntoEntity(VolunteerInDTO dto)
         {
-            Contract contract = new Contract
+            Volunteer volunteerEntity = new Volunteer
             {
-                VolunteerId = volunteerId,
-                DateStart = DateTime.Now,
-                DateEnd = DateTime.MaxValue,
+                Id = Guid.NewGuid(),
+                FullName = dto.FullName,
+                PhoneNumber = dto.PhoneNumber,
+                Email = dto.Email,
+                Telegram = dto.Telegram,
+                Document = dto.Document,
+                EstablishmentId = dto.EstablishmentId,
             };
-            await this._unitOfWork.ContractRepository.AddAsync(contract);
+            return volunteerEntity;
         }
 
+        private VolunteerOutDTO ConvertEntityIntoOutDTO (Volunteer entity)
+        {
+            VolunteerOutDTO dto = new VolunteerOutDTO
+            {
+                Id = entity.Id,
+                FullName = entity.FullName,
+                PhoneNumber = entity.PhoneNumber,
+                Email = entity.Email,
+                Telegram = entity.Telegram,
+                Document = entity.Document,
+                EstablishmentId = entity.EstablishmentId
+            };
+            return dto;
+        }
+
+        private Volunteer ConvertOutDTOIntoEntity(VolunteerOutDTO dto)
+        {
+            Volunteer entity = new Volunteer
+            {
+                Id = dto.Id,
+                FullName = dto.FullName,
+                PhoneNumber = dto.PhoneNumber,
+                Email = dto.Email,
+                Telegram = dto.Telegram,
+                Document = dto.Document,
+                EstablishmentId = dto.EstablishmentId
+            };
+            return entity;
+        }
     }
 }

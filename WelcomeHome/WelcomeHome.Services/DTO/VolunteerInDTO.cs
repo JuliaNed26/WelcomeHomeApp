@@ -25,5 +25,7 @@ namespace WelcomeHome.Services.DTO
 
         public Guid EstablishmentId { get; set; }
 
+        [Required]
+        public string Password { get; set; }
     }
 }

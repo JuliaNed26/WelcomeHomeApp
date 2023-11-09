@@ -17,7 +17,7 @@ namespace WelcomeHome.Services.Services
 
         Task AddAsync(EventInDTO newEvent);
 
-        Task UpdateAsync(EventInDTO eventWithUpdateInfo);
+        Task UpdateAsync(EventOutDTO eventWithUpdateInfo);
 
         Task DeleteAsync(Guid id);
     }
