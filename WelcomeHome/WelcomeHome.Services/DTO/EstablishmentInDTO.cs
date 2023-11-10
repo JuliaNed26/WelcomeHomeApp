@@ -8,7 +8,7 @@ using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.Services.DTO
 {
-    public class EstablishmentInDTO
+    public record EstablishmentInDTO
     {
         [Required]
         public string Name { get; init; }

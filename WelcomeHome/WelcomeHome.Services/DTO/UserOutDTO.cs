@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WelcomeHome.Services.DTO
 {
-    public class UserOutDTO
+    public record UserOutDTO
     {
         public Guid Id { get; set; }
 

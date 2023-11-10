@@ -7,10 +7,11 @@ using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.Services.DTO
 {
-    public class EstablishmentTypeOutDTO
+    public record EstablishmentTypeOutDTO
     {
-        public string Name { get; set; } 
-        public ICollection<Establishment>? Establishments { get; set; }
-        public ICollection<Step>? Steps { get; set; }
+        public Guid Id { get; init; }
+        public string Name { get; init; } 
+        public ICollection<Establishment>? Establishments { get; init; }
+        public ICollection<Step>? Steps { get; init; }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WelcomeHome.Services.DTO
 {
-    public class VolunteerInDTO
+    public record VolunteerInDTO
     {
         [Required]
         public string FullName { get; set; }
