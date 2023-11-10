@@ -50,7 +50,8 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Establishment editedEstablishment)
         {
-            var existingEstablishment = await _context.Establishments.SingleAsync(e => e.Id == editedEstablishment.Id).ConfigureAwait(false);
+            var existingEstablishment = await _context.Establishments.SingleAsync(e => e.Id == editedEstablishment.Id)
+	                                                                 .ConfigureAwait(false);
 
             existingEstablishment.Name = editedEstablishment.Name;
             existingEstablishment.Address = editedEstablishment.Address;
