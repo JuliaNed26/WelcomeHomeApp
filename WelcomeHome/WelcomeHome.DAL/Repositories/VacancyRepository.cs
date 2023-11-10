@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
@@ -25,7 +26,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task DeleteAsync(Guid id)
         {
-            var foundVacancy = await _context.Vacancies.SingleAsync(v => v.Id == id).ConfigureAwait(false);
+            var foundVacancy = await _context.Vacancies
+	                                         .FindAsync(id)
+	                                         .ConfigureAwait(false)
+                               ?? throw new NotFoundException($"Vacancy with Id {id} not found for deletion.");
             _context.Vacancies.Remove(foundVacancy);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -48,34 +52,17 @@ namespace WelcomeHome.DAL.Repositories
         }
 
         public async Task UpdateAsync(Vacancy vacancy)
-        {
-            var foundVacancy = await _context.Vacancies
-                                         .SingleAsync(v => v.Id == vacancy.Id)
-                                         .ConfigureAwait(false);
-
-            foundVacancy.Name = vacancy.Name;
-            foundVacancy.Salary = vacancy.Salary;
-            foundVacancy.Description = vacancy.Description;
-            foundVacancy.PageURL = vacancy.PageURL;
-            foundVacancy.PhoneNumber = vacancy.PhoneNumber;
-            foundVacancy.OtherContacts = vacancy.OtherContacts;
-            //foundVacancy.Establishment = vacancy.Establishment;
-
-            _context.Vacancies.Update(foundVacancy);
-
-            await AttachEstablishmentAsync(vacancy).ConfigureAwait(false);
+		{
+			AttachEstablishment(vacancy);
+			_context.Vacancies.Update(vacancy);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private async Task AttachEstablishmentAsync(Vacancy vacancy)
+        private void AttachEstablishment(Vacancy vacancy)
         {
-            var foundEstablishment = await _context.Establishments
-                                         .SingleAsync(e => e.Id == vacancy.EstablishmentId)
-                                         .ConfigureAwait(false);
-
-            _context.Establishments.Attach(foundEstablishment);
-            _context.Entry(foundEstablishment).State = EntityState.Unchanged;
+            _context.Vacancies.Attach(vacancy);
+            _context.Entry(vacancy).State = EntityState.Unchanged;
         }
     }
 }

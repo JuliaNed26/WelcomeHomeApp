@@ -9,7 +9,7 @@ namespace WelcomeHome.Web.Controllers;
 [ApiController]
 public class DocumentController : ControllerBase
 {
-	private IDocumentService _documentService;
+	private readonly IDocumentService _documentService;
 
 	public DocumentController(IDocumentService documentService)
 	{

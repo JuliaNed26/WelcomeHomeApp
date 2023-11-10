@@ -1,13 +1,14 @@
 ﻿using WelcomeHome.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 
 namespace WelcomeHome.DAL.Repositories
 {
     public class EstablishmentTypeRepository : IEstablishmentTypeRepository
-    {
-        private WelcomeHomeDbContext _context;
+	{
+		private readonly WelcomeHomeDbContext _context;
 
-        public EstablishmentTypeRepository(WelcomeHomeDbContext context)
+		public EstablishmentTypeRepository(WelcomeHomeDbContext context)
         {
             this._context = context;
         }
@@ -36,7 +37,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task DeleteAsync(Guid id)
         {
-            var existingEstablishmentType = await _context.EstablishmentTypes.SingleAsync(et => et.Id == id).ConfigureAwait(false);
+            var existingEstablishmentType = await _context.EstablishmentTypes
+	                                                      .FindAsync(id)
+	                                                      .ConfigureAwait(false)
+				                            ?? throw new NotFoundException($"Establishment with Id {id} not found for deletion.");
             _context.EstablishmentTypes.Remove(existingEstablishmentType);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -44,10 +48,7 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(EstablishmentType editedEstablishmentType)
         {
-            var existingEstablishmentType = await _context.EstablishmentTypes.SingleAsync(et => et.Id == editedEstablishmentType.Id).ConfigureAwait(false);
-
-            existingEstablishmentType.Name = editedEstablishmentType.Name;
-            _context.EstablishmentTypes.Update(existingEstablishmentType);
+            _context.EstablishmentTypes.Update(editedEstablishmentType);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

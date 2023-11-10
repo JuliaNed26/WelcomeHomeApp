@@ -1,13 +1,14 @@
 ﻿using WelcomeHome.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 
 namespace WelcomeHome.DAL.Repositories
 {
     public class EventRepository : IEventRepository
-    {
-        private WelcomeHomeDbContext _context;
+	{
+		private readonly WelcomeHomeDbContext _context;
 
-        public EventRepository(WelcomeHomeDbContext context)
+		public EventRepository(WelcomeHomeDbContext context)
         {
             this._context = context;
         }
@@ -34,62 +35,49 @@ namespace WelcomeHome.DAL.Repositories
         {
 
             await _context.Events.AddAsync(newEvent).ConfigureAwait(false);
-            await AttachEstablishmentAsync(newEvent).ConfigureAwait(false);
-            await AttachEventTypeAsync(newEvent).ConfigureAwait(false);
-            await AttachVolunteerAsync(newEvent).ConfigureAwait(false);
+            AttachEstablishment(newEvent.Establishment);
+            AttachEventType(newEvent.EventType);
+            AttachVolunteer(newEvent.Volunteer);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var existingEvent = await _context.Events.SingleAsync(e => e.Id == id).ConfigureAwait(false);
+            var existingEvent = await _context.Events
+	                                          .FindAsync(id)
+	                                          .ConfigureAwait(false)
+                                ?? throw new NotFoundException($"Event with Id {id} not found for deletion.");
             _context.Events.Remove(existingEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(Event editedEvent)
-        {
-            var existingEvent = await _context.Events.SingleAsync(e => e.Id == editedEvent.Id).ConfigureAwait(false);
-
-            existingEvent.Name = editedEvent.Name;
-            existingEvent.Date = editedEvent.Date;
-            existingEvent.Description = editedEvent.Description;
-            existingEvent.EstablishmentId = editedEvent.EstablishmentId;
-            existingEvent.EventTypeId = editedEvent.EventTypeId;
-            existingEvent.VolunteerId = editedEvent.VolunteerId;
-
-            _context.Events.Update(existingEvent);
-
-            await AttachEstablishmentAsync(editedEvent).ConfigureAwait(false);
-            await AttachEventTypeAsync(editedEvent).ConfigureAwait(false);
-            await AttachVolunteerAsync(editedEvent).ConfigureAwait(false);
+		{
+			AttachEstablishment(editedEvent.Establishment);
+			AttachEventType(editedEvent.EventType);
+			AttachVolunteer(editedEvent.Volunteer);
+			_context.Events.Update(editedEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private async Task AttachEstablishmentAsync(Event _event)
+        private void AttachEstablishment(Establishment establishment)
         {
-            var existingEstablishment = await _context.Establishments.SingleAsync(e => e.Id == _event.EstablishmentId).ConfigureAwait(false);
-
-            _context.Establishments.Attach(existingEstablishment);
-            _context.Entry(existingEstablishment).State = EntityState.Unchanged;
+            _context.Establishments.Attach(establishment);
+            _context.Entry(establishment).State = EntityState.Unchanged;
         }
 
-        private async Task AttachEventTypeAsync(Event _event)
+        private void AttachEventType(EventType eventType)
         {
-            var existingEventType = await _context.EventTypes.SingleAsync(et => et.Id == _event.EventTypeId).ConfigureAwait(false);
-
-            _context.EventTypes.Attach(existingEventType);
-            _context.Entry(existingEventType).State = EntityState.Unchanged;
+            _context.EventTypes.Attach(eventType);
+            _context.Entry(eventType).State = EntityState.Unchanged;
         }
-        private async Task AttachVolunteerAsync(Event _event)
+        private void AttachVolunteer(Volunteer volunteer)
         {
-            var existingVolunteer = await _context.Volunteers.SingleAsync(v => v.Id == _event.VolunteerId).ConfigureAwait(false);
-
-            _context.Volunteers.Attach(existingVolunteer);
-            _context.Entry(existingVolunteer).State = EntityState.Unchanged;
+            _context.Volunteers.Attach(volunteer);
+            _context.Entry(volunteer).State = EntityState.Unchanged;
         }
     }
 }

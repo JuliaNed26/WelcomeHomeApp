@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories;
@@ -35,23 +36,16 @@ public sealed class UserRepository : IUserRepository
 
 	public async Task UpdateAsync(User user)
 	{
-		var foundUser = await _context.Users
-			                          .SingleAsync(u => u.Id == user.Id)
-			                          .ConfigureAwait(false);
-
-		foundUser.Email = user.Email;
-		foundUser.FullName = user.FullName;
-		foundUser.PhoneNumber = user.PhoneNumber;
-		foundUser.PasswordHash = user.PasswordHash;
-		foundUser.PasswordSalt = user.PasswordSalt;
-
-		_context.Users.Update(foundUser);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}
 
 	public async Task DeleteAsync(Guid id)
 	{
-		var foundUser = await _context.Users.SingleAsync(u => u.Id == id).ConfigureAwait(false);
+		var foundUser = await _context.Users
+			                          .FindAsync(id)
+			                          .ConfigureAwait(false)
+		                ?? throw new NotFoundException($"User with Id {id} not found for deletion.");
 
 		_context.Users.Remove(foundUser);
 		await _context.SaveChangesAsync().ConfigureAwait(false);

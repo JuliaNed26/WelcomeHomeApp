@@ -9,7 +9,7 @@ namespace WelcomeHome.Web.Controllers;
 [ApiController]
 public class VolunteerController : ControllerBase
 {
-	private IVolunteerService _volunteerService;
+	private readonly IVolunteerService _volunteerService;
 
 	public VolunteerController(IVolunteerService volunteerService)
 	{

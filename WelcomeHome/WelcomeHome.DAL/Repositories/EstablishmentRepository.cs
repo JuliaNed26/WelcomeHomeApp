@@ -1,11 +1,12 @@
 ﻿using WelcomeHome.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 
 namespace WelcomeHome.DAL.Repositories
 {
     public class EstablishmentRepository : IEstablishmentRepository
     {
-        private WelcomeHomeDbContext _context;
+        private readonly WelcomeHomeDbContext _context;
 
         public EstablishmentRepository(WelcomeHomeDbContext context)
         {
@@ -34,55 +35,42 @@ namespace WelcomeHome.DAL.Repositories
         {
 
             await _context.Establishments.AddAsync(newEstablishment).ConfigureAwait(false);
-            await AttachEstablishmentTypeAsync(newEstablishment).ConfigureAwait(false);
-            await AttachCityAsync(newEstablishment).ConfigureAwait(false);
+            AttachEstablishmentType(newEstablishment.EstablishmentType);
+            AttachCity(newEstablishment.City);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var existingEstablishment = await _context.Establishments.SingleAsync(e => e.Id == id).ConfigureAwait(false);
+            var existingEstablishment = await _context.Establishments
+	                                          .FindAsync(id)
+	                                          .ConfigureAwait(false)
+				                        ?? throw new NotFoundException($"Establishment with Id {id} not found for deletion.");
             _context.Establishments.Remove(existingEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(Establishment editedEstablishment)
-        {
-            var existingEstablishment = await _context.Establishments.SingleAsync(e => e.Id == editedEstablishment.Id)
-	                                                                 .ConfigureAwait(false);
-
-            existingEstablishment.Name = editedEstablishment.Name;
-            existingEstablishment.Address = editedEstablishment.Address;
-            existingEstablishment.CityId = editedEstablishment.CityId;
-            existingEstablishment.EstablishmentTypeId = editedEstablishment.EstablishmentTypeId;
-            existingEstablishment.PageURL = editedEstablishment.PageURL;
-            existingEstablishment.PhoneNumber = editedEstablishment.PhoneNumber;
-            existingEstablishment.OtherContacts = editedEstablishment.OtherContacts;
-
-            _context.Establishments.Update(existingEstablishment);
-
-            await AttachEstablishmentTypeAsync(editedEstablishment).ConfigureAwait(false);
-            await AttachCityAsync(editedEstablishment).ConfigureAwait(false);
+		{
+			AttachEstablishmentType(editedEstablishment.EstablishmentType);
+			AttachCity(editedEstablishment.City);
+			_context.Establishments.Update(editedEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private async Task AttachEstablishmentTypeAsync(Establishment establishment)
+        private void AttachEstablishmentType(EstablishmentType establishmentType)
         {
-            var existingEstablishmentType = await _context.EstablishmentTypes.SingleAsync(et => et.Id == establishment.EstablishmentTypeId).ConfigureAwait(false);
-
-            _context.EstablishmentTypes.Attach(existingEstablishmentType);
-            _context.Entry(existingEstablishmentType).State = EntityState.Unchanged;
+            _context.EstablishmentTypes.Attach(establishmentType);
+            _context.Entry(establishmentType).State = EntityState.Unchanged;
         }
 
-        private async Task AttachCityAsync(Establishment establishment)
+        private void AttachCity(City city)
         {
-            var existingCity = await _context.Cities.SingleAsync(c => c.Id == establishment.CityId).ConfigureAwait(false);
-
-            _context.Cities.Attach(existingCity);
-            _context.Entry(existingCity).State = EntityState.Unchanged;
+            _context.Cities.Attach(city);
+            _context.Entry(city).State = EntityState.Unchanged;
         }
     }
 }

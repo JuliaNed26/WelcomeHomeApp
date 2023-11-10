@@ -2,6 +2,7 @@
 using WelcomeHome.DAL;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services;
+using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 using WelcomeHome.Services.Services;
 
 namespace WelcomeHome.Web;
@@ -20,5 +21,7 @@ public static class WebApplicationBuilderExtensions
 		builder.Services.AddScoped<IEventService, EventService>();
 		builder.Services.AddScoped<IEstablishmentService, EstablishmentService>();
 		builder.Services.AddScoped<IDocumentService, DocumentService>();
+
+		builder.Services.AddSingleton<ExceptionHandlerMediatorBase, ExceptionHandlerMediator>();
 	}
 }

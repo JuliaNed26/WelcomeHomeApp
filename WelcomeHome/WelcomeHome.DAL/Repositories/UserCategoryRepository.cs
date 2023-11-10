@@ -5,6 +5,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
@@ -25,7 +26,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task DeleteAsync(Guid id)
         {
-            var foundUserCategory = await _context.UserCategories.SingleAsync(u => u.Id == id).ConfigureAwait(false);
+            var foundUserCategory = await _context.UserCategories
+	                                              .FindAsync(id)
+	                                              .ConfigureAwait(false)
+                                    ?? throw new NotFoundException($"User category with Id {id} not found for deletion.");
 
             _context.UserCategories.Remove(foundUserCategory);
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -51,14 +55,7 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(UserCategory userCategory)
         {
-            var foundUserCategory = await _context.UserCategories
-                                         .SingleAsync(u => u.Id == userCategory.Id)
-                                         .ConfigureAwait(false);
-
-            foundUserCategory.Name = foundUserCategory.Name;
-            //чи потрібно оновлювати соц виплати?
-            //foundUserCategory.SocialPayments = userCategory.SocialPayments;
-            _context.UserCategories.Update(foundUserCategory);
+            _context.UserCategories.Update(userCategory);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
     }

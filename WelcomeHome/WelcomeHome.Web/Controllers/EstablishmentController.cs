@@ -9,7 +9,7 @@ namespace WelcomeHome.Web.Controllers;
 [ApiController]
 public class EstablishmentController : ControllerBase
 {
-	private IEstablishmentService _establishmentService;
+	private readonly IEstablishmentService _establishmentService;
 
 	public EstablishmentController(IEstablishmentService establishmentService)
 	{

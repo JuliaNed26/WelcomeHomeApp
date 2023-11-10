@@ -2,6 +2,8 @@
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO;
+using WelcomeHome.Services.Exceptions;
+using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 
 namespace WelcomeHome.Services.Services
 {
@@ -9,21 +11,21 @@ namespace WelcomeHome.Services.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ExceptionHandlerMediatorBase _exceptionHandler;
 
-        public DocumentService(IUnitOfWork unitOfWork, IMapper mapper)
+        public DocumentService(IUnitOfWork unitOfWork, IMapper mapper, ExceptionHandlerMediatorBase exceptionHandler)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _exceptionHandler = exceptionHandler;
         }
-
-        //TODO: AddAsync exceptions
-        //TODO: AddAsync stedDocument repository
-        //TODO: AddAsync getByStep methods
 
         public async Task<DocumentOutDTO> GetAsync(Guid id)
         {
             var foundDocument = await _unitOfWork.DocumentRepository.GetByIdAsync(id).ConfigureAwait(false);
-            return _mapper.Map<DocumentOutDTO>(foundDocument);
+            return foundDocument == null
+	            ? throw new RecordNotFoundException("Document was not found")
+	            : _mapper.Map<DocumentOutDTO>(foundDocument);
         }
 
         public IEnumerable<DocumentOutDTO> GetAll()
@@ -50,17 +52,26 @@ namespace WelcomeHome.Services.Services
 
         public async Task AddAsync(DocumentInDTO newDocument)
         {
-            await _unitOfWork.DocumentRepository.AddAsync(_mapper.Map<Document>(newDocument)).ConfigureAwait(false);
+	        await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+			                                                  .DocumentRepository
+		                                                      .AddAsync(_mapper.Map<Document>(newDocument)))
+		        .ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(DocumentOutDTO updatedDocument)
         {
-            await _unitOfWork.DocumentRepository.UpdateAsync(_mapper.Map<Document>(updatedDocument)).ConfigureAwait(false);
+	        await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+			                                                  .DocumentRepository
+			                                                  .UpdateAsync(_mapper.Map<Document>(updatedDocument)))
+		        .ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            await _unitOfWork.DocumentRepository.DeleteAsync(id).ConfigureAwait(false);
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+	                                                          .DocumentRepository
+	                                                          .DeleteAsync(id))
+	            .ConfigureAwait(false);
         }
     }
 }
