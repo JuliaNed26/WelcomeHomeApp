@@ -58,9 +58,10 @@ public sealed class EstablishmentService : IEstablishmentService
         await _unitOfWork.EstablishmentRepository.AddAsync(_mapper.Map<Establishment>(newEstablishment)).ConfigureAwait(false);
     }
 
-    public async Task UpdateAsync(EstablishmentInDTO updatedEstablishment)
+    public async Task UpdateAsync(EstablishmentOutDTO updatedEstablishment)
     {
-        await _unitOfWork.EstablishmentRepository.UpdateAsync(_mapper.Map<Establishment>(updatedEstablishment)).ConfigureAwait(false);
+        await _unitOfWork.EstablishmentRepository.UpdateAsync(_mapper.Map<Establishment>(updatedEstablishment))
+	                                             .ConfigureAwait(false);
     }
 
     public async Task DeleteAsync(Guid id)

@@ -53,7 +53,7 @@ namespace WelcomeHome.Services.Services
             await _unitOfWork.DocumentRepository.AddAsync(_mapper.Map<Document>(newDocument)).ConfigureAwait(false);
         }
 
-        public async Task UpdateAsync(DocumentInDTO updatedDocument)
+        public async Task UpdateAsync(DocumentOutDTO updatedDocument)
         {
             await _unitOfWork.DocumentRepository.UpdateAsync(_mapper.Map<Document>(updatedDocument)).ConfigureAwait(false);
         }

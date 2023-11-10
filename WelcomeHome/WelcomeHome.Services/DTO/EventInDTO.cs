@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WelcomeHome.Services.DTO
 {
-    public class EventInDTO
+    public record EventInDTO
     {
         public DateTime? Date { get; set; }
 

@@ -51,7 +51,6 @@ public sealed class VolunteerRepository : IVolunteerRepository
 		foundVolunteer.Telegram = volunteer.Telegram;
 		foundVolunteer.Document = volunteer.Document;
 		foundVolunteer.EstablishmentId = volunteer.EstablishmentId;
-		foundVolunteer.ContractId = volunteer.ContractId;
 
 		_context.Volunteers.Update(foundVolunteer);
 		await AttachEstablishmentAsync(foundVolunteer).ConfigureAwait(false);

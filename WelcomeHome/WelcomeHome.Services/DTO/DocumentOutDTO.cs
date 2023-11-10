@@ -8,9 +8,10 @@ using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.Services.DTO
 {
-    public class DocumentOutDTO
+    public record DocumentOutDTO
     {
-        public string Name { get; set; }
-        public ICollection<StepDocument> StepDocuments { get; set; }
+	    public Guid Id { get; init; }
+        public string Name { get; init; }
+        public ICollection<StepDocument> StepDocuments { get; init; }
     }
 }

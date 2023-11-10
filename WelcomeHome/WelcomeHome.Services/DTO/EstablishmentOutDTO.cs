@@ -8,8 +8,9 @@ using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.Services.DTO
 {
-    public class EstablishmentOutDTO
+    public record EstablishmentOutDTO
     {
+	    public Guid Id { get; init; }
         public string Name { get; init; }
         public string Address { get; init; }
         public string? PageURL { get; init; }

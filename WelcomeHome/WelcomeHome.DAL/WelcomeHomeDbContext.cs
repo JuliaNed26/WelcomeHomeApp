@@ -7,6 +7,7 @@ namespace WelcomeHome.DAL;
 public sealed class WelcomeHomeDbContext : DbContext
 {
 	public WelcomeHomeDbContext(DbContextOptions<WelcomeHomeDbContext> options)
+		: base(options)
 	{
 		var dbCreated = Database.EnsureCreated();
 		if (dbCreated)
@@ -33,8 +34,6 @@ public sealed class WelcomeHomeDbContext : DbContext
 	public DbSet<City> Cities { get; set; }
 
 	public DbSet<Country> Countries { get; set; }
-
-	public DbSet<Contract> Contracts { get; set; }
 
 	public DbSet<Volunteer> Volunteers { get; set; }
 
@@ -100,6 +99,9 @@ public sealed class WelcomeHomeDbContext : DbContext
 		modelBuilder.Entity<Step>().HasMany(s => s.PaymentSteps)
 			                       .WithOne(ps => ps.Step)
 			                       .HasForeignKey(ps => ps.StepId);
+
+		modelBuilder.Entity<PaymentStep>().HasKey(ps => new { ps.StepId, ps.SocialPayoutId });
+		modelBuilder.Entity<StepDocument>().HasKey(sd => new { sd.StepId, sd.DocumentId });
 	}
 
 	private static void SeedWithPredefinedData(string connectionString)

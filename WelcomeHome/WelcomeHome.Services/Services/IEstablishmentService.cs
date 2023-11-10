@@ -23,7 +23,7 @@ namespace WelcomeHome.Services.Services
 
         Task AddAsync(EstablishmentInDTO newEstablishment);
 
-        Task UpdateAsync(EstablishmentInDTO updatedEstablishment);
+        Task UpdateAsync(EstablishmentOutDTO updatedEstablishment);
 
         Task DeleteAsync(Guid id);
 

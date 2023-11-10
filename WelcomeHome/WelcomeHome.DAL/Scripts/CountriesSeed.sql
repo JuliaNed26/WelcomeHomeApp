@@ -1,1 +1,1 @@
-?INSERT INTO dbo.Countries (Id, Name) VALUES (NEWID(), 'Ukraine');
+INSERT INTO dbo.Countries (Id, Name) VALUES (NEWID(), 'Ukraine');

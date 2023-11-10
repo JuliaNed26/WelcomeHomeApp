@@ -14,9 +14,7 @@ namespace WelcomeHome.DAL.Models
         public string Telegram { get; set; } = "";
         public string? Document { get; set; }
         public Guid? EstablishmentId { get; set; }
-        public Guid ContractId { get; set; }
         public Establishment? Establishment { get; set; }
-        public Contract? Contract { get; set; }
         public ICollection<Event>? Events { get; set; }
     }
 }
