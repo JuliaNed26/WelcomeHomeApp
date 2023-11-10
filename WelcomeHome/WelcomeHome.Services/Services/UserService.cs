@@ -8,7 +8,7 @@ using WelcomeHome.Services.DTO;
 
 namespace WelcomeHome.Services.Services
 {
-    internal class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
