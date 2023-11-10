@@ -8,8 +8,8 @@ using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.Services.DTO
 {
-    public class DocumentInDTO
+    public record DocumentInDTO
     {
-        public string Name { get; set; }
+        public string Name { get; init; }
     }
 }

@@ -19,7 +19,7 @@ namespace WelcomeHome.Services.Services
 
         Task AddAsync(DocumentInDTO newDocument);
 
-        Task UpdateAsync(DocumentInDTO updatedDocument);
+        Task UpdateAsync(DocumentOutDTO updatedDocument);
 
         Task DeleteAsync(Guid id);
     }
