@@ -39,15 +39,8 @@ public sealed class CityRepository : ICityRepository
 
 	public async Task UpdateAsync(City city)
 	{
-		var foundCity = await _context.Cities
-			                          .SingleAsync(c => c.Id == city.Id)
-			                          .ConfigureAwait(false);
-
-		foundCity.Name = city.Name;
-		foundCity.CountryId = city.CountryId;
-
-		_context.Cities.Update(foundCity);
 		await AttachCountryAsync(city).ConfigureAwait(false);
+		_context.Cities.Update(city);
 
 		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}

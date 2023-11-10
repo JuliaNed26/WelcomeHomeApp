@@ -42,12 +42,9 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task UpdateAsync(Event editedEventType)
+        public async Task UpdateAsync(EventType editedEventType)
         {
-            var existingEventType = await _context.EventTypes.SingleAsync(et => et.Id == editedEventType.Id).ConfigureAwait(false);
-
-            existingEventType.Name = editedEventType.Name;
-            _context.EventTypes.Update(existingEventType);
+            _context.EventTypes.Update(editedEventType);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

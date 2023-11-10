@@ -48,22 +48,9 @@ namespace WelcomeHome.DAL.Repositories
         }
 
         public async Task UpdateAsync(Vacancy vacancy)
-        {
-            var foundVacancy = await _context.Vacancies
-                                         .SingleAsync(v => v.Id == vacancy.Id)
-                                         .ConfigureAwait(false);
-
-            foundVacancy.Name = vacancy.Name;
-            foundVacancy.Salary = vacancy.Salary;
-            foundVacancy.Description = vacancy.Description;
-            foundVacancy.PageURL = vacancy.PageURL;
-            foundVacancy.PhoneNumber = vacancy.PhoneNumber;
-            foundVacancy.OtherContacts = vacancy.OtherContacts;
-            //foundVacancy.Establishment = vacancy.Establishment;
-
-            _context.Vacancies.Update(foundVacancy);
-
-            await AttachEstablishmentAsync(vacancy).ConfigureAwait(false);
+		{
+			await AttachEstablishmentAsync(vacancy).ConfigureAwait(false);
+			_context.Vacancies.Update(vacancy);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

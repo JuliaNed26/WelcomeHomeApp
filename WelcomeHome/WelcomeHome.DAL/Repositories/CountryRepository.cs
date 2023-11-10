@@ -37,13 +37,7 @@ public sealed class CountryRepository : ICountryRepository
 
 	public async Task UpdateAsync(Country country)
 	{
-		var foundCountry = await _context.Countries
-			                             .SingleAsync(c => c.Id == country.Id)
-			                             .ConfigureAwait(false);
-
-		foundCountry.Name = country.Name;
-
-		_context.Countries.Update(foundCountry);
+		_context.Countries.Update(country);
 		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}
 

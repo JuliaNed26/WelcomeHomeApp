@@ -17,6 +17,6 @@ namespace WelcomeHome.DAL.Repositories
 
         Task DeleteAsync(Guid id);
 
-        Task UpdateAsync(Event editedEventType);
+        Task UpdateAsync(EventType editedEventType);
     }
 }

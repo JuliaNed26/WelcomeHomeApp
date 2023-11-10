@@ -49,22 +49,10 @@ namespace WelcomeHome.DAL.Repositories
         }
 
         public async Task UpdateAsync(Establishment editedEstablishment)
-        {
-            var existingEstablishment = await _context.Establishments.SingleAsync(e => e.Id == editedEstablishment.Id)
-	                                                                 .ConfigureAwait(false);
-
-            existingEstablishment.Name = editedEstablishment.Name;
-            existingEstablishment.Address = editedEstablishment.Address;
-            existingEstablishment.CityId = editedEstablishment.CityId;
-            existingEstablishment.EstablishmentTypeId = editedEstablishment.EstablishmentTypeId;
-            existingEstablishment.PageURL = editedEstablishment.PageURL;
-            existingEstablishment.PhoneNumber = editedEstablishment.PhoneNumber;
-            existingEstablishment.OtherContacts = editedEstablishment.OtherContacts;
-
-            _context.Establishments.Update(existingEstablishment);
-
-            await AttachEstablishmentTypeAsync(editedEstablishment).ConfigureAwait(false);
-            await AttachCityAsync(editedEstablishment).ConfigureAwait(false);
+		{
+			await AttachEstablishmentTypeAsync(editedEstablishment).ConfigureAwait(false);
+			await AttachCityAsync(editedEstablishment).ConfigureAwait(false);
+			_context.Establishments.Update(editedEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

@@ -39,21 +39,8 @@ public sealed class VolunteerRepository : IVolunteerRepository
 
 	public async Task UpdateAsync(Volunteer volunteer)
 	{
-		var foundVolunteer = await _context.Volunteers
-			                               .SingleAsync(v => v.Id == volunteer.Id)
-			                               .ConfigureAwait(false);
-
-		foundVolunteer.PasswordHash = volunteer.PasswordHash;
-		foundVolunteer.PasswordSalt = volunteer.PasswordSalt;
-		foundVolunteer.FullName = volunteer.FullName;
-		foundVolunteer.PhoneNumber = volunteer.PhoneNumber;
-		foundVolunteer.Email = volunteer.Email;
-		foundVolunteer.Telegram = volunteer.Telegram;
-		foundVolunteer.Document = volunteer.Document;
-		foundVolunteer.EstablishmentId = volunteer.EstablishmentId;
-
-		_context.Volunteers.Update(foundVolunteer);
-		await AttachEstablishmentAsync(foundVolunteer).ConfigureAwait(false);
+		await AttachEstablishmentAsync(volunteer).ConfigureAwait(false);
+		_context.Volunteers.Update(volunteer);
 
 		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}

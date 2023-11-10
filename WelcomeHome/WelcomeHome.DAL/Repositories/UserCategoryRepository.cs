@@ -51,14 +51,7 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(UserCategory userCategory)
         {
-            var foundUserCategory = await _context.UserCategories
-                                         .SingleAsync(u => u.Id == userCategory.Id)
-                                         .ConfigureAwait(false);
-
-            foundUserCategory.Name = foundUserCategory.Name;
-            //чи потрібно оновлювати соц виплати?
-            //foundUserCategory.SocialPayments = userCategory.SocialPayments;
-            _context.UserCategories.Update(foundUserCategory);
+            _context.UserCategories.Update(userCategory);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
     }

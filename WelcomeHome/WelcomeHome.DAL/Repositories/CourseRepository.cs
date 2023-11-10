@@ -39,15 +39,7 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Course editedCourse)
         {
-            var existingCourse = await _context.Courses.SingleAsync(e => e.Id == editedCourse.Id).ConfigureAwait(false);
-
-            existingCourse.Name = editedCourse.Name;
-            existingCourse.Description = editedCourse.Description;
-            existingCourse.PageURL = editedCourse.PageURL;
-            existingCourse.PhoneNumber = editedCourse.PhoneNumber;
-            existingCourse.OtherContacts = editedCourse.OtherContacts;
-
-            _context.Courses.Update(existingCourse);
+            _context.Courses.Update(editedCourse);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

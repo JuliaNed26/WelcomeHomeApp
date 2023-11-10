@@ -50,21 +50,11 @@ namespace WelcomeHome.DAL.Repositories
         }
 
         public async Task UpdateAsync(Event editedEvent)
-        {
-            var existingEvent = await _context.Events.SingleAsync(e => e.Id == editedEvent.Id).ConfigureAwait(false);
-
-            existingEvent.Name = editedEvent.Name;
-            existingEvent.Date = editedEvent.Date;
-            existingEvent.Description = editedEvent.Description;
-            existingEvent.EstablishmentId = editedEvent.EstablishmentId;
-            existingEvent.EventTypeId = editedEvent.EventTypeId;
-            existingEvent.VolunteerId = editedEvent.VolunteerId;
-
-            _context.Events.Update(existingEvent);
-
-            await AttachEstablishmentAsync(editedEvent).ConfigureAwait(false);
-            await AttachEventTypeAsync(editedEvent).ConfigureAwait(false);
-            await AttachVolunteerAsync(editedEvent).ConfigureAwait(false);
+		{
+			await AttachEstablishmentAsync(editedEvent).ConfigureAwait(false);
+			await AttachEventTypeAsync(editedEvent).ConfigureAwait(false);
+			await AttachVolunteerAsync(editedEvent).ConfigureAwait(false);
+			_context.Events.Update(editedEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

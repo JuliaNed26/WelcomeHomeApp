@@ -44,10 +44,7 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(EstablishmentType editedEstablishmentType)
         {
-            var existingEstablishmentType = await _context.EstablishmentTypes.SingleAsync(et => et.Id == editedEstablishmentType.Id).ConfigureAwait(false);
-
-            existingEstablishmentType.Name = editedEstablishmentType.Name;
-            _context.EstablishmentTypes.Update(existingEstablishmentType);
+            _context.EstablishmentTypes.Update(editedEstablishmentType);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
