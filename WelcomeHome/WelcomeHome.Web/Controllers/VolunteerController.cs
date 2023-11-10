@@ -5,7 +5,7 @@ using WelcomeHome.Services.Services;
 
 namespace WelcomeHome.Web.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class VolunteerController : ControllerBase
 {
