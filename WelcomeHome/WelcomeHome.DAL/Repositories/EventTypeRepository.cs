@@ -5,10 +5,10 @@ using WelcomeHome.DAL.Exceptions;
 namespace WelcomeHome.DAL.Repositories
 {
     public class EventTypeRepository : IEventTypeRepository
-    {
-        private WelcomeHomeDbContext _context;
+	{
+		private readonly WelcomeHomeDbContext _context;
 
-        public EventTypeRepository(WelcomeHomeDbContext context)
+		public EventTypeRepository(WelcomeHomeDbContext context)
         {
             this._context = context;
         }

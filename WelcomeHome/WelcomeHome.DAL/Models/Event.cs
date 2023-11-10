@@ -12,8 +12,8 @@ namespace WelcomeHome.DAL.Models
         public Guid EstablishmentId { get; set; }
         public Guid EventTypeId { get; set; }
         public Guid VolunteerId { get; set; }
-        public Establishment? Establishment { get; set; }
-        public EventType? EventType { get; set; }
+        public Establishment Establishment { get; set; }
+        public EventType EventType { get; set; }
         public Volunteer Volunteer { get; set; } = null!;
     }
 }

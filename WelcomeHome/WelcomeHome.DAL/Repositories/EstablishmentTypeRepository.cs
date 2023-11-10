@@ -5,10 +5,10 @@ using WelcomeHome.DAL.Exceptions;
 namespace WelcomeHome.DAL.Repositories
 {
     public class EstablishmentTypeRepository : IEstablishmentTypeRepository
-    {
-        private WelcomeHomeDbContext _context;
+	{
+		private readonly WelcomeHomeDbContext _context;
 
-        public EstablishmentTypeRepository(WelcomeHomeDbContext context)
+		public EstablishmentTypeRepository(WelcomeHomeDbContext context)
         {
             this._context = context;
         }

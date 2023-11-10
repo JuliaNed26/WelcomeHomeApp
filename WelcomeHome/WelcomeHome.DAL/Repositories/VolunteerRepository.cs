@@ -33,14 +33,14 @@ public sealed class VolunteerRepository : IVolunteerRepository
 	public async Task AddAsync(Volunteer volunteer)
 	{
 		await _context.Volunteers.AddAsync(volunteer).ConfigureAwait(false);
-		await AttachEstablishmentAsync(volunteer).ConfigureAwait(false);
+		AttachEstablishment(volunteer);
 
 		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}
 
 	public async Task UpdateAsync(Volunteer volunteer)
 	{
-		await AttachEstablishmentAsync(volunteer).ConfigureAwait(false);
+		AttachEstablishment(volunteer);
 		_context.Volunteers.Update(volunteer);
 
 		await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -57,7 +57,7 @@ public sealed class VolunteerRepository : IVolunteerRepository
 		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}
 
-	private async Task AttachEstablishmentAsync(Volunteer volunteer)
+	private void AttachEstablishment(Volunteer volunteer)
 	{
 		if (volunteer.Establishment != null)
 		{

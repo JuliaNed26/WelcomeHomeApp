@@ -5,10 +5,10 @@ using WelcomeHome.DAL.Exceptions;
 namespace WelcomeHome.DAL.Repositories
 {
     public class EventRepository : IEventRepository
-    {
-        private WelcomeHomeDbContext _context;
+	{
+		private readonly WelcomeHomeDbContext _context;
 
-        public EventRepository(WelcomeHomeDbContext context)
+		public EventRepository(WelcomeHomeDbContext context)
         {
             this._context = context;
         }
@@ -35,9 +35,9 @@ namespace WelcomeHome.DAL.Repositories
         {
 
             await _context.Events.AddAsync(newEvent).ConfigureAwait(false);
-            await AttachEstablishmentAsync(newEvent.Establishment).ConfigureAwait(false);
-            await AttachEventTypeAsync(newEvent.EventType).ConfigureAwait(false);
-            await AttachVolunteerAsync(newEvent.Volunteer).ConfigureAwait(false);
+            AttachEstablishment(newEvent.Establishment);
+            AttachEventType(newEvent.EventType);
+            AttachVolunteer(newEvent.Volunteer);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -55,26 +55,26 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Event editedEvent)
 		{
-			await AttachEstablishmentAsync(editedEvent.Establishment).ConfigureAwait(false);
-			await AttachEventTypeAsync(editedEvent.EventType).ConfigureAwait(false);
-			await AttachVolunteerAsync(editedEvent.Volunteer).ConfigureAwait(false);
+			AttachEstablishment(editedEvent.Establishment);
+			AttachEventType(editedEvent.EventType);
+			AttachVolunteer(editedEvent.Volunteer);
 			_context.Events.Update(editedEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private async Task AttachEstablishmentAsync(Establishment establishment)
+        private void AttachEstablishment(Establishment establishment)
         {
             _context.Establishments.Attach(establishment);
             _context.Entry(establishment).State = EntityState.Unchanged;
         }
 
-        private async Task AttachEventTypeAsync(EventType eventType)
+        private void AttachEventType(EventType eventType)
         {
             _context.EventTypes.Attach(eventType);
             _context.Entry(eventType).State = EntityState.Unchanged;
         }
-        private async Task AttachVolunteerAsync(Volunteer volunteer)
+        private void AttachVolunteer(Volunteer volunteer)
         {
             _context.Volunteers.Attach(volunteer);
             _context.Entry(volunteer).State = EntityState.Unchanged;

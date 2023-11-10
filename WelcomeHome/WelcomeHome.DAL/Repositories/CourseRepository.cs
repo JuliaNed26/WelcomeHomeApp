@@ -5,7 +5,7 @@ namespace WelcomeHome.DAL.Repositories
 {
     public class CourseRepository : ICourseRepository
     {
-        private WelcomeHomeDbContext _context;
+        private readonly WelcomeHomeDbContext _context;
 
         public CourseRepository(WelcomeHomeDbContext context)
         {

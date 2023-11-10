@@ -53,13 +53,13 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Vacancy vacancy)
 		{
-			await AttachEstablishmentAsync(vacancy).ConfigureAwait(false);
+			AttachEstablishment(vacancy);
 			_context.Vacancies.Update(vacancy);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private async Task AttachEstablishmentAsync(Vacancy vacancy)
+        private void AttachEstablishment(Vacancy vacancy)
         {
             _context.Vacancies.Attach(vacancy);
             _context.Entry(vacancy).State = EntityState.Unchanged;
