@@ -1,5 +1,6 @@
 ﻿using WelcomeHome.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 
 namespace WelcomeHome.DAL.Repositories
 {
@@ -36,7 +37,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task DeleteAsync(Guid id)
         {
-            var existingEventType = await _context.EventTypes.SingleAsync(et => et.Id == id).ConfigureAwait(false);
+            var existingEventType = await _context.EventTypes
+	                                              .FindAsync(id)
+	                                              .ConfigureAwait(false)
+                                    ?? throw new NotFoundException($"Event type with Id {id} not found for deletion.");
             _context.EventTypes.Remove(existingEventType);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);

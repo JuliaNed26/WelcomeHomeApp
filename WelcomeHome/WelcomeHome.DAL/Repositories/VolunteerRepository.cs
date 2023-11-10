@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories;
@@ -47,7 +48,10 @@ public sealed class VolunteerRepository : IVolunteerRepository
 
 	public async Task DeleteAsync(Guid id)
 	{
-		var foundVolunteer = await _context.Volunteers.SingleAsync(v => v.Id == id).ConfigureAwait(false);
+		var foundVolunteer = await _context.Volunteers
+			                               .FindAsync(id)
+			                               .ConfigureAwait(false)
+		                     ?? throw new NotFoundException($"Volunteer with Id {id} not found for deletion.");
 
 		_context.Volunteers.Remove(foundVolunteer);
 		await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -55,14 +59,10 @@ public sealed class VolunteerRepository : IVolunteerRepository
 
 	private async Task AttachEstablishmentAsync(Volunteer volunteer)
 	{
-		if (volunteer.EstablishmentId != null)
+		if (volunteer.Establishment != null)
 		{
-			var foundEstablishment = await _context.Establishments
-				                                   .SingleAsync(e => e.Id == volunteer.EstablishmentId)
-				                                   .ConfigureAwait(false);
-
-			_context.Establishments.Attach(foundEstablishment);
-			_context.Entry(foundEstablishment).State = EntityState.Unchanged;
+			_context.Establishments.Attach(volunteer.Establishment);
+			_context.Entry(volunteer.Establishment).State = EntityState.Unchanged;
 		}
 	}
 }

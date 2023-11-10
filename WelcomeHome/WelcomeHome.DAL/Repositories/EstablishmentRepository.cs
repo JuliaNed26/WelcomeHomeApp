@@ -1,5 +1,6 @@
 ﻿using WelcomeHome.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 
 namespace WelcomeHome.DAL.Repositories
 {
@@ -34,15 +35,18 @@ namespace WelcomeHome.DAL.Repositories
         {
 
             await _context.Establishments.AddAsync(newEstablishment).ConfigureAwait(false);
-            await AttachEstablishmentTypeAsync(newEstablishment).ConfigureAwait(false);
-            await AttachCityAsync(newEstablishment).ConfigureAwait(false);
+            await AttachEstablishmentTypeAsync(newEstablishment.EstablishmentType).ConfigureAwait(false);
+            await AttachCityAsync(newEstablishment.City).ConfigureAwait(false);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var existingEstablishment = await _context.Establishments.SingleAsync(e => e.Id == id).ConfigureAwait(false);
+            var existingEstablishment = await _context.Establishments
+	                                          .FindAsync(id)
+	                                          .ConfigureAwait(false)
+				                        ?? throw new NotFoundException($"Establishment with Id {id} not found for deletion.");
             _context.Establishments.Remove(existingEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -50,27 +54,23 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Establishment editedEstablishment)
 		{
-			await AttachEstablishmentTypeAsync(editedEstablishment).ConfigureAwait(false);
-			await AttachCityAsync(editedEstablishment).ConfigureAwait(false);
+			await AttachEstablishmentTypeAsync(editedEstablishment.EstablishmentType).ConfigureAwait(false);
+			await AttachCityAsync(editedEstablishment.City).ConfigureAwait(false);
 			_context.Establishments.Update(editedEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private async Task AttachEstablishmentTypeAsync(Establishment establishment)
+        private async Task AttachEstablishmentTypeAsync(EstablishmentType establishmentType)
         {
-            var existingEstablishmentType = await _context.EstablishmentTypes.SingleAsync(et => et.Id == establishment.EstablishmentTypeId).ConfigureAwait(false);
-
-            _context.EstablishmentTypes.Attach(existingEstablishmentType);
-            _context.Entry(existingEstablishmentType).State = EntityState.Unchanged;
+            _context.EstablishmentTypes.Attach(establishmentType);
+            _context.Entry(establishmentType).State = EntityState.Unchanged;
         }
 
-        private async Task AttachCityAsync(Establishment establishment)
+        private async Task AttachCityAsync(City city)
         {
-            var existingCity = await _context.Cities.SingleAsync(c => c.Id == establishment.CityId).ConfigureAwait(false);
-
-            _context.Cities.Attach(existingCity);
-            _context.Entry(existingCity).State = EntityState.Unchanged;
+            _context.Cities.Attach(city);
+            _context.Entry(city).State = EntityState.Unchanged;
         }
     }
 }
