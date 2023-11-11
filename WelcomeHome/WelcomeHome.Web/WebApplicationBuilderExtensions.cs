@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EntityFramework.Exceptions.SqlServer;
+using Microsoft.EntityFrameworkCore;
 using WelcomeHome.DAL;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services;
@@ -14,7 +15,9 @@ public static class WebApplicationBuilderExtensions
 		builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 		builder.Services.AddDbContext<WelcomeHomeDbContext>(options =>
-			options.UseSqlServer(builder.Configuration.GetConnectionString("JuliaNConnectionString")));
+			options
+			.UseSqlServer(builder.Configuration.GetConnectionString("JuliaNConnectionString"))
+			.UseExceptionProcessor());
 		builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 		builder.Services.AddScoped<IUserService, UserService>();
 		builder.Services.AddScoped<IVolunteerService, VolunteerService>();
