@@ -14,7 +14,7 @@ public static class WebApplicationBuilderExtensions
 		builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 		builder.Services.AddDbContext<WelcomeHomeDbContext>(options =>
-			options.UseSqlServer(builder.Configuration.GetConnectionString("JuliaNConnectionString")));
+			options.UseSqlServer(builder.Configuration.GetConnectionString("AlinaConnectionString")));
 		builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 		builder.Services.AddScoped<IUserService, UserService>();
 		builder.Services.AddScoped<IVolunteerService, VolunteerService>();

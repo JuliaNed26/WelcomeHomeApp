@@ -35,9 +35,6 @@ namespace WelcomeHome.DAL.Repositories
         {
 
             await _context.Establishments.AddAsync(newEstablishment).ConfigureAwait(false);
-            AttachEstablishmentType(newEstablishment.EstablishmentType);
-            AttachCity(newEstablishment.City);
-
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
@@ -54,23 +51,30 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Establishment editedEstablishment)
 		{
-			AttachEstablishmentType(editedEstablishment.EstablishmentType);
-			AttachCity(editedEstablishment.City);
+			AttachEstablishmentType(editedEstablishment);
+			AttachCity(editedEstablishment);
 			_context.Establishments.Update(editedEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void AttachEstablishmentType(EstablishmentType establishmentType)
+        private void AttachEstablishmentType(Establishment establishment)
         {
-            _context.EstablishmentTypes.Attach(establishmentType);
-            _context.Entry(establishmentType).State = EntityState.Unchanged;
+            if (establishment.EstablishmentType != null)
+            {
+                _context.EstablishmentTypes.Attach(establishment.EstablishmentType);
+                _context.Entry(establishment.EstablishmentType).State = EntityState.Unchanged;
+            }
         }
 
-        private void AttachCity(City city)
+        private void AttachCity(Establishment establishment)
         {
-            _context.Cities.Attach(city);
-            _context.Entry(city).State = EntityState.Unchanged;
+            if (establishment.City != null)
+            {
+                _context.Cities.Attach(establishment.City);
+                _context.Entry(establishment.City).State = EntityState.Unchanged;
+            }
+
         }
     }
 }
