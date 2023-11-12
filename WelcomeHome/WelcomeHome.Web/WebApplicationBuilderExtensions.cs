@@ -24,6 +24,7 @@ public static class WebApplicationBuilderExtensions
 		builder.Services.AddScoped<IEventService, EventService>();
 		builder.Services.AddScoped<IEstablishmentService, EstablishmentService>();
 		builder.Services.AddScoped<IDocumentService, DocumentService>();
+		builder.Services.AddScoped<ICityCountryService, CityCountryService>();
 
 		builder.Services.AddSingleton<ExceptionHandlerMediatorBase, ExceptionHandlerMediator>();
 	}
