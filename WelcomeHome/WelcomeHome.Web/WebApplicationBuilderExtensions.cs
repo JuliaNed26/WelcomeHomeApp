@@ -27,6 +27,8 @@ public static class WebApplicationBuilderExtensions
 		builder.Services.AddScoped<IAuthService, AuthService>();
 		builder.Services.AddScoped<ISocialPayoutService, SocialPayoutService>();
 
+		builder.Services.AddScoped<IAuthService, AuthService>();
+
 		builder.Services.AddSingleton<ExceptionHandlerMediatorBase, ExceptionHandlerMediator>();
 
 

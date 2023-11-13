@@ -50,10 +50,7 @@ namespace WelcomeHome.Services.Services
                                   ? null
                                   : newVolunteer.EstablishmentId
             };
-
-            await _unitOfWork.VolunteerRepository.AddAsync(volunteer);
-
-            //await _exceptionHandler.HandleAndThrowAsync(()=>_unitOfWork.VolunteerRepository.AddAsync(volunteer));
+            await _exceptionHandler.HandleAndThrowAsync(()=>_unitOfWork.VolunteerRepository.AddAsync(volunteer));
         }
 
         public async Task DeleteAsync(Guid id)
