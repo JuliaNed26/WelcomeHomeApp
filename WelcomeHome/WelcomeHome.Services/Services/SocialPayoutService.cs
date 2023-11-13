@@ -33,7 +33,9 @@ namespace WelcomeHome.Services.Services
           
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
                                                               .SocialPayoutRepository
-                                                              .AddWithStepsAsync(socialPayoutWithSteps.Item1, socialPayoutWithSteps.Item2, socialPayoutWithSteps.Item3))
+                                                              .AddWithStepsAsync(socialPayoutWithSteps.Item1,
+                                                              socialPayoutWithSteps.Item2
+                                                              ))
                 .ConfigureAwait(false);
             
         }
@@ -63,11 +65,20 @@ namespace WelcomeHome.Services.Services
             throw new NotImplementedException();
         }
 
-        private async Task<(SocialPayout, Dictionary<int, Step>, List<UserCategory>)> ConvertDtoIntoEntities(SocialPayoutInDTO newPayout)
+        private async Task<(SocialPayout, Dictionary<int, Step>)> ConvertDtoIntoEntities(SocialPayoutInDTO newPayout)
+        {
+            var socialPayout = await GenerateSocialPayout(newPayout);
+
+            var steps = GenerateSteps(newPayout.PaymentSteps);
+
+            return (socialPayout, steps);
+        }
+
+        private async Task<SocialPayout> GenerateSocialPayout(SocialPayoutInDTO newPayout)
         {
             List<UserCategory> categories = new List<UserCategory>();
 
-            foreach(var categoryId in newPayout.UserCategoriesId)
+            foreach (var categoryId in newPayout.UserCategoriesId)
             {
                 var foundCategory = await _unitOfWork.UserCategoryRepository.GetByIdAsync(categoryId);
                 if (foundCategory != null)
@@ -76,20 +87,17 @@ namespace WelcomeHome.Services.Services
                 }
                 else throw new Exception("No such user category");
             }
-         
+
             SocialPayout socialPayout = new SocialPayout
             {
                 Name = newPayout.Name,
                 Description = newPayout.Description,
                 Amount = newPayout.Amount,
+                UserCategories = categories
             };
-            
 
-            var steps = GenerateSteps(newPayout.PaymentSteps);
-            
-            return (socialPayout, steps, categories);
+            return socialPayout;
         }
-
 
         private Dictionary<int, Step> GenerateSteps(ICollection<StepInDTO> stepsDTO)
         {
@@ -97,26 +105,28 @@ namespace WelcomeHome.Services.Services
 
             foreach (var step in stepsDTO)
             {
-                
-                /*
-                var foundStep = await _unitOfWork.StepRepository.GetByEstablishmentTypeAndDocuments(step.EstablishmentTypeId, step.DocumentsReceiveId, step.DocumentsBringId);
+                //пошук існуючих степів в БД. Пошук працює, проте не ясно, як додати всі степи без помилки у бд,
+                //не додаючи існуючий,
+                //тому поки в коменті
 
-                if (foundStep != null)
-                    steps.Add(step.SequenceNumber, foundStep);
-                else
-                {
-                */
+                /*   var foundStep = await _unitOfWork.StepRepository.GetByEstablishmentTypeAndDocuments(step.EstablishmentTypeId, step.DocumentsReceiveId, step.DocumentsBringId);
+                   if (foundStep != null)
+                   {
+                       steps.Add(step.SequenceNumber, foundStep);
+                   }
+                   else
+                   {*/
+                var stepEntity = _mapper.Map<Step>(step);
 
-                    var stepEntity = _mapper.Map<Step>(step);
+                stepEntity.Id = Guid.NewGuid();
+                stepEntity.StepDocuments = new List<StepDocument>();
 
-                    stepEntity.StepDocuments = new List<StepDocument>();
+                stepEntity.StepDocuments.AddRange(GenerateStepDocumentsToReceive(step.DocumentsReceiveId));
+                stepEntity.StepDocuments.AddRange(GenerateStepDocumentsToBring(step.DocumentsBringId));
 
-                    stepEntity.StepDocuments.AddRange(GenerateStepDocumentsToReceive(step.DocumentsReceiveId));
-                    stepEntity.StepDocuments.AddRange(GenerateStepDocumentsToBring(step.DocumentsBringId));
-                    
-                    steps.Add(step.SequenceNumber, stepEntity);
-                //}
+                steps.Add(step.SequenceNumber, stepEntity);
             }
+            //}
 
             return steps;
         }

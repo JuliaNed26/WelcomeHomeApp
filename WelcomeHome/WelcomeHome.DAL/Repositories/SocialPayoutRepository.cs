@@ -32,18 +32,17 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 			                   .ConfigureAwait(false);
 	}
 
-	public async Task AddWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps, List<UserCategory> categories)
+	public async Task AddWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps)
 	{
-		socialPayout.Id = Guid.NewGuid();
 		try
 		{
-			await _dbContext.SocialPayouts.AddAsync(socialPayout).ConfigureAwait(false);
+            socialPayout.Id = Guid.NewGuid();
 
-			AddStepsToSicialPayout(steps, socialPayout);
+            AttachUserCategories(socialPayout.UserCategories);
 
-			await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+            await _dbContext.SocialPayouts.AddAsync(socialPayout).ConfigureAwait(false);
 
-			socialPayout.UserCategories = categories;
+            AddStepsToSicialPayout(steps, socialPayout);
 
 			await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 		}
@@ -51,9 +50,7 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 		{
 			Console.WriteLine(ex.ToString());
 		}
-
 	}
-
 
 	public async Task UpdateWithStepsAsync(SocialPayout socialPayout, IEnumerable<Guid> stepIds)
 	{
@@ -71,20 +68,19 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 	}
 
 
-	private async void AddStepsToSicialPayout(Dictionary<int, Step> steps, SocialPayout socialPayout)
-	{
-		foreach (var step in steps.Values) 
-		{
-			step.Id = Guid.NewGuid();
-		}
+    private void AddStepsToSicialPayout(Dictionary<int, Step> steps, SocialPayout socialPayout)
+    {
+        foreach (var step in steps.Values)
+        {
+            step.Id = Guid.NewGuid();
+        }
+        _dbContext.Steps.AddRange(steps.Values);
+        _dbContext.SaveChanges();
 
-		_dbContext.Steps.AddRange(steps.Values);
-		_dbContext.SaveChanges();
-		
-		socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
-	}
+        socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
+    }
 
-	private List<PaymentStep> GeneratePaymentStep(Guid SocialPayoutId, Dictionary<int, Step> steps)
+    private List<PaymentStep> GeneratePaymentStep(Guid SocialPayoutId, Dictionary<int, Step> steps)
 	{
 		List<PaymentStep> paymentSteps = new List<PaymentStep>();
 		foreach(var step in steps)
@@ -102,8 +98,25 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 
 	}
 
+	private void AttachUserCategories(ICollection<UserCategory> categories)
+	{
+		foreach (var c in categories)
+		{
+			_dbContext.UserCategories.Attach(c);
+			_dbContext.Entry(c).State = EntityState.Unchanged;
+		}
+	}
+
+	private void AttachStep(Step step)
+	{
+        _dbContext.Steps.Attach(step);
+        _dbContext.Entry(step).State = EntityState.Unchanged;
+    }
 
 
+
+
+	
 	
 
 }
