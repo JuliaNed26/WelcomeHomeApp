@@ -32,14 +32,29 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 			                   .ConfigureAwait(false);
 	}
 
-	public async Task AddWithStepsAsync(SocialPayout socialPayout, IEnumerable<Guid> stepIds)
+	public async Task AddWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps, List<UserCategory> categories)
 	{
 		socialPayout.Id = Guid.NewGuid();
+		try
+		{
+			await _dbContext.SocialPayouts.AddAsync(socialPayout).ConfigureAwait(false);
 
-		await _dbContext.SocialPayouts.AddAsync(socialPayout).ConfigureAwait(false);
-		await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+			AddStepsToSicialPayout(steps, socialPayout);
+
+			await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+
+			socialPayout.UserCategories = categories;
+
+			await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.ToString());
+		}
 
 	}
+
+
 	public async Task UpdateWithStepsAsync(SocialPayout socialPayout, IEnumerable<Guid> stepIds)
 	{
 		_dbContext.SocialPayouts.Update(socialPayout);
@@ -54,4 +69,41 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 		_dbContext.SocialPayouts.Remove(socialPayout);
 		await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 	}
+
+
+	private async void AddStepsToSicialPayout(Dictionary<int, Step> steps, SocialPayout socialPayout)
+	{
+		foreach (var step in steps.Values) 
+		{
+			step.Id = Guid.NewGuid();
+		}
+
+		_dbContext.Steps.AddRange(steps.Values);
+		_dbContext.SaveChanges();
+		
+		socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
+	}
+
+	private List<PaymentStep> GeneratePaymentStep(Guid SocialPayoutId, Dictionary<int, Step> steps)
+	{
+		List<PaymentStep> paymentSteps = new List<PaymentStep>();
+		foreach(var step in steps)
+		{
+			var newPaymentStep = new PaymentStep
+			{
+				SocialPayoutId = SocialPayoutId,
+				Step = step.Value,
+				SequenceNumber = step.Key
+			};
+			paymentSteps.Add(newPaymentStep);
+		}
+
+		return paymentSteps;
+
+	}
+
+
+
+	
+
 }
