@@ -12,3 +12,4 @@ namespace WelcomeHome.DAL.Models
 		public ICollection<StepDocument> StepDocuments { get; set; }
 	}
 }
+

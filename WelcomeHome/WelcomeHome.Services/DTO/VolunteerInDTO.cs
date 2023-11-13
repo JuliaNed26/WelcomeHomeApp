@@ -23,7 +23,7 @@ namespace WelcomeHome.Services.DTO
 
         public string? Document { get; set; }
 
-        public Guid EstablishmentId { get; set; }
+        public Guid? EstablishmentId { get; set; }
 
         [Required]
         public string Password { get; set; }

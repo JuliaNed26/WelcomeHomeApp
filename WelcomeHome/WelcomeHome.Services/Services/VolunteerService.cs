@@ -46,10 +46,14 @@ namespace WelcomeHome.Services.Services
                 Email = newVolunteer.Email,
                 Telegram = newVolunteer.Telegram,
                 Document = newVolunteer.Document,
-                EstablishmentId = newVolunteer.EstablishmentId
+                EstablishmentId = newVolunteer.EstablishmentId == Guid.Empty
+                                  ? null
+                                  : newVolunteer.EstablishmentId
             };
 
-            await _exceptionHandler.HandleAndThrowAsync(()=>_unitOfWork.VolunteerRepository.AddAsync(volunteer));
+            await _unitOfWork.VolunteerRepository.AddAsync(volunteer);
+
+            //await _exceptionHandler.HandleAndThrowAsync(()=>_unitOfWork.VolunteerRepository.AddAsync(volunteer));
         }
 
         public async Task DeleteAsync(Guid id)

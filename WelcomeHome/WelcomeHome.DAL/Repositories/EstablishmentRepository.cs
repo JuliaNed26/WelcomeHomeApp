@@ -33,7 +33,6 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task AddAsync(Establishment newEstablishment)
         {
-
             await _context.Establishments.AddAsync(newEstablishment).ConfigureAwait(false);
             AttachEstablishmentType(newEstablishment.EstablishmentType);
             AttachCity(newEstablishment.City);

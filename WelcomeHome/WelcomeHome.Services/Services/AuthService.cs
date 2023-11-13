@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WelcomeHome.Services.Services
 {
-    internal class AuthService : IAuthService
+    public class AuthService : IAuthService
     {
         public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
