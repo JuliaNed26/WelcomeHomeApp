@@ -118,7 +118,6 @@ namespace WelcomeHome.Services.Services
                    {*/
                 var stepEntity = _mapper.Map<Step>(step);
 
-                stepEntity.Id = Guid.NewGuid();
                 stepEntity.StepDocuments = new List<StepDocument>();
 
                 stepEntity.StepDocuments.AddRange(GenerateStepDocumentsToReceive(step.DocumentsReceiveId));
