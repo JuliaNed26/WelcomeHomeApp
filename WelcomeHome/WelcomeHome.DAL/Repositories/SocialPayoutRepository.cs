@@ -70,14 +70,18 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 
     private void AddStepsToSicialPayout(Dictionary<int, Step> steps, SocialPayout socialPayout)
     {
-        foreach (var step in steps.Values)
+		GenerateGuidForSteps(steps.Values);
+		_dbContext.Steps.AddRange(steps.Values);
+        socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
+    }
+
+
+	private void GenerateGuidForSteps(ICollection<Step> steps)
+	{
+        foreach (var step in steps)
         {
             step.Id = Guid.NewGuid();
         }
-        _dbContext.Steps.AddRange(steps.Values);
-        _dbContext.SaveChanges();
-
-        socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
     }
 
     private List<PaymentStep> GeneratePaymentStep(Guid SocialPayoutId, Dictionary<int, Step> steps)
@@ -95,7 +99,6 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 		}
 
 		return paymentSteps;
-
 	}
 
 	private void AttachUserCategories(ICollection<UserCategory> categories)
@@ -103,8 +106,18 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 		foreach (var c in categories)
 		{
 			_dbContext.UserCategories.Attach(c);
+			if (c.SocialPayouts != null)
+			{
+				foreach (var s in c.SocialPayouts)
+					DettachSocialPayout(s);
+			}
 			_dbContext.Entry(c).State = EntityState.Unchanged;
 		}
+	}
+
+	private void DettachSocialPayout(SocialPayout socialPayout)
+	{
+		_dbContext.Entry(socialPayout).State = EntityState.Detached;
 	}
 
 	private void AttachStep(Step step)
