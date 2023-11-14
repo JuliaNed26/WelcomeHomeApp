@@ -38,7 +38,10 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 		{
             socialPayout.Id = Guid.NewGuid();
 
-            AttachUserCategories(socialPayout.UserCategories);
+			if (socialPayout.UserCategories != null)
+			{
+				AttachUserCategories(socialPayout.UserCategories);
+			}
 
             await _dbContext.SocialPayouts.AddAsync(socialPayout).ConfigureAwait(false);
 
