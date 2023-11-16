@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.Repositories;
 using WelcomeHome.DAL.UnitOfWork;
@@ -22,7 +17,7 @@ namespace WelcomeHome.Services.Tests.Documents
         private Mock<IDocumentRepository> _mockDocumentRepository;
         private Mock<IUnitOfWork> _mockUnitOfWork;
         private Mock<IMapper> _mockMapper;
-        private ExceptionHandlerMediator exceptionHandlerMediator;
+        private ExceptionHandlerMediator _exceptionHandlerMediator;
         private static readonly Guid Guid = Guid.NewGuid();
         private static readonly Document Document = new Document
         {
@@ -40,12 +35,12 @@ namespace WelcomeHome.Services.Tests.Documents
         {
             _mockDocumentRepository = new Mock<IDocumentRepository>();
             _mockMapper = new Mock<IMapper>();
-            exceptionHandlerMediator = new ExceptionHandlerMediator();
+            _exceptionHandlerMediator = new ExceptionHandlerMediator();
 
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockUnitOfWork.Setup(uow => uow.DocumentRepository).Returns(_mockDocumentRepository.Object);
 
-            _documentService = new DocumentService(_mockUnitOfWork.Object, _mockMapper.Object, exceptionHandlerMediator);
+            _documentService = new DocumentService(_mockUnitOfWork.Object, _mockMapper.Object, _exceptionHandlerMediator);
         }
 
         [Test]
@@ -192,7 +187,7 @@ namespace WelcomeHome.Services.Tests.Documents
             _mockDocumentRepository.Verify(repo => repo.AddAsync(It.IsAny<Document>()), Times.Once);
 
             Assert.IsNotNull(capturedDocument);
-            Assert.That(capturedDocument.Name, Is.EqualTo(mappedDocument.Name));
+            Assert.That(capturedDocument?.Name, Is.EqualTo(mappedDocument.Name));
 
 
         }
@@ -209,7 +204,7 @@ namespace WelcomeHome.Services.Tests.Documents
             
             // Act & Assert
             var exception = Assert.ThrowsAsync<InvalidCastException>(async () => await _documentService.AddAsync(documentInDto));
-            Assert.That(exception.Message, Is.EqualTo(exceptionMessage));
+            Assert.That(exception?.Message, Is.EqualTo(exceptionMessage));
         }
 
         [Test]

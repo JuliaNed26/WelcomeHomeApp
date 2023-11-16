@@ -19,6 +19,18 @@ namespace WelcomeHome.Services.Services
             _mapper = mapper;
             _exceptionHandler = exceptionHandler;
         }
+        public async Task<VolunteerOutDTO> GetAsync(Guid id)
+        {
+            var foundVolunteer = await _unitOfWork.VolunteerRepository.GetByIdAsync(id);
+            return foundVolunteer == null
+                ? throw new RecordNotFoundException("No volunteer with such id")
+                : _mapper.Map<VolunteerOutDTO>(foundVolunteer);
+        }
+        public IEnumerable<VolunteerOutDTO> GetAll()
+        {
+            var volunteers = _unitOfWork.VolunteerRepository.GetAll();
+            return volunteers.Select(volunteer => _mapper.Map<VolunteerOutDTO>(volunteer));
+        }
 
         public async Task AddAsync(VolunteerInDTO newVolunteer)
         {
@@ -26,6 +38,13 @@ namespace WelcomeHome.Services.Services
 			                                                  .VolunteerRepository
 			                                                  .AddAsync(_mapper.Map<Volunteer>(newVolunteer)))
 		        .ConfigureAwait(false);
+        }
+        public async Task UpdateAsync(VolunteerOutDTO volunteerWithUpdateInfo)
+        {
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+                    .VolunteerRepository
+                    .UpdateAsync(_mapper.Map<Volunteer>(volunteerWithUpdateInfo)))
+                .ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -36,32 +55,12 @@ namespace WelcomeHome.Services.Services
 		        .ConfigureAwait(false);
         }
 
-        public IEnumerable<VolunteerOutDTO> GetAll()
-        {
-            var volunteers = _unitOfWork.VolunteerRepository.GetAll();
-            return volunteers.Select(volunteer => _mapper.Map<VolunteerOutDTO>(volunteer));
-        }
-
-        public async Task<VolunteerOutDTO> GetAsync(Guid id)
-        {
-	        var foundVolunteer = await _unitOfWork.VolunteerRepository.GetByIdAsync(id);
-	        return foundVolunteer == null
-		        ? throw new RecordNotFoundException("No volunteer with such id")
-		        : _mapper.Map<VolunteerOutDTO>(foundVolunteer);
-        }
-
         public int GetCount()
         {
             var allVolunteers = _unitOfWork.VolunteerRepository.GetAll();
             return allVolunteers.Count();
         }
 
-        public async Task UpdateAsync(VolunteerOutDTO volunteerWithUpdateInfo)
-        {
-	        await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
-			                                                  .VolunteerRepository
-			                                                  .UpdateAsync(_mapper.Map<Volunteer>(volunteerWithUpdateInfo)))
-		        .ConfigureAwait(false);
-        }
+        
     }
 }
