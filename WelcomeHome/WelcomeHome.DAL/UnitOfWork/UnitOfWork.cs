@@ -15,6 +15,7 @@ public sealed class UnitOfWork : IUnitOfWork
 	private readonly Lazy<IDocumentRepository> _documentRepository;
     private readonly Lazy<IEstablishmentRepository> _establishmentRepository;
     private readonly Lazy<IEstablishmentTypeRepository> _establishmentTypeRepository;
+	private readonly Lazy<IUserCategoryRepository> _userCategoryRepository;
 
     public UnitOfWork(WelcomeHomeDbContext context)
 	{
@@ -28,11 +29,13 @@ public sealed class UnitOfWork : IUnitOfWork
 		_documentRepository = new Lazy<IDocumentRepository>(() => new DocumentRepository(context));
 		_establishmentRepository=new Lazy<IEstablishmentRepository>(()=> new EstablishmentRepository(context));
         _establishmentTypeRepository = new Lazy<IEstablishmentTypeRepository>(() => new EstablishmentTypeRepository(context));
+		_userCategoryRepository = new Lazy<IUserCategoryRepository>(() => new UserCategoryRepository(context));
     }
   
 	public IEventRepository EventRepository => _eventRepository.Value;
 
-	public IUserRepository UserRepository => _userRepository.Value;
+    public IUserCategoryRepository UserCategoryRepository => _userCategoryRepository.Value;
+    public IUserRepository UserRepository => _userRepository.Value;
 
 	public ICityRepository CityRepository => _cityRepository.Value;
 
@@ -44,4 +47,5 @@ public sealed class UnitOfWork : IUnitOfWork
 	public IDocumentRepository DocumentRepository => _documentRepository.Value;
 	public IEstablishmentRepository EstablishmentRepository => _establishmentRepository.Value;
     public IEstablishmentTypeRepository EstablishmentTypeRepository => _establishmentTypeRepository.Value;
+
 }

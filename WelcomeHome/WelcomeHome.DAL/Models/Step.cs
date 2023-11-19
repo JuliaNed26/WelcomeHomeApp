@@ -13,7 +13,7 @@ namespace WelcomeHome.DAL.Models
 
 		public EstablishmentType EstablishmentType { get; set; }
 
-		public ICollection<StepDocument> StepDocuments { get; set; }
+		public List<StepDocument> StepDocuments { get; set; }
 
 		public ICollection<PaymentStep> PaymentSteps { get; set; }
 	}

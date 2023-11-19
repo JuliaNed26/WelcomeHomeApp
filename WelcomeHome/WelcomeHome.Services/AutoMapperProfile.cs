@@ -29,6 +29,7 @@ namespace WelcomeHome.Services
             CreateMap<VolunteerInDTO, Volunteer>();
             CreateMap<Volunteer, VolunteerOutDTO>();
             CreateMap<VolunteerOutDTO, Volunteer>();
+            CreateMap<StepInDTO, Step>();
         }
     }
 }

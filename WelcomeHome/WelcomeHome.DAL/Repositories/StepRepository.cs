@@ -54,4 +54,18 @@ public sealed class StepRepository : IStepRepository
 		_dbContext.Steps.Remove(step);
 		await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 	}
+
+	
+	public async Task<Step?> GetByEstablishmentTypeAndDocuments(Guid establishmentTypeId, ICollection<Guid> documentsRecieveIds, ICollection<Guid> documentsBringIds)
+	{
+		var step = await _dbContext.Steps
+			.Where(s =>
+					s.EstablishmentTypeId == establishmentTypeId &&
+					!s.StepDocuments.Any(sd => sd.ToReceive == true && !documentsRecieveIds.Contains(sd.DocumentId)) &&
+					!s.StepDocuments.Any(sd => sd.ToReceive == false && !documentsBringIds.Contains(sd.DocumentId)) 
+				   ).FirstOrDefaultAsync();
+
+		return step;
+	}
+	
 }

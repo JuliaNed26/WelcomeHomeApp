@@ -13,4 +13,6 @@ public interface IStepRepository
 	Task UpdateAsync(Step step);
 
 	Task DeleteAsync(Guid id);
+
+	Task<Step?> GetByEstablishmentTypeAndDocuments(Guid establishmentTypeId, ICollection<Guid> documentsRecieveIds, ICollection<Guid> documentsBringIds);
 }

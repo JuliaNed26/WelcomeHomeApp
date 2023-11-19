@@ -12,20 +12,42 @@ namespace WelcomeHome.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ExceptionHandlerMediatorBase _exceptionHandler;
+        private readonly IAuthService _authService;
 
-		public UserService(IUnitOfWork unitOfWork, IMapper mapper, ExceptionHandlerMediatorBase exceptionHandler)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, ExceptionHandlerMediatorBase exceptionHandler, IAuthService authService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _exceptionHandler = exceptionHandler;
+            _authService = authService;
         }
 
         public async Task AddAsync(UserInDTO newUser)
         {
+            /*
 	        await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
 			                                                  .UserRepository
 			                                                  .AddAsync(_mapper.Map<User>(newUser)))
 		        .ConfigureAwait(false);
+            */
+
+            //I didn't figure out how to combine mapper and password shifr, so I wrote my code here 
+            byte[] hash;
+            byte[] salt;
+            _authService.CreatePasswordHash(newUser.Password, out hash, out salt);
+            User user = new User
+            {
+                Id = new Guid(),
+                PasswordHash = hash,
+                PasswordSalt = salt,
+                FullName = newUser.FullName,
+                PhoneNumber = newUser.PhoneNumber,
+                Email = newUser.Email,
+            };
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+                                                              .UserRepository
+                                                              .AddAsync(user));
+
         }
 
         public async Task DeleteAsync(Guid id)
@@ -58,7 +80,8 @@ namespace WelcomeHome.Services.Services
 
         public async Task UpdateAsync(UserOutDTO userWithUpdateInfo)
         {
-	        await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+            //should we update the pswrd?
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
 			                                                  .UserRepository
 			                                                  .UpdateAsync(_mapper.Map<User>(userWithUpdateInfo)))
 		        .ConfigureAwait(false);
