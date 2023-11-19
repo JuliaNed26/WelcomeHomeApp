@@ -16,8 +16,7 @@ namespace WelcomeHome.Services.DTO
         public string? PageURL { get; init; }
         public string? PhoneNumber { get; init; }
         public string? OtherContacts { get; init; }
-        public ICollection<Event>? Events { get; init; }
         public City City { get; init; }
-        public EstablishmentType EstablishmentType { get; init; }
+        public EstablishmentTypeOutDTO EstablishmentType { get; init; }
     }
 }

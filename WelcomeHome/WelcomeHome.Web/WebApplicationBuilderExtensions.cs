@@ -16,7 +16,7 @@ public static class WebApplicationBuilderExtensions
 
 		builder.Services.AddDbContext<WelcomeHomeDbContext>(options =>
 			options
-			.UseSqlServer(builder.Configuration.GetConnectionString("YuliiaSConnectionString"))
+			.UseSqlServer(builder.Configuration.GetConnectionString("AlinaConnectionString"))
 			.UseExceptionProcessor());
 		builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 		builder.Services.AddScoped<IUserService, UserService>();
@@ -26,6 +26,7 @@ public static class WebApplicationBuilderExtensions
 		builder.Services.AddScoped<IDocumentService, DocumentService>();
 		builder.Services.AddScoped<IAuthService, AuthService>();
 		builder.Services.AddScoped<ISocialPayoutService, SocialPayoutService>();
+		builder.Services.AddScoped<IStepService, StepService>();
 
 		builder.Services.AddScoped<IAuthService, AuthService>();
 

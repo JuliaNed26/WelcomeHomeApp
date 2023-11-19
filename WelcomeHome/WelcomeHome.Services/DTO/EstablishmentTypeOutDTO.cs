@@ -11,7 +11,5 @@ namespace WelcomeHome.Services.DTO
     {
         public Guid Id { get; init; }
         public string Name { get; init; } 
-        public ICollection<Establishment>? Establishments { get; init; }
-        public ICollection<Step>? Steps { get; init; }
     }
 }
