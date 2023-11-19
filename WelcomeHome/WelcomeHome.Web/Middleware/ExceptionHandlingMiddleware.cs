@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Net;
 using WelcomeHome.Services.Exceptions;
+using Newtonsoft.Json;
+
 
 namespace WelcomeHome.Web.Middleware;
 
@@ -24,21 +25,32 @@ public class ExceptionHandlingMiddleware
 		{
 			context.Response.Clear();
 			context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+			await AddExceptionMessageToResponseAsync(context, ex).ConfigureAwait(false);
 		}
 		catch (RecordNotFoundException ex)
 		{
 			context.Response.Clear();
 			context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+			await AddExceptionMessageToResponseAsync(context, ex).ConfigureAwait(false);
 		}
 		catch (BusinessException ex)
 		{
 			context.Response.Clear();
 			context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+			await AddExceptionMessageToResponseAsync(context, ex).ConfigureAwait(false);
 		}
 		catch (Exception ex)
 		{
 			context.Response.Clear();
 			context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+			await AddExceptionMessageToResponseAsync(context, ex).ConfigureAwait(false);
 		}
 	}
+	private static async Task AddExceptionMessageToResponseAsync(HttpContext context, Exception exception)
+	{
+		context.Response.ContentType = "application/json";
+
+		await context.Response.WriteAsync(JsonConvert.SerializeObject(exception.Message));
+	}
+
 }
