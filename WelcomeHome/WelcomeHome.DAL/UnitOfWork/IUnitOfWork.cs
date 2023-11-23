@@ -6,8 +6,6 @@ public interface IUnitOfWork
 {
 	public IEventRepository EventRepository { get; }
 
-	public IUserRepository UserRepository { get; }
-
 	public ICityRepository CityRepository { get; }
 
 	public ICountryRepository CountryRepository { get; }

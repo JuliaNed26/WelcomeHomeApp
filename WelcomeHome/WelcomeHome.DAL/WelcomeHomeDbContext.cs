@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.Scripts;
 
 namespace WelcomeHome.DAL;
 
-public sealed class WelcomeHomeDbContext : DbContext
+public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
 	public WelcomeHomeDbContext(DbContextOptions<WelcomeHomeDbContext> options)
 		: base(options)
@@ -20,8 +22,6 @@ public sealed class WelcomeHomeDbContext : DbContext
 	public DbSet<Event> Events { get; set; }
   
     public DbSet<Course> Courses { get; set; }
-  
-	public DbSet<User> Users { get; set; }
   
     public DbSet<EventType> EventTypes { get; set; }
     
@@ -49,11 +49,9 @@ public sealed class WelcomeHomeDbContext : DbContext
 
 	public DbSet<PaymentStep> PaymentSteps { get; set; }
 
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		modelBuilder.Entity<User>()
-			        .HasIndex(u => u.Email)
-			        .IsUnique();
 
         modelBuilder.Entity<Event>().HasOne(e => e.Volunteer)
                                     .WithMany(v => v.Events)
@@ -102,6 +100,12 @@ public sealed class WelcomeHomeDbContext : DbContext
 
 		modelBuilder.Entity<PaymentStep>().HasKey(ps => new { ps.StepId, ps.SocialPayoutId });
 		modelBuilder.Entity<StepDocument>().HasKey(sd => new { sd.StepId, sd.DocumentId });
+
+		modelBuilder.Entity<Volunteer>().HasKey(v => v.UserId);
+
+		modelBuilder.Entity<Volunteer>().HasOne(v => v.User)
+			                            .WithOne(u => u.Volunteer)
+										.HasForeignKey<Volunteer>(u => u.UserId);
 	}
 
 	private static void SeedWithPredefinedData(string connectionString)

@@ -26,7 +26,7 @@ public sealed class VolunteerRepository : IVolunteerRepository
 		return await _context.Volunteers
 			                 .Include(v => v.Establishment)
 							 .AsNoTracking()
-			                 .SingleOrDefaultAsync(v => v.Id == id)
+			                 .SingleOrDefaultAsync(v => v.UserId == id)
 			                 .ConfigureAwait(false);
 	}
 

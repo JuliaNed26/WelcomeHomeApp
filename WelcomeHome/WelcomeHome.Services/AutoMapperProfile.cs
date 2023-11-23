@@ -23,9 +23,6 @@ namespace WelcomeHome.Services
 			CreateMap<EventInDTO, Event>();
             CreateMap<Event, EventOutDTO>();
             CreateMap<EventOutDTO, Event>();
-            CreateMap<UserInDTO, User>();
-            CreateMap<User, UserOutDTO>();
-            CreateMap<UserOutDTO, User>();
             CreateMap<VolunteerInDTO, Volunteer>();
             CreateMap<Volunteer, VolunteerOutDTO>();
             CreateMap<VolunteerOutDTO, Volunteer>();
