@@ -18,14 +18,22 @@ public static class WebApplicationBuilderExtensions
 			                                                         .UseSqlServer(builder.Configuration.GetConnectionString("JuliaNConnectionString"))
 			                                                         .UseExceptionProcessor());
 			
+
 		builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+    
 		builder.Services.AddScoped<IUserService, UserService>();
 		builder.Services.AddScoped<IVolunteerService, VolunteerService>();
 		builder.Services.AddScoped<IEventService, EventService>();
 		builder.Services.AddScoped<IEstablishmentService, EstablishmentService>();
 		builder.Services.AddScoped<IDocumentService, DocumentService>();
+		builder.Services.AddScoped<IAuthService, AuthService>();
+		builder.Services.AddScoped<ISocialPayoutService, SocialPayoutService>();
+		builder.Services.AddScoped<IStepService, StepService>();
 		builder.Services.AddScoped<ICityCountryService, CityCountryService>();
 
+
 		builder.Services.AddSingleton<ExceptionHandlerMediatorBase, ExceptionHandlerMediator>();
+
+
 	}
 }

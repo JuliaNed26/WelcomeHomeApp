@@ -13,6 +13,7 @@ namespace WelcomeHome.DAL.Models
 
 		public double Amount { get; set; }
 
+		//why nullable?
 		public ICollection<UserCategory>? UserCategories { get; set; }
 
 		public ICollection<PaymentStep> PaymentSteps { get; set; }

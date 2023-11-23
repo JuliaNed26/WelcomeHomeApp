@@ -21,4 +21,5 @@ public interface IUnitOfWork
 	public IDocumentRepository DocumentRepository { get; }
 	public IEstablishmentRepository EstablishmentRepository { get; }
     public IEstablishmentTypeRepository EstablishmentTypeRepository { get; }
+	public IUserCategoryRepository UserCategoryRepository { get; }
 }
