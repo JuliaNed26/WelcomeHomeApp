@@ -14,11 +14,13 @@ public static class WebApplicationBuilderExtensions
 	{
 		builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
-		builder.Services.AddDbContext<WelcomeHomeDbContext>(options =>
-			options
-			.UseSqlServer(builder.Configuration.GetConnectionString("AlinaConnectionString"))
-			.UseExceptionProcessor());
+		builder.Services.AddDbContext<WelcomeHomeDbContext>(options =>options
+			                                                         .UseSqlServer(builder.Configuration.GetConnectionString("JuliaNConnectionString"))
+			                                                         .UseExceptionProcessor());
+			
+
 		builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+    
 		builder.Services.AddScoped<IUserService, UserService>();
 		builder.Services.AddScoped<IVolunteerService, VolunteerService>();
 		builder.Services.AddScoped<IEventService, EventService>();
@@ -27,8 +29,8 @@ public static class WebApplicationBuilderExtensions
 		builder.Services.AddScoped<IAuthService, AuthService>();
 		builder.Services.AddScoped<ISocialPayoutService, SocialPayoutService>();
 		builder.Services.AddScoped<IStepService, StepService>();
+		builder.Services.AddScoped<ICityCountryService, CityCountryService>();
 
-		builder.Services.AddScoped<IAuthService, AuthService>();
 
 		builder.Services.AddSingleton<ExceptionHandlerMediatorBase, ExceptionHandlerMediator>();
 
