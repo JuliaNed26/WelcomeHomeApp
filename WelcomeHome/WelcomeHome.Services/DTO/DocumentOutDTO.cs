@@ -12,6 +12,5 @@ namespace WelcomeHome.Services.DTO
     {
 	    public Guid Id { get; init; }
         public string Name { get; init; }
-        public ICollection<StepDocument> StepDocuments { get; init; }
     }
 }

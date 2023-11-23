@@ -27,10 +27,12 @@ namespace WelcomeHome.Services.Services
 
         public async Task AddAsync(StepInDTO newStep)
         {
+            var step = _mapper.Map<Step>(newStep);
+            await AddDocumentStepsAsync(newStep, step);
 
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
                                                               .StepRepository
-                                                              .AddAsync(_mapper.Map<Step>(newStep)))
+                                                              .AddAsync(step))
                 .ConfigureAwait(false);
         }
 
@@ -101,18 +103,41 @@ namespace WelcomeHome.Services.Services
 
         private async Task AttachDocumentsReceiveToDTOAsync(Step step, StepOutDTO stepOut)
         {
-            foreach(var stepDocument in step.StepDocuments)
+            var docs = new List<DocumentOutDTO>();
+            foreach (var stepDocument in step.StepDocuments)
             {
-                var document = _unitOfWork.DocumentRepository.GetAll().Any(d => d.Id == stepDocument.DocumentId);
-                stepOut.DocumentsReceive.Add(_mapper.Map<DocumentOutDTO>(document));
+                if (stepDocument.ToReceive)
+                {
+                    var document = await _unitOfWork.DocumentRepository.GetByIdAsync(stepDocument.DocumentId);
+                    if (document != null)
+                    {
+                        docs.Add(_mapper.Map<DocumentOutDTO>(document));
+                    }
+                }
+            }
+            if (docs.Any())
+            {
+                stepOut.DocumentsReceive = docs;
             }
         }
         private async Task AttachDocumentsBringToDTOAsync(Step step, StepOutDTO stepOut)
         {
+            var docs = new List<DocumentOutDTO>();
             foreach (var stepDocument in step.StepDocuments)
             {
-                var document = _unitOfWork.DocumentRepository.GetAll().Any(d => d.Id == stepDocument.DocumentId);
-                stepOut.DocumentsBring.Add(_mapper.Map<DocumentOutDTO>(document));
+                if (!stepDocument.ToReceive)
+                {
+                    var document = await _unitOfWork.DocumentRepository.GetByIdAsync(stepDocument.DocumentId);
+                    if (document != null)
+                    {
+                        docs.Add(_mapper.Map<DocumentOutDTO>(document));
+
+                    }
+                }
+            }
+            if (docs.Any())
+            {
+                stepOut.DocumentsBring=docs;
             }
         }
 
@@ -120,15 +145,38 @@ namespace WelcomeHome.Services.Services
         {
             var establishments = _unitOfWork.EstablishmentRepository.GetAll().ToList();
             var stepEstablishments = establishments.Where(e => e.EstablishmentTypeId == establishmentTypeId);
-            step.Establishments = _mapper.Map<List<EstablishmentOutDTO>>(stepEstablishments);
+            if (stepEstablishments.Any())
+            {
+                step.Establishments = _mapper.Map<List<EstablishmentOutDTO>>(stepEstablishments);
+            }
         }
 
-        //private void AddDocumentSteps(StepInDTO stepIn, Step step)
-        //{
-        //    foreach(var documentId in stepIn.DocumentsReceiveId)
-        //    {
-                
-        //    }
-        //}
+        private async Task AddDocumentStepsAsync(StepInDTO stepIn, Step step)
+        {
+            var stepDocuments = new List<StepDocument>();
+            foreach (var documentId in stepIn.DocumentsReceiveId)
+            {
+                var stepDocument = new StepDocument()
+                {
+                    DocumentId = documentId,
+                    StepId = step.Id,
+                    ToReceive = true
+                };
+                stepDocuments.Add(stepDocument);
+            }
+
+            foreach (var documentId in stepIn.DocumentsBringId)
+            {
+                var stepDocument = new StepDocument()
+                {
+                    DocumentId = documentId,
+                    StepId = step.Id,
+                    ToReceive = false
+                };
+                stepDocuments.Add(stepDocument);
+            }
+
+            step.StepDocuments = stepDocuments;
+        }
     }
 }
