@@ -18,9 +18,7 @@ namespace WelcomeHome.Services.DTO
 
         public string Email { get; set; }
 
-        public string Telegram { get; set; }
-
-        public string? Document { get; set; }
+        public string SocialUrl { get; set; }
 
         public Guid? EstablishmentId { get; set; }
 

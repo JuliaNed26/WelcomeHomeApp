@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WelcomeHome.DAL.Models;
 using WelcomeHome.Services.DTO;
-using WelcomeHome.Services.Services;
 
 namespace WelcomeHome.Web.Controllers;
 
@@ -9,45 +10,28 @@ namespace WelcomeHome.Web.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-	private readonly IUserService _userService;
+    private readonly UserManager<User> _userManager;
+    private readonly IMapper _mapper;
 
-	public UserController(IUserService userService)
-	{
-		_userService = userService;
-	}
+    public UserController(UserManager<User> userManager, IMapper mapper)
+    {
+        _userManager = userManager;
+        _mapper = mapper;
+    }
 
-	[HttpGet("{id}")]
-	public async Task<ActionResult<UserOutDTO>> GetAsync(Guid id)
-	{
-		var foundUser = await _userService.GetAsync(id).ConfigureAwait(false);
-		return Ok(foundUser);
-	}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<UserOutDTO>> GetAsync(Guid id)
+    {
+        var foundUser = await _userManager.FindByIdAsync(id.ToString()).ConfigureAwait(false);
+        return Ok(_mapper.Map<UserOutDTO>(foundUser));
+    }
 
-	[HttpGet]
-	public ActionResult<IEnumerable<UserOutDTO>> GetAll()
-	{
-		var allUsers = _userService.GetAll();
-		return Ok(allUsers);
-	}
+    [HttpGet]
+    public ActionResult<IEnumerable<UserOutDTO>> GetAll()
+    {
+        var allUsers = _userManager.Users.ToList();
+        var result = _mapper.Map<List<UserOutDTO>>(allUsers);
+        return Ok(result);
+    }
 
-	[HttpPost]
-	public async Task<IActionResult> AddAsync(UserInDTO newUser)
-	{
-		await _userService.AddAsync(newUser).ConfigureAwait(false);
-		return NoContent();
-	}
-
-	[HttpPut]
-	public async Task<IActionResult> UpdateAsync(UserOutDTO updateUser)
-	{
-		await _userService.UpdateAsync(updateUser).ConfigureAwait(false);
-		return NoContent();
-	}
-
-	[HttpDelete("{id}")]
-	public async Task<IActionResult> DeleteAsync(Guid id)
-	{
-		await _userService.DeleteAsync(id).ConfigureAwait(false);
-		return NoContent();
-	}
 }

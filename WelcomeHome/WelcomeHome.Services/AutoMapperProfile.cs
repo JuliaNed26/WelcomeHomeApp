@@ -1,39 +1,33 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.Services.DTO;
 
 namespace WelcomeHome.Services
 {
-    public class AutoMapperProfile: Profile
+    public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
         {
             CreateMap<Establishment, EstablishmentOutDTO>();
             CreateMap<EstablishmentInDTO, Establishment>();
             CreateMap<EstablishmentOutDTO, Establishment>();
-			CreateMap<EstablishmentType, EstablishmentTypeOutDTO>();
+            CreateMap<EstablishmentType, EstablishmentTypeOutDTO>();
             CreateMap<Document, DocumentOutDTO>();
             CreateMap<DocumentInDTO, Document>();
             CreateMap<DocumentOutDTO, Document>();
-			CreateMap<EventInDTO, Event>();
+            CreateMap<EventInDTO, Event>();
             CreateMap<Event, EventOutDTO>();
             CreateMap<EventOutDTO, Event>();
-            CreateMap<UserInDTO, User>();
-            CreateMap<User, UserOutDTO>();
-            CreateMap<UserOutDTO, User>();
-            CreateMap<VolunteerInDTO, Volunteer>();
+            CreateMap<VolunteerRegisterDTO, Volunteer>();
             CreateMap<Volunteer, VolunteerOutDTO>();
             CreateMap<VolunteerOutDTO, Volunteer>();
+            CreateMap<VolunteerRegisterDTO, UserRegisterDTO>();
             CreateMap<StepInDTO, Step>();
             CreateMap<Step, StepOutDTO>();
             CreateMap<Country, CountryOutDto>();
             CreateMap<City, CityOutDto>();
-
+            CreateMap<UserRegisterDTO, User>();
+            CreateMap<User, UserOutDTO>();
         }
     }
 }

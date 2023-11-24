@@ -8,7 +8,7 @@ public interface IVolunteerRepository
 
 	IEnumerable<Volunteer> GetAll();
 
-	Task AddAsync(Volunteer volunteer);
+	Task<Volunteer?> AddAsync(Guid id, Volunteer volunteer);
 
 	Task UpdateAsync(Volunteer volunteer);
 

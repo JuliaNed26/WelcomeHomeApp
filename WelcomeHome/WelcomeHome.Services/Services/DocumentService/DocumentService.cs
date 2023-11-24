@@ -24,8 +24,8 @@ namespace WelcomeHome.Services.Services
         {
             var foundDocument = await _unitOfWork.DocumentRepository.GetByIdAsync(id).ConfigureAwait(false);
             return foundDocument == null
-	            ? throw new RecordNotFoundException("Document was not found")
-	            : _mapper.Map<DocumentOutDTO>(foundDocument);
+                ? throw new RecordNotFoundException("Document was not found")
+                : _mapper.Map<DocumentOutDTO>(foundDocument);
         }
 
         public IEnumerable<DocumentOutDTO> GetAll()
@@ -52,26 +52,26 @@ namespace WelcomeHome.Services.Services
 
         public async Task AddAsync(DocumentInDTO newDocument)
         {
-	        await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
-			                                                  .DocumentRepository
-		                                                      .AddAsync(_mapper.Map<Document>(newDocument)))
-		        .ConfigureAwait(false);
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+                                                              .DocumentRepository
+                                                              .AddAsync(_mapper.Map<Document>(newDocument)))
+                .ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(DocumentOutDTO updatedDocument)
         {
-	        await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
-			                                                  .DocumentRepository
-			                                                  .UpdateAsync(_mapper.Map<Document>(updatedDocument)))
-		        .ConfigureAwait(false);
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+                                                              .DocumentRepository
+                                                              .UpdateAsync(_mapper.Map<Document>(updatedDocument)))
+                .ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(Guid id)
         {
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
-	                                                          .DocumentRepository
-	                                                          .DeleteAsync(id))
-	            .ConfigureAwait(false);
+                                                              .DocumentRepository
+                                                              .DeleteAsync(id))
+                .ConfigureAwait(false);
         }
     }
 }
