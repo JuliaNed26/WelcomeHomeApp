@@ -34,6 +34,7 @@ options.WithOrigins("http://localhost:3000")
 */
 //app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

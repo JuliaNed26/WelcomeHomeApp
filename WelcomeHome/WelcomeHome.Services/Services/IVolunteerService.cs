@@ -3,22 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WelcomeHome.DAL.Models;
 using WelcomeHome.Services.DTO;
 
 namespace WelcomeHome.Services.Services
 {
     public interface IVolunteerService
     {
-        int GetCount();
-
-        Task<VolunteerOutDTO> GetAsync(Guid id);
+        Task<Volunteer?> RegisterVolunteerAsync (VolunteerRegisterDTO volunteer);
 
         IEnumerable<VolunteerOutDTO> GetAll();
 
-        Task AddAsync(VolunteerInDTO newVolunteer);
-
-        Task UpdateAsync(VolunteerOutDTO volunteerWithUpdateInfo);
-
-        Task DeleteAsync(Guid id);
+        Task<VolunteerOutDTO> GetAsync(Guid id);
     }
 }

@@ -106,6 +106,8 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
 		modelBuilder.Entity<Volunteer>().HasOne(v => v.User)
 			                            .WithOne(u => u.Volunteer)
 										.HasForeignKey<Volunteer>(u => u.UserId);
+
+		base.OnModelCreating(modelBuilder);
 	}
 
 	private static void SeedWithPredefinedData(string connectionString)
@@ -120,6 +122,9 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
 
 		string establishmentTypeScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\EstablishmentTypesSeed.sql");
 		SqlScriptExecutor.Execute(establishmentTypeScriptPath, connectionString);
+
+		string rolesSeedScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\RolesSeed.sql");
+		SqlScriptExecutor.Execute(rolesSeedScriptPath, connectionString);
 	}
 
 }

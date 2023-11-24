@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WelcomeHome.Services.DTO
 {
-    public record VolunteerInDTO
+    public record VolunteerRegisterDTO
     {
         [Required]
         public string FullName { get; set; }
@@ -19,11 +19,9 @@ namespace WelcomeHome.Services.DTO
         public string Email { get; set; }
 
         [Required]
-        public string Telegram { get; set; }
+        public string SocialUrl { get; set; }
 
-        public string? Document { get; set; }
-
-        public Guid? EstablishmentId { get; set; }
+        public Guid EstablishmentId { get; set; }
 
         [Required]
         public string Password { get; set; }
