@@ -41,7 +41,7 @@ namespace WelcomeHome.Services.Services
             var volunteers = _unitOfWork.VolunteerRepository.GetAll();
 
             var result = new List<VolunteerOutDTO>();
-            foreach(var volunteer in volunteers)
+            foreach (var volunteer in volunteers)
             {
                 var volunteerDto = _mapper.Map<VolunteerOutDTO>(volunteer);
                 volunteerDto.FullName = volunteer.User.FullName;
@@ -50,7 +50,7 @@ namespace WelcomeHome.Services.Services
                 volunteerDto.Id = volunteer.UserId;
 
                 result.Add(volunteerDto);
-                
+
             }
             return result;
         }

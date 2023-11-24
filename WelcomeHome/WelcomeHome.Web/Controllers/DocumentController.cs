@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services;
 
@@ -9,59 +8,59 @@ namespace WelcomeHome.Web.Controllers;
 [ApiController]
 public class DocumentController : ControllerBase
 {
-	private readonly IDocumentService _documentService;
+    private readonly IDocumentService _documentService;
 
-	public DocumentController(IDocumentService documentService)
-	{
-		_documentService = documentService;
-	}
+    public DocumentController(IDocumentService documentService)
+    {
+        _documentService = documentService;
+    }
 
-	[HttpGet("{id}")]
-	public async Task<ActionResult<DocumentOutDTO>> GetAsync(Guid id)
-	{
-		var foundDocument = await _documentService.GetAsync(id).ConfigureAwait(false);
-		return Ok(foundDocument);
-	}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<DocumentOutDTO>> GetAsync(Guid id)
+    {
+        var foundDocument = await _documentService.GetAsync(id).ConfigureAwait(false);
+        return Ok(foundDocument);
+    }
 
-	[HttpGet]
-	public ActionResult<IEnumerable<DocumentOutDTO>> GetAll()
-	{
-		var allDocuments = _documentService.GetAll();
-		return Ok(allDocuments);
-	}
+    [HttpGet]
+    public ActionResult<IEnumerable<DocumentOutDTO>> GetAll()
+    {
+        var allDocuments = _documentService.GetAll();
+        return Ok(allDocuments);
+    }
 
-	[HttpGet("step/{stepId}/needed")]
-	public ActionResult<IEnumerable<DocumentOutDTO>> GetByStepNeeded(Guid stepId)
-	{
-		var allDocumentsNeededForStep = _documentService.GetByStepNeeded(stepId);
-		return Ok(allDocumentsNeededForStep);
-	}
+    [HttpGet("step/{stepId}/needed")]
+    public ActionResult<IEnumerable<DocumentOutDTO>> GetByStepNeeded(Guid stepId)
+    {
+        var allDocumentsNeededForStep = _documentService.GetByStepNeeded(stepId);
+        return Ok(allDocumentsNeededForStep);
+    }
 
-	[HttpGet("step/{stepId}/received")]
-	public ActionResult<IEnumerable<DocumentOutDTO>> GetByStepReceived(Guid stepId)
-	{
-		var allDocumentsReceivedForStep = _documentService.GetByStepReceived(stepId);
-		return Ok(allDocumentsReceivedForStep);
-	}
+    [HttpGet("step/{stepId}/received")]
+    public ActionResult<IEnumerable<DocumentOutDTO>> GetByStepReceived(Guid stepId)
+    {
+        var allDocumentsReceivedForStep = _documentService.GetByStepReceived(stepId);
+        return Ok(allDocumentsReceivedForStep);
+    }
 
-	[HttpPost]
-	public async Task<IActionResult> AddAsync(DocumentInDTO newDocument)
-	{
-		await _documentService.AddAsync(newDocument).ConfigureAwait(false);
-		return NoContent();
-	}
+    [HttpPost]
+    public async Task<IActionResult> AddAsync(DocumentInDTO newDocument)
+    {
+        await _documentService.AddAsync(newDocument).ConfigureAwait(false);
+        return NoContent();
+    }
 
-	[HttpPut]
-	public async Task<IActionResult> UpdateAsync(DocumentOutDTO updateDocument)
-	{
-		await _documentService.UpdateAsync(updateDocument).ConfigureAwait(false);
-		return NoContent();
-	}
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync(DocumentOutDTO updateDocument)
+    {
+        await _documentService.UpdateAsync(updateDocument).ConfigureAwait(false);
+        return NoContent();
+    }
 
-	[HttpDelete("{id}")]
-	public async Task<IActionResult> DeleteAsync(Guid id)
-	{
-		await _documentService.DeleteAsync(id).ConfigureAwait(false);
-		return NoContent();
-	}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAsync(Guid id)
+    {
+        await _documentService.DeleteAsync(id).ConfigureAwait(false);
+        return NoContent();
+    }
 }

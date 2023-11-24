@@ -1,12 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO;
@@ -30,14 +22,14 @@ namespace WelcomeHome.Services.Services
         public async Task AddAsync(SocialPayoutInDTO newPayout)
         {
             var socialPayoutWithSteps = await ConvertDtoIntoEntities(newPayout);
-          
+
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
                                                               .SocialPayoutRepository
                                                               .AddWithStepsAsync(socialPayoutWithSteps.Item1,
                                                               socialPayoutWithSteps.Item2
                                                               ))
                 .ConfigureAwait(false);
-            
+
         }
 
         public Task DeleteAsync(Guid id)

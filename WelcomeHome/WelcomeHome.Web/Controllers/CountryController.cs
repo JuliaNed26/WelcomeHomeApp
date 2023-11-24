@@ -8,17 +8,17 @@ namespace WelcomeHome.Web.Controllers;
 [ApiController]
 public class CountryController : ControllerBase
 {
-	private readonly ICityCountryService _cityCountryService;
+    private readonly ICityCountryService _cityCountryService;
 
-	public CountryController(ICityCountryService cityCountryService)
-	{
-		_cityCountryService = cityCountryService;
-	}
+    public CountryController(ICityCountryService cityCountryService)
+    {
+        _cityCountryService = cityCountryService;
+    }
 
-	[HttpGet]
-	public ActionResult<IEnumerable<CountryOutDto>> GetAll()
-	{
-		var allCountries = _cityCountryService.GetAllCountries();
-		return Ok(allCountries);
-	}
+    [HttpGet]
+    public ActionResult<IEnumerable<CountryOutDto>> GetAll()
+    {
+        var allCountries = _cityCountryService.GetAllCountries();
+        return Ok(allCountries);
+    }
 }

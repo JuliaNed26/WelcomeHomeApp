@@ -1,18 +1,13 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO;
-using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 using WelcomeHome.Services.Exceptions;
+using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 
 namespace WelcomeHome.Services.Services
 {
-    public class StepService :IStepService
+    public class StepService : IStepService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -76,7 +71,7 @@ namespace WelcomeHome.Services.Services
 
         public async Task<IEnumerable<StepOutDTO>> GetByEstablishmentTypeIdAsync(Guid establishmentTypeId)
         {
-            var steps = _unitOfWork.StepRepository.GetAll().Where(e=>e.EstablishmentTypeId==establishmentTypeId);
+            var steps = _unitOfWork.StepRepository.GetAll().Where(e => e.EstablishmentTypeId == establishmentTypeId);
 
             var result = new List<StepOutDTO>();
             foreach (var step in steps)
@@ -137,7 +132,7 @@ namespace WelcomeHome.Services.Services
             }
             if (docs.Any())
             {
-                stepOut.DocumentsBring=docs;
+                stepOut.DocumentsBring = docs;
             }
         }
 

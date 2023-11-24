@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services;
 
@@ -10,7 +9,7 @@ namespace WelcomeHome.Web.Controllers
     public class SocialPayoutController : ControllerBase
     {
         private readonly ISocialPayoutService _socialPayoutService;
-        public SocialPayoutController(ISocialPayoutService socialPayoutService) 
+        public SocialPayoutController(ISocialPayoutService socialPayoutService)
         {
             _socialPayoutService = socialPayoutService;
         }

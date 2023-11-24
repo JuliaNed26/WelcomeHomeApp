@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WelcomeHome.DAL.Models;
-using WelcomeHome.DAL.UnitOfWork;
-using WelcomeHome.Services.DTO;
+﻿using WelcomeHome.Services.DTO;
 
 namespace WelcomeHome.Services.Services
 {
