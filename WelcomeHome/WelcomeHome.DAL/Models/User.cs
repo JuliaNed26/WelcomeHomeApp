@@ -10,7 +10,7 @@ namespace WelcomeHome.DAL.Models
     public class User : IdentityUser<Guid>
     {
         public string FullName {  get; set; }
-        public Volunteer? Volunteer { get; set;}
-
+		public RefreshToken RefreshToken { get; set; }
+		public Volunteer? Volunteer { get; set;}
     }
 }
