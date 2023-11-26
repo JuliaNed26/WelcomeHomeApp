@@ -21,6 +21,8 @@ public class RefreshTokenRepository : IRefreshTokenRepository
 	public async Task<RefreshToken?> GetByTokenAsync(string token)
 	{
 		var foundRefreshToken = await _context.RefreshTokens
+			                                  .Include(rt => rt.User)
+											  .AsNoTracking()
 			                                  .SingleOrDefaultAsync(rt => rt.Token == token)
 			                                  .ConfigureAwait(false)
 							    ?? throw new NotFoundException("Refresh token was not found");
@@ -43,10 +45,11 @@ public class RefreshTokenRepository : IRefreshTokenRepository
 	{
 		var foundRefreshToken = await _context.RefreshTokens
 			                                  .SingleOrDefaultAsync(rt => rt.UserId == userId)
-			                                  .ConfigureAwait(false)
-							    ?? throw new NotFoundException("Refresh token was not found");
-
-		_context.RefreshTokens.Remove(foundRefreshToken);
-		await _context.SaveChangesAsync().ConfigureAwait(false);
+			                                  .ConfigureAwait(false);
+		if (foundRefreshToken != null)
+		{
+			_context.RefreshTokens.Remove(foundRefreshToken);
+			await _context.SaveChangesAsync().ConfigureAwait(false);
+		}
 	}
 }

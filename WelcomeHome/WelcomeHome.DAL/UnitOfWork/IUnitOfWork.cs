@@ -20,4 +20,6 @@ public interface IUnitOfWork
 	public IEstablishmentRepository EstablishmentRepository { get; }
     public IEstablishmentTypeRepository EstablishmentTypeRepository { get; }
 	public IUserCategoryRepository UserCategoryRepository { get; }
+
+	public IRefreshTokenRepository RefreshTokenRepository { get; }
 }

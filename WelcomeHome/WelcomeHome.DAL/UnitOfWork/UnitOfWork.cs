@@ -15,6 +15,7 @@ public sealed class UnitOfWork : IUnitOfWork
     private readonly Lazy<IEstablishmentRepository> _establishmentRepository;
     private readonly Lazy<IEstablishmentTypeRepository> _establishmentTypeRepository;
 	private readonly Lazy<IUserCategoryRepository> _userCategoryRepository;
+	private readonly Lazy<IRefreshTokenRepository> _refreshTokenRepository;
 
     public UnitOfWork(WelcomeHomeDbContext context)
 	{
@@ -28,6 +29,7 @@ public sealed class UnitOfWork : IUnitOfWork
 		_establishmentRepository=new Lazy<IEstablishmentRepository>(()=> new EstablishmentRepository(context));
         _establishmentTypeRepository = new Lazy<IEstablishmentTypeRepository>(() => new EstablishmentTypeRepository(context));
 		_userCategoryRepository = new Lazy<IUserCategoryRepository>(() => new UserCategoryRepository(context));
+		_refreshTokenRepository = new Lazy<IRefreshTokenRepository>(() => new RefreshTokenRepository(context));
     }
   
 	public IEventRepository EventRepository => _eventRepository.Value;
@@ -45,4 +47,5 @@ public sealed class UnitOfWork : IUnitOfWork
 	public IEstablishmentRepository EstablishmentRepository => _establishmentRepository.Value;
     public IEstablishmentTypeRepository EstablishmentTypeRepository => _establishmentTypeRepository.Value;
 
+	public IRefreshTokenRepository RefreshTokenRepository => _refreshTokenRepository.Value;
 }
