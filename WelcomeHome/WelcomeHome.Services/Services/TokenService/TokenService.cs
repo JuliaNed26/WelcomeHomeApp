@@ -3,8 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using WelcomeHome.DAL.Models;
+using WelcomeHome.DAL.UnitOfWork;
+using WelcomeHome.Services.DTO;
+using WelcomeHome.Services.Exceptions;
 
 namespace WelcomeHome.Services.Services
 {
@@ -14,16 +18,19 @@ namespace WelcomeHome.Services.Services
 
         private readonly UserManager<User> _userManager;
 
-        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public TokenService(IConfiguration configuration, UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager)
+        public TokenService(
+            IConfiguration configuration,
+            UserManager<User> userManager,
+            IUnitOfWork unitOfWork)
         {
             _configuration = configuration;
             _userManager = userManager;
-            _roleManager = roleManager;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> GenerateAsync(User user)
+        public async Task<string> GenerateJwtAsync(User user)
         {
             var claims = new List<Claim>
             {
@@ -54,5 +61,25 @@ namespace WelcomeHome.Services.Services
 
             return jwt;
         }
-    }
+
+		public async Task<string> GenerateNewRefreshTokenAsync(User user)
+		{
+            var refreshTokenForUser = CreateRefreshTokenToSave();
+            await _unitOfWork.RefreshTokenRepository.DeleteForUserAsync(user.Id).ConfigureAwait(false);
+            await _unitOfWork.RefreshTokenRepository.AddAsync(refreshTokenForUser).ConfigureAwait(false);
+			return refreshTokenForUser.Token;
+
+            RefreshToken CreateRefreshTokenToSave()
+            {
+				var refreshToken = new RefreshToken
+				{
+                    Id = Guid.NewGuid(),
+					Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+					Expires = DateTime.Now.AddDays(7),
+					UserId = user.Id
+				};
+				return refreshToken;
+			}
+		}
+	}
 }
