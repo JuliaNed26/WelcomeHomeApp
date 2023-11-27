@@ -16,6 +16,6 @@ namespace WelcomeHome.DAL.Models
 		//why nullable?
 		public ICollection<UserCategory>? UserCategories { get; set; }
 
-		public ICollection<PaymentStep> PaymentSteps { get; set; }
+		public List<PaymentStep> PaymentSteps { get; set; }
 	}
 }

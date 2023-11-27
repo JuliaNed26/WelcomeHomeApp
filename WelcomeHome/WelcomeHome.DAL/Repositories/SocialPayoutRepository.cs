@@ -45,7 +45,10 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 
             await _dbContext.SocialPayouts.AddAsync(socialPayout).ConfigureAwait(false);
 
-            AddStepsToSicialPayout(steps, socialPayout);
+			if (steps != null)
+			{
+				AddStepsToSocialPayout(steps, socialPayout);
+			}
 
 			await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 		}
@@ -71,11 +74,20 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 	}
 
 
-    private void AddStepsToSicialPayout(Dictionary<int, Step> steps, SocialPayout socialPayout)
+    private void AddStepsToSocialPayout(Dictionary<int, Step> steps, SocialPayout socialPayout)
     {
 		GenerateGuidForSteps(steps.Values);
 		_dbContext.Steps.AddRange(steps.Values);
-        socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
+		var newPaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
+
+		if (socialPayout.PaymentSteps == null)
+		{
+			socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
+		}
+		else
+		{
+			socialPayout.PaymentSteps.AddRange(newPaymentSteps);
+		}
     }
 
 

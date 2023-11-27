@@ -19,6 +19,8 @@ namespace WelcomeHome.Services.DTO
 
         public ICollection<Guid> UserCategoriesId { get; set; }
 
-        public ICollection<StepInDTO> PaymentSteps { get; set; }
+        public ICollection<StepInDTO>? NewPaymentSteps { get; set; }
+
+        public ICollection<ExistingStepInDTO>? ExistingPaymentSteps { get; set; }
     }
 }

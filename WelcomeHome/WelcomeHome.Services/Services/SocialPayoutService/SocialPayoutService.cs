@@ -61,7 +61,9 @@ namespace WelcomeHome.Services.Services
         {
             var socialPayout = await GenerateSocialPayout(newPayout);
 
-            var steps = GenerateSteps(newPayout.PaymentSteps);
+            
+            var steps = newPayout.NewPaymentSteps == null ? null : GenerateSteps(newPayout.NewPaymentSteps);
+
 
             return (socialPayout, steps);
         }
@@ -85,9 +87,9 @@ namespace WelcomeHome.Services.Services
                 Name = newPayout.Name,
                 Description = newPayout.Description,
                 Amount = newPayout.Amount,
-                UserCategories = categories
+                UserCategories = categories,
+                PaymentSteps = newPayout.ExistingPaymentSteps == null ? null : GeneratePaymentStepsforExistingSteps(newPayout.ExistingPaymentSteps)
             };
-
             return socialPayout;
         }
 
@@ -152,6 +154,22 @@ namespace WelcomeHome.Services.Services
             }
 
             return stepDocuments;
+        }
+
+        private List<PaymentStep> GeneratePaymentStepsforExistingSteps(ICollection<ExistingStepInDTO> steps)
+        {
+                List<PaymentStep> newTables = new List<PaymentStep>();
+                foreach (var step in steps)
+                {
+                    PaymentStep newPaymentStep = new PaymentStep
+                    {
+                        StepId = step.stepId,
+                        SequenceNumber = step.SequenceNumber
+                    };
+                    newTables.Add(newPaymentStep);
+                }
+                return newTables;
+            
         }
     }
 }
