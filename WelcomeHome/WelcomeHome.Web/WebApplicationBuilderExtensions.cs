@@ -20,7 +20,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
         builder.Services.AddDbContext<WelcomeHomeDbContext>(options => options
-                                                                     .UseSqlServer(builder.Configuration.GetConnectionString("JuliaNConnectionString"))
+                                                                     .UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString"))
                                                                      .UseExceptionProcessor());
 
         builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
