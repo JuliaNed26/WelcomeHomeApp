@@ -52,11 +52,11 @@ namespace WelcomeHome.Web.Controllers
             return BadRequest();
         }
 
-        [HttpPut("Refresh/{refreshToken}")]
-        public async Task<ActionResult<string>> RefreshJwtTokenAsync(string refreshToken)
+        [HttpPut("Refresh")]
+        public async Task<ActionResult<string>> RefreshJwtTokenAsync()
         {
-            var refreshTokenInRightFormat = HttpUtility.UrlDecode(refreshToken);
-			var refreshedTokens = await _authService.RefreshTokenAsync(refreshTokenInRightFormat)
+			var refreshToken = Request.Cookies["x-refresh-token"];
+			var refreshedTokens = await _authService.RefreshTokenAsync(refreshToken!)
                                                     .ConfigureAwait(false);
 			AddRefreshTokenToCookie(refreshedTokens.RefreshToken);
 			return Ok(refreshedTokens.JwtToken);
