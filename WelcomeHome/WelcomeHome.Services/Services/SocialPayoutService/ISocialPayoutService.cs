@@ -12,7 +12,7 @@ namespace WelcomeHome.Services.Services
 
         Task AddAsync(SocialPayoutInDTO newPayout);
 
-        Task UpdateAsync(SocialPayoutOutDTO payoutWithUpdateInfo);
+        Task UpdateAsync(SocialPayoutInDTO payoutWithUpdateInfo);
 
         Task DeleteAsync(Guid id);
     }

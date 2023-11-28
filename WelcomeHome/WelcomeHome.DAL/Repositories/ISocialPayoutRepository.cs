@@ -10,7 +10,7 @@ public interface ISocialPayoutRepository
 
 	Task AddWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps);
 
-	Task UpdateWithStepsAsync(SocialPayout socialPayout, IEnumerable<Guid> stepIds);
+	Task UpdateWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps);
 
 	Task DeleteAsync(Guid id);
 

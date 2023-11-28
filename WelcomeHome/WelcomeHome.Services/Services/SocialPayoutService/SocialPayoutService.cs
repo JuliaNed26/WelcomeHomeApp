@@ -2,6 +2,7 @@
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO;
+using WelcomeHome.Services.Exceptions;
 using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 
 namespace WelcomeHome.Services.Services
@@ -11,12 +12,14 @@ namespace WelcomeHome.Services.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ExceptionHandlerMediatorBase _exceptionHandler;
+        private readonly IStepService _stepService;
 
-        public SocialPayoutService(IUnitOfWork unitOfWork, IMapper mapper, ExceptionHandlerMediatorBase exceptionHandler)
+        public SocialPayoutService(IUnitOfWork unitOfWork, IMapper mapper, ExceptionHandlerMediatorBase exceptionHandler, IStepService stepService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _exceptionHandler = exceptionHandler;
+            _stepService = stepService;
         }
 
         public async Task AddAsync(SocialPayoutInDTO newPayout)
@@ -32,19 +35,42 @@ namespace WelcomeHome.Services.Services
 
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork.SocialPayoutRepository.DeleteAsync(id))
+                                   .ConfigureAwait(false);
         }
 
         public IEnumerable<SocialPayoutOutDTO> GetAll()
         {
-            throw new NotImplementedException();
+            var allSocialPayouts = _unitOfWork.SocialPayoutRepository.GetAll().ToList();
+            List<SocialPayoutOutDTO> dtos = new List<SocialPayoutOutDTO>();
+            foreach (var payment in allSocialPayouts)
+            {
+                dtos.Add(ConvertEntityIntoOutDTO(payment));
+            }
+            return dtos;
         }
 
-        public Task<SocialPayoutOutDTO> GetAsync(Guid id)
+        public async Task<SocialPayoutOutDTO> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var socialPayout = await _unitOfWork.SocialPayoutRepository.GetByIdAsync(id);
+            if (socialPayout == null)
+            {
+                throw new RecordNotFoundException("No socialPayout with such id");
+            }
+
+            
+            var socialPayoutDto = ConvertEntityIntoOutDTO(socialPayout);
+            socialPayoutDto.Steps = new List<StepOutDTO>();
+
+            foreach (var step in socialPayout.PaymentSteps)
+            {
+                var step_dto = await _stepService.GetAsync(step.StepId);
+                socialPayoutDto.Steps.Add(step_dto);
+            }
+
+            return socialPayoutDto;
         }
 
         public int GetCount()
@@ -52,10 +78,20 @@ namespace WelcomeHome.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(SocialPayoutOutDTO payoutWithUpdateInfo)
+        public async Task UpdateAsync(SocialPayoutInDTO payoutWithUpdateInfo)
         {
-            throw new NotImplementedException();
+            var socialPayoutWithSteps = await ConvertDtoIntoEntities(payoutWithUpdateInfo);
+            socialPayoutWithSteps.Item1.Id = (Guid)payoutWithUpdateInfo.Id;
+
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+                                                              .SocialPayoutRepository
+                                                              .UpdateWithStepsAsync(socialPayoutWithSteps.Item1,
+                                                              socialPayoutWithSteps.Item2
+                                                              ))
+                .ConfigureAwait(false);
         }
+
+
 
         private async Task<(SocialPayout, Dictionary<int, Step>)> ConvertDtoIntoEntities(SocialPayoutInDTO newPayout)
         {
@@ -170,6 +206,30 @@ namespace WelcomeHome.Services.Services
                 }
                 return newTables;
             
+        }
+
+        private SocialPayoutOutDTO ConvertEntityIntoOutDTO(SocialPayout entity){
+
+            
+            SocialPayoutOutDTO dto = new SocialPayoutOutDTO
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Description = entity.Description,
+                Amount = entity.Amount,
+                UserCategoriesId = entity.UserCategories != null ? GetUserCategories(entity.UserCategories) : null,
+            };
+            return dto;
+        }
+
+        private List<Guid> GetUserCategories(ICollection<UserCategory> categories)
+        {
+            List<Guid> userCategoryIds = new List<Guid>();
+            foreach (var category in categories)
+            {
+                userCategoryIds.Add(category.Id);
+            }
+            return userCategoryIds;
         }
     }
 }

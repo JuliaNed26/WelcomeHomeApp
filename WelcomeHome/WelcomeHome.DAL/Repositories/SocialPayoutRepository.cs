@@ -19,6 +19,7 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 			             .AsNoTracking()
 						 .Include(p => p.PaymentSteps)
 			             .ThenInclude(ps => ps.Step)
+						 .Include(p => p.UserCategories)
 			             .Select(sp => sp);
 	}
 
@@ -34,8 +35,6 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 
 	public async Task AddWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps)
 	{
-		try
-		{
             socialPayout.Id = Guid.NewGuid();
 
 			if (socialPayout.UserCategories != null)
@@ -51,17 +50,29 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 			}
 
 			await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+	}
+
+	public async Task UpdateWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps)
+	{
+		try
+		{
+			if (socialPayout.UserCategories != null)
+			{
+				AttachUserCategories(socialPayout.UserCategories);
+			}
+
+			if (steps != null)
+			{
+				AddStepsToSocialPayout(steps, socialPayout);
+			}
+			_dbContext.SocialPayouts.Update(socialPayout);
+
+			await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine(ex.ToString());
 		}
-	}
-
-	public async Task UpdateWithStepsAsync(SocialPayout socialPayout, IEnumerable<Guid> stepIds)
-	{
-		_dbContext.SocialPayouts.Update(socialPayout);
-		await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 	}
 
 	public async Task DeleteAsync(Guid socialPayoutId)
