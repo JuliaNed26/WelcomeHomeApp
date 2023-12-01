@@ -4,16 +4,16 @@ namespace WelcomeHome.Services.Services
 {
     public interface IStepService
     {
-        Task<StepOutDTO> GetAsync(Guid id);
+        Task<StepOutDTO> GetAsync(int id);
 
         Task<IEnumerable<StepOutDTO>> GetAllAsync();
 
-        Task<IEnumerable<StepOutDTO>> GetByEstablishmentTypeIdAsync(Guid establishmentTypeId);
+        Task<IEnumerable<StepOutDTO>> GetByEstablishmentTypeIdAsync(int establishmentTypeId);
 
         Task AddAsync(StepInDTO newStep);
 
         Task UpdateAsync(StepOutDTO stepWithUpdateInfo);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(int id);
     }
 }

@@ -7,10 +7,10 @@ namespace WelcomeHome.DAL.Models
     public class Establishment
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;
-        public Guid EstablishmentTypeId { get; set; }
+        public int EstablishmentTypeId { get; set; }
         public Guid CityId { get; set; }
         public string? PageURL { get; set; }
         public string? PhoneNumber { get; set; }

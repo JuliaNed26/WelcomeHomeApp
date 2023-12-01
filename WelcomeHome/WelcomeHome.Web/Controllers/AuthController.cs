@@ -17,7 +17,6 @@ namespace WelcomeHome.Web.Controllers
             _authService = authService;
             _volunteerService = volunteerService;
         }
-
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login(UserLoginDTO user)
         {

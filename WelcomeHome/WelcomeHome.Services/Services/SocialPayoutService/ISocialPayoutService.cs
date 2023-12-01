@@ -6,7 +6,7 @@ namespace WelcomeHome.Services.Services
     {
         int GetCount();
 
-        Task<SocialPayoutOutDTO> GetAsync(Guid id);
+        Task<SocialPayoutOutDTO> GetAsync(int id);
 
         IEnumerable<SocialPayoutOutDTO> GetAll();
 
@@ -14,6 +14,6 @@ namespace WelcomeHome.Services.Services
 
         Task UpdateAsync(SocialPayoutOutDTO payoutWithUpdateInfo);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(int id);
     }
 }

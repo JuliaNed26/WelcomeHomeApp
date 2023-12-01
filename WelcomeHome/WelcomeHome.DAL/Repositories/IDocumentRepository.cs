@@ -6,11 +6,11 @@ public interface IDocumentRepository
 {
 	IEnumerable<Document> GetAll();
 
-	Task<Document?> GetByIdAsync(Guid id);
+	Task<Document?> GetByIdAsync(int id);
 
 	Task AddAsync(Document document);
 
 	Task UpdateAsync(Document document);
 
-	Task DeleteAsync(Guid id);
+	Task DeleteAsync(int id);
 }

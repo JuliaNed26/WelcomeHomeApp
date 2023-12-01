@@ -6,12 +6,12 @@ public interface ISocialPayoutRepository
 {
 	IEnumerable<SocialPayout> GetAll();
 
-	Task<SocialPayout?> GetByIdAsync(Guid id);
+	Task<SocialPayout?> GetByIdAsync(int id);
 
 	Task AddWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps);
 
-	Task UpdateWithStepsAsync(SocialPayout socialPayout, IEnumerable<Guid> stepIds);
+	Task UpdateWithStepsAsync(SocialPayout socialPayout, IEnumerable<int> stepIds);
 
-	Task DeleteAsync(Guid id);
+	Task DeleteAsync(int id);
 
 }

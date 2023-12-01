@@ -5,11 +5,11 @@ namespace WelcomeHome.DAL.Models
 	public class Step
 	{
 		[Key]
-		public Guid Id { get; set; }
+		public int Id { get; set; }
 
 		public string Description { get; set; }
 
-		public Guid EstablishmentTypeId { get; set; }
+		public int EstablishmentTypeId { get; set; }
 
 		public EstablishmentType EstablishmentType { get; set; }
 

@@ -16,7 +16,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<DocumentOutDTO>> GetAsync(Guid id)
+    public async Task<ActionResult<DocumentOutDTO>> GetAsync(int id)
     {
         var foundDocument = await _documentService.GetAsync(id).ConfigureAwait(false);
         return Ok(foundDocument);
@@ -30,14 +30,14 @@ public class DocumentController : ControllerBase
     }
 
     [HttpGet("step/{stepId}/needed")]
-    public ActionResult<IEnumerable<DocumentOutDTO>> GetByStepNeeded(Guid stepId)
+    public ActionResult<IEnumerable<DocumentOutDTO>> GetByStepNeeded(int stepId)
     {
         var allDocumentsNeededForStep = _documentService.GetByStepNeeded(stepId);
         return Ok(allDocumentsNeededForStep);
     }
 
     [HttpGet("step/{stepId}/received")]
-    public ActionResult<IEnumerable<DocumentOutDTO>> GetByStepReceived(Guid stepId)
+    public ActionResult<IEnumerable<DocumentOutDTO>> GetByStepReceived(int stepId)
     {
         var allDocumentsReceivedForStep = _documentService.GetByStepReceived(stepId);
         return Ok(allDocumentsReceivedForStep);
@@ -58,7 +58,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(Guid id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         await _documentService.DeleteAsync(id).ConfigureAwait(false);
         return NoContent();

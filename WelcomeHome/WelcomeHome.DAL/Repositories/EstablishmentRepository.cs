@@ -23,7 +23,7 @@ namespace WelcomeHome.DAL.Repositories
                                           .Select(e => e);
         }
 
-        public async Task<Establishment?> GetByIdAsync(Guid id)
+        public async Task<Establishment?> GetByIdAsync(int id)
         {
             return await _context.Establishments.Include(e => e.Events)
                                                 .Include(e => e.City)
@@ -38,7 +38,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var existingEstablishment = await _context.Establishments
 	                                          .FindAsync(id)

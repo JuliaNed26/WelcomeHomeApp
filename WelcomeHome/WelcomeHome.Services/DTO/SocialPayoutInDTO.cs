@@ -17,7 +17,7 @@ namespace WelcomeHome.Services.DTO
 
         public double Amount { get; set; }
 
-        public ICollection<Guid> UserCategoriesId { get; set; }
+        public ICollection<int> UserCategoriesId { get; set; }
 
         public ICollection<StepInDTO> PaymentSteps { get; set; }
     }

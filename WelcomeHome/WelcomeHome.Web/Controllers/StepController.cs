@@ -16,7 +16,7 @@ public class StepController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<StepOutDTO>> GetAsync(Guid id)
+    public async Task<ActionResult<StepOutDTO>> GetAsync(int id)
     {
         var foundStep = await _stepService.GetAsync(id).ConfigureAwait(false);
         return Ok(foundStep);
@@ -30,7 +30,7 @@ public class StepController : ControllerBase
     }
 
     [HttpGet("/byEstablishmentType/{establishmentTypeId}")]
-    public async Task<ActionResult<IEnumerable<StepOutDTO>>> GetByEstablishmentTypeAsync(Guid typeId)
+    public async Task<ActionResult<IEnumerable<StepOutDTO>>> GetByEstablishmentTypeAsync(int typeId)
     {
         var stepsByEstablishmentType = await _stepService.GetByEstablishmentTypeIdAsync(typeId);
         return Ok(stepsByEstablishmentType);
@@ -50,7 +50,7 @@ public class StepController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(Guid id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         await _stepService.DeleteAsync(id).ConfigureAwait(false);
         return Ok();

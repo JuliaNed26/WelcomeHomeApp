@@ -20,7 +20,7 @@ namespace WelcomeHome.Services.Services
             _exceptionHandler = exceptionHandler;
         }
 
-        public async Task<DocumentOutDTO> GetAsync(Guid id)
+        public async Task<DocumentOutDTO> GetAsync(int id)
         {
             var foundDocument = await _unitOfWork.DocumentRepository.GetByIdAsync(id).ConfigureAwait(false);
             return foundDocument == null
@@ -34,7 +34,7 @@ namespace WelcomeHome.Services.Services
                                                  .Select(d => _mapper.Map<DocumentOutDTO>(d));
         }
 
-        public IEnumerable<DocumentOutDTO> GetByStepNeeded(Guid stepId)
+        public IEnumerable<DocumentOutDTO> GetByStepNeeded(int stepId)
         {
             var byStep = _unitOfWork.DocumentRepository.GetAll()
                                                        .Where(d => d.StepDocuments
@@ -42,7 +42,7 @@ namespace WelcomeHome.Services.Services
             return byStep.Select(d => _mapper.Map<DocumentOutDTO>(d));
         }
 
-        public IEnumerable<DocumentOutDTO> GetByStepReceived(Guid stepId)
+        public IEnumerable<DocumentOutDTO> GetByStepReceived(int stepId)
         {
             var byStep = _unitOfWork.DocumentRepository.GetAll()
                                                        .Where(d => d.StepDocuments
@@ -66,7 +66,7 @@ namespace WelcomeHome.Services.Services
                 .ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
                                                               .DocumentRepository

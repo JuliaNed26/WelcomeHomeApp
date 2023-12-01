@@ -5,7 +5,7 @@ namespace WelcomeHome.DAL.Repositories
 {
     public interface IUserCategoryRepository
     {
-        Task<UserCategory?> GetByIdAsync(Guid id);
+        Task<UserCategory?> GetByIdAsync(int id);
 
         IEnumerable<UserCategory> GetAll();
 
@@ -13,6 +13,6 @@ namespace WelcomeHome.DAL.Repositories
 
         Task UpdateAsync(UserCategory userCategory);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(int id);
     }
 }

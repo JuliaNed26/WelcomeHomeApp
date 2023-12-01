@@ -17,9 +17,9 @@ namespace WelcomeHome.Services.DTO
         [Required]
         public string Description { get; set; } = null!;
 
-        public Guid EstablishmentId { get; set; }
+        public int EstablishmentId { get; set; }
 
-        public Guid EventTypeId { get; set; }
+        public int EventTypeId { get; set; }
 
         public Guid VolunteerId { get; set; }
 

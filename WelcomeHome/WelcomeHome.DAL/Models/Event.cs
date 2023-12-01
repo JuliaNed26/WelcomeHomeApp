@@ -9,7 +9,7 @@ namespace WelcomeHome.DAL.Models
         public DateTime? Date { get; set; }
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public Guid EstablishmentId { get; set; }
+        public int EstablishmentId { get; set; }
         public Guid EventTypeId { get; set; }
         public Guid VolunteerId { get; set; }
         public Establishment Establishment { get; set; }

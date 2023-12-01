@@ -2,9 +2,9 @@
 {
 	public class PaymentStep
 	{
-		public Guid SocialPayoutId { get; set; }
+		public int SocialPayoutId { get; set; }
 
-		public Guid StepId { get; set; }
+		public int StepId { get; set; }
 
 		public int SequenceNumber { get; set; }
 

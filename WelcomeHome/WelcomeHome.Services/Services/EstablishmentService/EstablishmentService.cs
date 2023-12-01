@@ -23,7 +23,7 @@ namespace WelcomeHome.Services.Services
 
         //TODO: AddAsync exceptions
 
-        public async Task<EstablishmentOutDTO> GetAsync(Guid id)
+        public async Task<EstablishmentOutDTO> GetAsync(int id)
         {
             var foundEstablishment = await _unitOfWork.EstablishmentRepository.GetByIdAsync(id).ConfigureAwait(false);
             return foundEstablishment == null
@@ -37,7 +37,7 @@ namespace WelcomeHome.Services.Services
                                                       .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
         }
 
-        public IEnumerable<EstablishmentOutDTO> GetByEstablishmentType(Guid typeId)
+        public IEnumerable<EstablishmentOutDTO> GetByEstablishmentType(int typeId)
         {
             return _unitOfWork.EstablishmentRepository.GetAll()
                                                       .Where(e => e.EstablishmentTypeId == typeId)
@@ -51,7 +51,7 @@ namespace WelcomeHome.Services.Services
                                                       .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
         }
 
-        public IEnumerable<EstablishmentOutDTO> GetByTypeAndCity(Guid typeId, Guid cityId)
+        public IEnumerable<EstablishmentOutDTO> GetByTypeAndCity(int typeId, Guid cityId)
         {
             return GetByEstablishmentType(typeId).Where(e => e.City.Id == cityId);
         }
@@ -72,7 +72,7 @@ namespace WelcomeHome.Services.Services
                 .ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
                                                               .EstablishmentRepository

@@ -129,9 +129,6 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
 		string citiesSeedScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\CitiesSeed.sql");
 		SqlScriptExecutor.Execute(citiesSeedScriptPath, connectionString);
 
-		string establishmentTypeScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\EstablishmentTypesSeed.sql");
-		SqlScriptExecutor.Execute(establishmentTypeScriptPath, connectionString);
-
 		string rolesSeedScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\RolesSeed.sql");
 		SqlScriptExecutor.Execute(rolesSeedScriptPath, connectionString);
 	}

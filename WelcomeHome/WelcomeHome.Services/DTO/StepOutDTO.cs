@@ -8,7 +8,7 @@ namespace WelcomeHome.Services.DTO
 {
     public class StepOutDTO
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public int SequenceNumber { get; set; }
         

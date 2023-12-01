@@ -24,7 +24,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var foundUserCategory = await _context.UserCategories
 	                                              .FindAsync(id)
@@ -43,7 +43,7 @@ namespace WelcomeHome.DAL.Repositories
                 .Select(u => u);
         }
 
-        public async Task<UserCategory?> GetByIdAsync(Guid id)
+        public async Task<UserCategory?> GetByIdAsync(int id)
         {
             return await _context.UserCategories
                 .Include(u => u.SocialPayouts)

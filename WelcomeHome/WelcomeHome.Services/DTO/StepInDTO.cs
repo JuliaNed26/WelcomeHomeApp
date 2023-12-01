@@ -14,11 +14,11 @@ namespace WelcomeHome.Services.DTO
 
         public string Description { get; set; }
 
-        public Guid EstablishmentTypeId { get; set; }
+        public int EstablishmentTypeId { get; set; }
 
-        public ICollection<Guid> DocumentsBringId { get; set; }
+        public ICollection<int> DocumentsBringId { get; set; }
         
-        public ICollection<Guid> DocumentsReceiveId { get; set; }
+        public ICollection<int> DocumentsReceiveId { get; set; }
 
     }
 }

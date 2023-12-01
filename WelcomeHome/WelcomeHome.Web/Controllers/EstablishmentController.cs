@@ -16,7 +16,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<EstablishmentOutDTO>> GetAsync(Guid id)
+    public async Task<ActionResult<EstablishmentOutDTO>> GetAsync(int id)
     {
         var foundEstablishment = await _establishmentService.GetAsync(id).ConfigureAwait(false);
         return Ok(foundEstablishment);
@@ -29,8 +29,8 @@ public class EstablishmentController : ControllerBase
         return Ok(allEstablishments);
     }
 
-    [HttpGet("byType/{cityId}")]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByEstablishmentType(Guid typeId)
+    [HttpGet("byType/{typeId}")]
+    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByEstablishmentType(int typeId)
     {
         var establishmentsByType = _establishmentService.GetByEstablishmentType(typeId);
         return Ok(establishmentsByType);
@@ -44,7 +44,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpGet("/byType/{typeId}/byCity/{cityId}")]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByTypeAndCity(Guid typeId, Guid cityId)
+    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByTypeAndCity(int typeId, Guid cityId)
     {
         var establishmentsByTypeAndCity = _establishmentService.GetByTypeAndCity(typeId, cityId);
         return Ok(establishmentsByTypeAndCity);
@@ -72,7 +72,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(Guid id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         await _establishmentService.DeleteAsync(id).ConfigureAwait(false);
         return NoContent();

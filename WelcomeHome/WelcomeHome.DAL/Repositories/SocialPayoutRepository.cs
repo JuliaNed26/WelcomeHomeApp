@@ -22,7 +22,7 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 			             .Select(sp => sp);
 	}
 
-	public async Task<SocialPayout?> GetByIdAsync(Guid id)
+	public async Task<SocialPayout?> GetByIdAsync(int id)
 	{
 		return await _dbContext.SocialPayouts
 			                   .AsNoTracking()
@@ -36,7 +36,6 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 	{
 		try
 		{
-            socialPayout.Id = Guid.NewGuid();
 
 			if (socialPayout.UserCategories != null)
 			{
@@ -55,13 +54,13 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 		}
 	}
 
-	public async Task UpdateWithStepsAsync(SocialPayout socialPayout, IEnumerable<Guid> stepIds)
+	public async Task UpdateWithStepsAsync(SocialPayout socialPayout, IEnumerable<int> stepIds)
 	{
 		_dbContext.SocialPayouts.Update(socialPayout);
 		await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 	}
 
-	public async Task DeleteAsync(Guid socialPayoutId)
+	public async Task DeleteAsync(int socialPayoutId)
 	{
 		var socialPayout = await _dbContext.SocialPayouts.FindAsync(socialPayoutId) 
 		                   ?? throw new NotFoundException($"SocialPayout with Id {socialPayoutId} not found for delete.");
@@ -73,21 +72,11 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 
     private void AddStepsToSicialPayout(Dictionary<int, Step> steps, SocialPayout socialPayout)
     {
-		GenerateGuidForSteps(steps.Values);
 		_dbContext.Steps.AddRange(steps.Values);
         socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
     }
 
-
-	private void GenerateGuidForSteps(ICollection<Step> steps)
-	{
-        foreach (var step in steps)
-        {
-            step.Id = Guid.NewGuid();
-        }
-    }
-
-    private List<PaymentStep> GeneratePaymentStep(Guid SocialPayoutId, Dictionary<int, Step> steps)
+    private List<PaymentStep> GeneratePaymentStep(int SocialPayoutId, Dictionary<int, Step> steps)
 	{
 		List<PaymentStep> paymentSteps = new List<PaymentStep>();
 		foreach(var step in steps)

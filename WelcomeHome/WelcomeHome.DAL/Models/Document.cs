@@ -5,7 +5,7 @@ namespace WelcomeHome.DAL.Models
 	public class Document
 	{
 		[Key]
-		public Guid Id { get; set; }
+		public int Id { get; set; }
 
 		public string Name { get; set; }
 
