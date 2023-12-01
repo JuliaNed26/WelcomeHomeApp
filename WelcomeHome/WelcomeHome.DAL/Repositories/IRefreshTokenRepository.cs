@@ -4,11 +4,13 @@ namespace WelcomeHome.DAL.Repositories;
 
 public interface IRefreshTokenRepository
 {
-	Task<RefreshToken?> GetByTokenAsync(string token);
+    Task<RefreshToken?> GetByTokenAsync(string token);
 
-	Task AddAsync(RefreshToken refreshToken);
+    Task AddAsync(RefreshToken refreshToken);
 
-	Task UpdateAsync(RefreshToken updatedRefreshToken);
+    Task UpdateAsync(RefreshToken updatedRefreshToken);
 
-	Task DeleteForUserAsync(Guid userId);
+    Task DeleteForUserAsync(Guid id);
+
+    Task DeleteAllForUserAsync(Guid userId);
 }

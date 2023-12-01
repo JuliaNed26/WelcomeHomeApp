@@ -1,5 +1,4 @@
 ﻿using WelcomeHome.DAL.Models;
-using WelcomeHome.Services.DTO;
 
 namespace WelcomeHome.Services.Services
 {
@@ -8,5 +7,6 @@ namespace WelcomeHome.Services.Services
         Task<string> GenerateJwtAsync(User user);
 
         Task<string> GenerateNewRefreshTokenAsync(User user);
+        Task UnvalidateTokensAsync(Guid userId);
     }
 }

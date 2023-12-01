@@ -7,8 +7,6 @@ using System.Security.Cryptography;
 using System.Text;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
-using WelcomeHome.Services.DTO;
-using WelcomeHome.Services.Exceptions;
 
 namespace WelcomeHome.Services.Services
 {
@@ -34,6 +32,7 @@ namespace WelcomeHome.Services.Services
         {
             var claims = new List<Claim>
             {
+                new Claim("id", user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.FullName),
                 new Claim(ClaimTypes.Email, user.Email)
             };
@@ -62,24 +61,29 @@ namespace WelcomeHome.Services.Services
             return jwt;
         }
 
-		public async Task<string> GenerateNewRefreshTokenAsync(User user)
-		{
+        public async Task<string> GenerateNewRefreshTokenAsync(User user)
+        {
             var refreshTokenForUser = CreateRefreshTokenToSave();
             await _unitOfWork.RefreshTokenRepository.DeleteForUserAsync(user.Id).ConfigureAwait(false);
             await _unitOfWork.RefreshTokenRepository.AddAsync(refreshTokenForUser).ConfigureAwait(false);
-			return refreshTokenForUser.Token;
+            return refreshTokenForUser.Token;
 
             RefreshToken CreateRefreshTokenToSave()
             {
-				var refreshToken = new RefreshToken
-				{
+                var refreshToken = new RefreshToken
+                {
                     Id = Guid.NewGuid(),
-					Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-					Expires = DateTime.Now.AddDays(7),
-					UserId = user.Id
-				};
-				return refreshToken;
-			}
-		}
-	}
+                    Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                    Expires = DateTime.Now.AddDays(7),
+                    UserId = user.Id
+                };
+                return refreshToken;
+            }
+        }
+
+        public async Task UnvalidateTokensAsync(Guid userId)
+        {
+            _unitOfWork.RefreshTokenRepository.DeleteAllForUserAsync(userId).ConfigureAwait(false);
+        }
+    }
 }

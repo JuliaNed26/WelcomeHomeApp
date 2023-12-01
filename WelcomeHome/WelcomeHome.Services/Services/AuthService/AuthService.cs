@@ -12,8 +12,8 @@ namespace WelcomeHome.Services.Services
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
-		private readonly IUnitOfWork _unitOfWork;
-		public AuthService(
+        private readonly IUnitOfWork _unitOfWork;
+        public AuthService(
             UserManager<User> userManager,
             ITokenService tokenService,
             IMapper mapper,
@@ -43,7 +43,7 @@ namespace WelcomeHome.Services.Services
 
             throw new BusinessException("User password was incorrect");
 
-		}
+        }
 
         public async Task<User?> RegisterUserAsync(UserRegisterDTO user, string? role = null)
         {
@@ -63,31 +63,36 @@ namespace WelcomeHome.Services.Services
             }
 
             return null;
-		}
+        }
 
-		public async Task<TokensDto> RefreshTokenAsync(string refreshToken)
-		{
-			var foundRefreshToken = await _unitOfWork.RefreshTokenRepository
-													 .GetByTokenAsync(refreshToken)
-													 .ConfigureAwait(false);
+        public async Task<TokensDto> RefreshTokenAsync(string refreshToken)
+        {
+            var foundRefreshToken = await _unitOfWork.RefreshTokenRepository
+                                                     .GetByTokenAsync(refreshToken)
+                                                     .ConfigureAwait(false);
 
-			if (foundRefreshToken == null || foundRefreshToken.Expires < DateTime.UtcNow)
-			{
-				throw new BusinessException("Refresh token expired or do not exist. User should relogin");
-			}
+            if (foundRefreshToken == null || foundRefreshToken.Expires < DateTime.UtcNow)
+            {
+                throw new BusinessException("Refresh token expired or do not exist. User should relogin");
+            }
 
-			var newJwtToken = await _tokenService
+            var newJwtToken = await _tokenService
                                    .GenerateJwtAsync(foundRefreshToken.User)
                                    .ConfigureAwait(false);
-			var newRefreshToken = await _tokenService
+            var newRefreshToken = await _tokenService
                                         .GenerateNewRefreshTokenAsync(foundRefreshToken.User)
                                         .ConfigureAwait(false);
 
-			return new()
-			{
-				JwtToken = newJwtToken,
-				RefreshToken = newRefreshToken,
-			};
-		}
-	}
+            return new()
+            {
+                JwtToken = newJwtToken,
+                RefreshToken = newRefreshToken,
+            };
+        }
+
+        public async Task LogoutAsync(Guid userId)
+        {
+            await _tokenService.UnvalidateTokensAsync(userId);
+        }
+    }
 }
