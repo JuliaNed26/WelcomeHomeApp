@@ -49,6 +49,8 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
 
 	public DbSet<PaymentStep> PaymentSteps { get; set; }
 
+	public DbSet<RefreshToken> RefreshTokens {  get; set; }
+
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -106,6 +108,13 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
 		modelBuilder.Entity<Volunteer>().HasOne(v => v.User)
 			                            .WithOne(u => u.Volunteer)
 										.HasForeignKey<Volunteer>(u => u.UserId);
+
+		modelBuilder.Entity<User>().HasOne(u => u.RefreshToken)
+			                       .WithOne(rt => rt.User);
+
+		modelBuilder.Entity<RefreshToken>().HasOne(rt => rt.User)
+			                               .WithOne(u => u.RefreshToken)
+			                               .HasForeignKey<RefreshToken>(rt => rt.UserId);
 
 		base.OnModelCreating(modelBuilder);
 	}

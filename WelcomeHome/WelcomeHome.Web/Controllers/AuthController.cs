@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services;
 
 namespace WelcomeHome.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -18,21 +20,17 @@ namespace WelcomeHome.Web.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(UserLoginDTO user)
+        public async Task<ActionResult<string>> Login(UserLoginDTO user)
         {
-            var token = await _authService.LoginUserAsync(user);
-            if (token != null)
-            {
-                return Ok(token);
-            }
-
-            return BadRequest();
+            var loginResponse = await _authService.LoginUserAsync(user).ConfigureAwait(false);
+            AddRefreshTokenToCookie(loginResponse.RefreshToken);
+            return Ok(loginResponse.JwtToken);
         }
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register(UserRegisterDTO user)
         {
-            var registered = await _authService.RegisterUserAsync(user);
+            var registered = await _authService.RegisterUserAsync(user).ConfigureAwait(false);
 
             if (registered != null)
             {
@@ -45,7 +43,7 @@ namespace WelcomeHome.Web.Controllers
         [HttpPost("RegisterVolunteer")]
         public async Task<IActionResult> RegisterVolunteer(VolunteerRegisterDTO volunteer)
         {
-            var registered = await _volunteerService.RegisterVolunteerAsync(volunteer);
+            var registered = await _volunteerService.RegisterVolunteerAsync(volunteer).ConfigureAwait(false);
 
             if (registered != null)
             {
@@ -55,5 +53,38 @@ namespace WelcomeHome.Web.Controllers
             return BadRequest();
         }
 
+        [HttpPut("Refresh")]
+        public async Task<ActionResult<string>> RefreshJwtTokenAsync()
+        {
+            var refreshToken = Request.Cookies["x-refresh-token"];
+            var refreshedTokens = await _authService.RefreshTokenAsync(refreshToken!)
+                                                    .ConfigureAwait(false);
+            AddRefreshTokenToCookie(refreshedTokens.RefreshToken);
+            return Ok(refreshedTokens.JwtToken);
+        }
+
+        private void AddRefreshTokenToCookie(string refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true
+            };
+            Response.Cookies.Append("x-refresh-token", refreshToken, cookieOptions);
+        }
+
+        [Authorize]
+        [HttpDelete("Logout")]
+        public async Task<ActionResult> Logout()
+        {
+            var id = HttpContext.User.FindFirstValue("id");
+
+            if (!Guid.TryParse(id, out Guid userId))
+            {
+                return Unauthorized();
+            }
+            await _authService.LogoutAsync(userId);
+
+            return Ok();
+        }
     }
 }
