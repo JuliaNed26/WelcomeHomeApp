@@ -64,6 +64,16 @@ namespace WelcomeHome.Services.Services
                 .ConfigureAwait(false);
         }
 
+        public async Task AddVolunteerAsync(EstablishmentVolunteerInDTO newEstablishment)
+        {
+            var entity = _mapper.Map<Establishment>(newEstablishment);
+            entity.EstablishmentTypeId = 0;
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+                                                            .EstablishmentRepository
+                                                            .AddAsync(entity))
+               .ConfigureAwait(false);
+        }
+
         public async Task UpdateAsync(EstablishmentOutDTO updatedEstablishment)
         {
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork

@@ -15,6 +15,8 @@ namespace WelcomeHome.Services.Services
 
         Task AddAsync(EstablishmentInDTO newEstablishment);
 
+        Task AddVolunteerAsync(EstablishmentVolunteerInDTO newEstablishment);
+
         Task UpdateAsync(EstablishmentOutDTO updatedEstablishment);
 
         Task DeleteAsync(int id);

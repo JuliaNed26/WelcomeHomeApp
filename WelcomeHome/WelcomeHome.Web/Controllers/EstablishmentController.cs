@@ -67,6 +67,14 @@ public class EstablishmentController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("volunteer")]
+    [Authorize(Roles = "volunteer")]
+    public async Task<IActionResult> AddVolunteerEstablishmentAsync(EstablishmentVolunteerInDTO newEstablishment)
+    {
+        await _establishmentService.AddVolunteerAsync(newEstablishment).ConfigureAwait(false);
+        return NoContent();
+    }
+
     [HttpPut]
     [Authorize(Roles = "volunteer")]
     public async Task<IActionResult> UpdateAsync(EstablishmentOutDTO updateEstablishment)
