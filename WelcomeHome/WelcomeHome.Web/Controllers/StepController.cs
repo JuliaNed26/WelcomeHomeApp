@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services;
 
@@ -6,6 +7,7 @@ namespace WelcomeHome.Web.Controllers;
 
 [Route("[controller]")]
 [ApiController]
+[Authorize]
 public class StepController : ControllerBase
 {
     private readonly IStepService _stepService;
@@ -36,6 +38,7 @@ public class StepController : ControllerBase
         return Ok(stepsByEstablishmentType);
     }
     [HttpPost]
+    [Authorize(Roles = "volunteer")]
     public async Task<IActionResult> AddAsync(StepInDTO newStep)
     {
         await _stepService.AddAsync(newStep).ConfigureAwait(false);
@@ -43,6 +46,7 @@ public class StepController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Roles = "volunteer")]
     public async Task<IActionResult> UpdateAsync(StepOutDTO updateStep)
     {
         await _stepService.UpdateAsync(updateStep).ConfigureAwait(false);
@@ -50,6 +54,7 @@ public class StepController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "volunteer")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _stepService.DeleteAsync(id).ConfigureAwait(false);

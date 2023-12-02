@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services.UserCategoryService;
 
@@ -6,6 +7,7 @@ namespace WelcomeHome.Web.Controllers;
 
 [Route("[controller]")]
 [ApiController]
+[Authorize]
 public class UserCategoryController : ControllerBase
 {
     private readonly IUserCategoryService _userCategoryService;

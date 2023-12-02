@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.DAL.Models;
@@ -8,6 +9,7 @@ namespace WelcomeHome.Web.Controllers;
 
 [Route("[controller]")]
 [ApiController]
+[Authorize(Roles = "volunteer")]
 public class UserController : ControllerBase
 {
     private readonly UserManager<User> _userManager;

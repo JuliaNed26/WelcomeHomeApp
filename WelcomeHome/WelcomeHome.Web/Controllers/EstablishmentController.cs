@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services;
 
@@ -6,6 +7,7 @@ namespace WelcomeHome.Web.Controllers;
 
 [Route("[controller]")]
 [ApiController]
+[Authorize]
 public class EstablishmentController : ControllerBase
 {
     private readonly IEstablishmentService _establishmentService;
@@ -58,6 +60,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "volunteer")]
     public async Task<IActionResult> AddAsync(EstablishmentInDTO newEstablishment)
     {
         await _establishmentService.AddAsync(newEstablishment).ConfigureAwait(false);
@@ -65,6 +68,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Roles = "volunteer")]
     public async Task<IActionResult> UpdateAsync(EstablishmentOutDTO updateEstablishment)
     {
         await _establishmentService.UpdateAsync(updateEstablishment).ConfigureAwait(false);
@@ -72,6 +76,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "volunteer")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _establishmentService.DeleteAsync(id).ConfigureAwait(false);

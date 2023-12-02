@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services;
 
@@ -6,6 +7,7 @@ namespace WelcomeHome.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SocialPayoutController : ControllerBase
     {
         private readonly ISocialPayoutService _socialPayoutService;
@@ -14,6 +16,7 @@ namespace WelcomeHome.Web.Controllers
             _socialPayoutService = socialPayoutService;
         }
         [HttpPost]
+        [Authorize(Roles = "volunteer")]
         public async Task<IActionResult> AddAsync(SocialPayoutInDTO newPayOut)
         {
             await _socialPayoutService.AddAsync(newPayOut);
@@ -37,6 +40,7 @@ namespace WelcomeHome.Web.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "volunteer")]
         public async Task<IActionResult> Delete(int id)
         {
             await _socialPayoutService.DeleteAsync(id);
