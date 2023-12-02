@@ -8,7 +8,7 @@ namespace WelcomeHome.Services.Services
 
         Task<SocialPayoutOutDTO> GetAsync(int id);
 
-        IEnumerable<SocialPayoutOutDTO> GetAll();
+        IEnumerable<SocialPayoutListItemDTO> GetAll();
 
         Task AddAsync(SocialPayoutInDTO newPayout);
 

@@ -41,13 +41,13 @@ namespace WelcomeHome.Services.Services
                                    .ConfigureAwait(false);
         }
 
-        public IEnumerable<SocialPayoutOutDTO> GetAll()
+        public IEnumerable<SocialPayoutListItemDTO> GetAll()
         {
             var allSocialPayouts = _unitOfWork.SocialPayoutRepository.GetAll().ToList();
-            List<SocialPayoutOutDTO> dtos = new List<SocialPayoutOutDTO>();
+            List<SocialPayoutListItemDTO> dtos = new List<SocialPayoutListItemDTO>();
             foreach (var payment in allSocialPayouts)
             {
-                dtos.Add(ConvertEntityIntoOutDTO(payment));
+                dtos.Add(_mapper.Map<SocialPayoutListItemDTO>(payment));
             }
             return dtos;
         }

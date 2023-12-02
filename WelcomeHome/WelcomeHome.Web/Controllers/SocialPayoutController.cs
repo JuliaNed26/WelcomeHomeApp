@@ -21,7 +21,7 @@ namespace WelcomeHome.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public ActionResult<SocialPayoutListItemDTO> GetAll()
         {
             var socialPayouts = _socialPayoutService.GetAll();
             return Ok(socialPayouts);
@@ -29,7 +29,7 @@ namespace WelcomeHome.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<SocialPayoutOutDTO>> GetById(int id)
         {
             var socialPayout = await _socialPayoutService.GetAsync(id);
             return Ok(socialPayout);
