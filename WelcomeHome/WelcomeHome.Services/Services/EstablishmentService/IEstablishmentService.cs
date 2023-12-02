@@ -1,5 +1,4 @@
 ﻿using WelcomeHome.Services.DTO;
-
 namespace WelcomeHome.Services.Services
 {
     public interface IEstablishmentService
@@ -10,9 +9,9 @@ namespace WelcomeHome.Services.Services
 
         IEnumerable<EstablishmentOutDTO> GetByEstablishmentType(int typeId);
 
-        IEnumerable<EstablishmentOutDTO> GetByCity(Guid cityId);
+        IEnumerable<EstablishmentOutDTO> GetByCity(int cityId);
 
-        IEnumerable<EstablishmentOutDTO> GetByTypeAndCity(int typeId, Guid cityId);
+        IEnumerable<EstablishmentOutDTO> GetByTypeAndCity(int typeId, int cityId);
 
         Task AddAsync(EstablishmentInDTO newEstablishment);
 

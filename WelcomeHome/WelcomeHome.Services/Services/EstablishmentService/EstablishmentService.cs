@@ -44,14 +44,14 @@ namespace WelcomeHome.Services.Services
                                                       .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
         }
 
-        public IEnumerable<EstablishmentOutDTO> GetByCity(Guid cityId)
+        public IEnumerable<EstablishmentOutDTO> GetByCity(int cityId)
         {
             return _unitOfWork.EstablishmentRepository.GetAll()
                                                       .Where(e => e.CityId == cityId)
                                                       .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
         }
 
-        public IEnumerable<EstablishmentOutDTO> GetByTypeAndCity(int typeId, Guid cityId)
+        public IEnumerable<EstablishmentOutDTO> GetByTypeAndCity(int typeId, int cityId)
         {
             return GetByEstablishmentType(typeId).Where(e => e.City.Id == cityId);
         }

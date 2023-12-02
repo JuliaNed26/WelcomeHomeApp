@@ -4,13 +4,13 @@ namespace WelcomeHome.DAL.Repositories;
 
 public interface IVolunteerRepository
 {
-	Task<Volunteer?> GetByIdAsync(Guid id);
+    Task<Volunteer?> GetByIdAsync(Guid id);
 
-	IEnumerable<Volunteer> GetAll();
+    IEnumerable<Volunteer> GetAll();
 
-	Task<Volunteer?> AddAsync(Guid id, Volunteer volunteer);
+    Task<Volunteer?> AddAsync(Guid id, Volunteer volunteer);
 
-	Task UpdateAsync(Volunteer volunteer);
+    Task UpdateAsync(Volunteer volunteer);
 
-	Task DeleteAsync(Guid id);
+    Task DeleteAsync(Guid id);
 }

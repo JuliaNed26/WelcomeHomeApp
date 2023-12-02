@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WelcomeHome.DAL.Models;
+﻿using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
     public interface IVacancyRepository
     {
-        Task<Vacancy?> GetByIdAsync(Guid id);
+        Task<Vacancy?> GetByIdAsync(int id);
 
         IEnumerable<Vacancy> GetAll();
 
@@ -17,6 +12,6 @@ namespace WelcomeHome.DAL.Repositories
 
         Task UpdateAsync(Vacancy vacancy);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(int id);
     }
 }

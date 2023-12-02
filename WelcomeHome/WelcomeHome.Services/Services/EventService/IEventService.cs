@@ -6,7 +6,7 @@ namespace WelcomeHome.Services.Services
     {
         int GetCount();
 
-        Task<EventOutDTO> GetAsync(Guid id);
+        Task<EventOutDTO> GetAsync(int id);
 
         IEnumerable<EventOutDTO> GetAll();
 
@@ -14,6 +14,6 @@ namespace WelcomeHome.Services.Services
 
         Task UpdateAsync(EventOutDTO eventWithUpdateInfo);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(int id);
     }
 }

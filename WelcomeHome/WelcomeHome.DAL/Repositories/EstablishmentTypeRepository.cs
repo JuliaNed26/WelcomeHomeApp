@@ -1,14 +1,14 @@
-﻿using WelcomeHome.DAL.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WelcomeHome.DAL.Exceptions;
+using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
     public class EstablishmentTypeRepository : IEstablishmentTypeRepository
-	{
-		private readonly WelcomeHomeDbContext _context;
+    {
+        private readonly WelcomeHomeDbContext _context;
 
-		public EstablishmentTypeRepository(WelcomeHomeDbContext context)
+        public EstablishmentTypeRepository(WelcomeHomeDbContext context)
         {
             this._context = context;
         }
@@ -38,9 +38,9 @@ namespace WelcomeHome.DAL.Repositories
         public async Task DeleteAsync(int id)
         {
             var existingEstablishmentType = await _context.EstablishmentTypes
-	                                                      .FindAsync(id)
-	                                                      .ConfigureAwait(false)
-				                            ?? throw new NotFoundException($"Establishment with Id {id} not found for deletion.");
+                                                          .FindAsync(id)
+                                                          .ConfigureAwait(false)
+                                            ?? throw new NotFoundException($"Establishment with Id {id} not found for deletion.");
             _context.EstablishmentTypes.Remove(existingEstablishmentType);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);

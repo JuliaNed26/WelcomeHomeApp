@@ -1,5 +1,5 @@
-﻿using WelcomeHome.DAL.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
@@ -17,7 +17,7 @@ namespace WelcomeHome.DAL.Repositories
             return _context.Courses.Select(e => e);
         }
 
-        public async Task<Course?> GetByIdAsync(Guid id)
+        public async Task<Course?> GetByIdAsync(int id)
         {
             return await _context.Courses.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
         }
@@ -29,7 +29,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var existingCourse = await _context.Courses.SingleAsync(c => c.Id == id).ConfigureAwait(false);
             _context.Courses.Remove(existingCourse);

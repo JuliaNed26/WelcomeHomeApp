@@ -1,7 +1,6 @@
-﻿using System.Runtime.InteropServices;
-using WelcomeHome.DAL.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WelcomeHome.DAL.Exceptions;
+using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
@@ -41,19 +40,19 @@ namespace WelcomeHome.DAL.Repositories
         public async Task DeleteAsync(int id)
         {
             var existingEstablishment = await _context.Establishments
-	                                          .FindAsync(id)
-	                                          .ConfigureAwait(false)
-				                        ?? throw new NotFoundException($"Establishment with Id {id} not found for deletion.");
+                                              .FindAsync(id)
+                                              .ConfigureAwait(false)
+                                        ?? throw new NotFoundException($"Establishment with Id {id} not found for deletion.");
             _context.Establishments.Remove(existingEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(Establishment editedEstablishment)
-		{
-			AttachEstablishmentType(editedEstablishment);
-			AttachCity(editedEstablishment);
-			_context.Establishments.Update(editedEstablishment);
+        {
+            AttachEstablishmentType(editedEstablishment);
+            AttachCity(editedEstablishment);
+            _context.Establishments.Update(editedEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

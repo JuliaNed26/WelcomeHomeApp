@@ -28,7 +28,7 @@ namespace WelcomeHome.Services.Services
                 .ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork.EventRepository.DeleteAsync(id))
                                    .ConfigureAwait(false);
@@ -41,7 +41,7 @@ namespace WelcomeHome.Services.Services
             return events.Select(e => _mapper.Map<EventOutDTO>(e));
         }
 
-        public async Task<EventOutDTO> GetAsync(Guid id)
+        public async Task<EventOutDTO> GetAsync(int id)
         {
             var foundEvent = await _unitOfWork.EventRepository.GetByIdAsync(id);
             return foundEvent == null

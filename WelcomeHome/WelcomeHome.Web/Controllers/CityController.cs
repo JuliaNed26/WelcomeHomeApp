@@ -16,14 +16,14 @@ public class CityController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<CityOutDto>> GetAll()
+    public ActionResult<IEnumerable<CityOutDTO>> GetAll()
     {
         var allCities = _cityCountryService.GetAllCities();
         return Ok(allCities);
     }
 
     [HttpGet("country/{countryId}")]
-    public ActionResult<IEnumerable<CityOutDto>> GetForCountry(Guid countryId)
+    public ActionResult<IEnumerable<CityOutDTO>> GetForCountry(int countryId)
     {
         var cities = _cityCountryService.GetAllCitiesForCountry(countryId);
         return Ok(cities);

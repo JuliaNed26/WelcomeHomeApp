@@ -16,7 +16,7 @@ public class CountryController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<CountryOutDto>> GetAll()
+    public ActionResult<IEnumerable<CountryOutDTO>> GetAll()
     {
         var allCountries = _cityCountryService.GetAllCountries();
         return Ok(allCountries);

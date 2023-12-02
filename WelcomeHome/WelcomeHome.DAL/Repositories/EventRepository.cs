@@ -1,14 +1,14 @@
-﻿using WelcomeHome.DAL.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WelcomeHome.DAL.Exceptions;
+using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
     public class EventRepository : IEventRepository
-	{
-		private readonly WelcomeHomeDbContext _context;
+    {
+        private readonly WelcomeHomeDbContext _context;
 
-		public EventRepository(WelcomeHomeDbContext context)
+        public EventRepository(WelcomeHomeDbContext context)
         {
             this._context = context;
         }
@@ -16,13 +16,13 @@ namespace WelcomeHome.DAL.Repositories
         public IEnumerable<Event> GetAll()
         {
             return _context.Events.Include(e => e.Establishment)
-                                  .Include(e=>e.EventType)
-                                  .Include(e=>e.Volunteer)
+                                  .Include(e => e.EventType)
+                                  .Include(e => e.Volunteer)
                                   .AsNoTracking()
                                   .Select(e => e);
         }
 
-        public async Task<Event?> GetByIdAsync(Guid id)
+        public async Task<Event?> GetByIdAsync(int id)
         {
             return await _context.Events.Include(e => e.Establishment)
                                         .Include(e => e.EventType)
@@ -42,11 +42,11 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var existingEvent = await _context.Events
-	                                          .FindAsync(id)
-	                                          .ConfigureAwait(false)
+                                              .FindAsync(id)
+                                              .ConfigureAwait(false)
                                 ?? throw new NotFoundException($"Event with Id {id} not found for deletion.");
             _context.Events.Remove(existingEvent);
 
@@ -54,11 +54,11 @@ namespace WelcomeHome.DAL.Repositories
         }
 
         public async Task UpdateAsync(Event editedEvent)
-		{
-			AttachEstablishment(editedEvent.Establishment);
-			AttachEventType(editedEvent.EventType);
-			AttachVolunteer(editedEvent.Volunteer);
-			_context.Events.Update(editedEvent);
+        {
+            AttachEstablishment(editedEvent.Establishment);
+            AttachEventType(editedEvent.EventType);
+            AttachVolunteer(editedEvent.Volunteer);
+            _context.Events.Update(editedEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

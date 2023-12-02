@@ -15,23 +15,23 @@ public sealed class CityCountryService : ICityCountryService
         _mapper = mapper;
     }
 
-    public IEnumerable<CountryOutDto> GetAllCountries()
+    public IEnumerable<CountryOutDTO> GetAllCountries()
     {
         var allCountries = _unitOfWork.CountryRepository.GetAll();
-        return allCountries.Select(c => _mapper.Map<CountryOutDto>(c));
+        return allCountries.Select(c => _mapper.Map<CountryOutDTO>(c));
     }
 
-    public IEnumerable<CityOutDto> GetAllCities()
+    public IEnumerable<CityOutDTO> GetAllCities()
     {
         var allCities = _unitOfWork.CityRepository.GetAll();
-        return allCities.Select(c => _mapper.Map<CityOutDto>(c));
+        return allCities.Select(c => _mapper.Map<CityOutDTO>(c));
     }
 
-    public IEnumerable<CityOutDto> GetAllCitiesForCountry(Guid countryId)
+    public IEnumerable<CityOutDTO> GetAllCitiesForCountry(int countryId)
     {
         var allCities = _unitOfWork.CityRepository.GetAll();
         return allCities
                .Where(c => c.CountryId == countryId)
-               .Select(c => _mapper.Map<CityOutDto>(c));
+               .Select(c => _mapper.Map<CityOutDTO>(c));
     }
 }

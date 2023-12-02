@@ -1,5 +1,4 @@
 ﻿using WelcomeHome.Services.DTO;
-
 namespace WelcomeHome.Services.Services
 {
     public interface ISocialPayoutService

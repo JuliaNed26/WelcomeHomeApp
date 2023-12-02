@@ -32,7 +32,7 @@ namespace WelcomeHome.Services.Services
 
         }
 
-        public Task DeleteAsync(int id)
+        public Task DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -42,7 +42,7 @@ namespace WelcomeHome.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task<SocialPayoutOutDTO> GetAsync(int id)
+        public Task<SocialPayoutOutDTO> GetAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -61,7 +61,7 @@ namespace WelcomeHome.Services.Services
         {
             var socialPayout = await GenerateSocialPayout(newPayout);
 
-            var steps = GenerateSteps(newPayout.PaymentSteps);
+            var steps = GenerateSteps(newPayout.Steps);
 
             return (socialPayout, steps);
         }
@@ -122,7 +122,7 @@ namespace WelcomeHome.Services.Services
             return steps;
         }
 
-        private ICollection<StepDocument> GenerateStepDocumentsToReceive(ICollection<int> documentsReceive)
+        private ICollection<StepDocument> GenerateStepDocumentsToReceive(ICollection<Guid> documentsReceive)
         {
             ICollection<StepDocument> stepDocuments = new List<StepDocument>();
             foreach (var document in documentsReceive)
@@ -138,7 +138,7 @@ namespace WelcomeHome.Services.Services
             return stepDocuments;
         }
 
-        private ICollection<StepDocument> GenerateStepDocumentsToBring(ICollection<int> documentsBring)
+        private ICollection<StepDocument> GenerateStepDocumentsToBring(ICollection<Guid> documentsBring)
         {
             ICollection<StepDocument> stepDocuments = new List<StepDocument>();
             foreach (var document in documentsBring)

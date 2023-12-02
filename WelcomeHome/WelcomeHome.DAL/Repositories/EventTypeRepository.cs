@@ -1,14 +1,14 @@
-﻿using WelcomeHome.DAL.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WelcomeHome.DAL.Exceptions;
+using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
     public class EventTypeRepository : IEventTypeRepository
-	{
-		private readonly WelcomeHomeDbContext _context;
+    {
+        private readonly WelcomeHomeDbContext _context;
 
-		public EventTypeRepository(WelcomeHomeDbContext context)
+        public EventTypeRepository(WelcomeHomeDbContext context)
         {
             this._context = context;
         }
@@ -20,7 +20,7 @@ namespace WelcomeHome.DAL.Repositories
                                       .Select(et => et);
         }
 
-        public async Task<EventType?> GetByIdAsync(Guid id)
+        public async Task<EventType?> GetByIdAsync(int id)
         {
             return await _context.EventTypes.Include(et => et.Events)
                                             .FirstOrDefaultAsync(e => e.Id == id)
@@ -35,11 +35,11 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var existingEventType = await _context.EventTypes
-	                                              .FindAsync(id)
-	                                              .ConfigureAwait(false)
+                                                  .FindAsync(id)
+                                                  .ConfigureAwait(false)
                                     ?? throw new NotFoundException($"Event type with Id {id} not found for deletion.");
             _context.EventTypes.Remove(existingEventType);
 

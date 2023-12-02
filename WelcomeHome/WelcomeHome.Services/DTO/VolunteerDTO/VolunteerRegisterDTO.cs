@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace WelcomeHome.Services.DTO
 {
@@ -21,7 +16,7 @@ namespace WelcomeHome.Services.DTO
         [Required]
         public string SocialUrl { get; set; }
 
-        public Guid EstablishmentId { get; set; }
+        public int EstablishmentId { get; set; }
 
         [Required]
         public string Password { get; set; }

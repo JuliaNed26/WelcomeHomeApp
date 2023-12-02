@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
@@ -12,7 +7,7 @@ namespace WelcomeHome.DAL.Repositories
     public sealed class VacancyRepository : IVacancyRepository
     {
         private readonly WelcomeHomeDbContext _context;
-        
+
         public VacancyRepository(WelcomeHomeDbContext context)
         {
             _context = context;
@@ -24,11 +19,11 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var foundVacancy = await _context.Vacancies
-	                                         .FindAsync(id)
-	                                         .ConfigureAwait(false)
+                                             .FindAsync(id)
+                                             .ConfigureAwait(false)
                                ?? throw new NotFoundException($"Vacancy with Id {id} not found for deletion.");
             _context.Vacancies.Remove(foundVacancy);
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -42,7 +37,7 @@ namespace WelcomeHome.DAL.Repositories
                 .Select(v => v);
         }
 
-        public async Task<Vacancy?> GetByIdAsync(Guid id)
+        public async Task<Vacancy?> GetByIdAsync(int id)
         {
             return await _context.Vacancies
                 .Include(v => v.Establishment)
@@ -52,9 +47,9 @@ namespace WelcomeHome.DAL.Repositories
         }
 
         public async Task UpdateAsync(Vacancy vacancy)
-		{
-			AttachEstablishment(vacancy);
-			_context.Vacancies.Update(vacancy);
+        {
+            AttachEstablishment(vacancy);
+            _context.Vacancies.Update(vacancy);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

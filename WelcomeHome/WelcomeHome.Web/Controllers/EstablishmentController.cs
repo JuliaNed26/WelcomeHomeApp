@@ -29,7 +29,7 @@ public class EstablishmentController : ControllerBase
         return Ok(allEstablishments);
     }
 
-    [HttpGet("byType/{typeId}")]
+    [HttpGet("byType/{cityId}")]
     public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByEstablishmentType(int typeId)
     {
         var establishmentsByType = _establishmentService.GetByEstablishmentType(typeId);
@@ -37,14 +37,14 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpGet("byCity/{cityId}")]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByCity(Guid cityId)
+    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByCity(int cityId)
     {
         var establishmentsByCity = _establishmentService.GetByCity(cityId);
         return Ok(establishmentsByCity);
     }
 
     [HttpGet("/byType/{typeId}/byCity/{cityId}")]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByTypeAndCity(int typeId, Guid cityId)
+    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByTypeAndCity(int typeId, int cityId)
     {
         var establishmentsByTypeAndCity = _establishmentService.GetByTypeAndCity(typeId, cityId);
         return Ok(establishmentsByTypeAndCity);

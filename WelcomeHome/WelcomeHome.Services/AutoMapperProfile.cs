@@ -24,10 +24,11 @@ namespace WelcomeHome.Services
             CreateMap<VolunteerRegisterDTO, UserRegisterDTO>();
             CreateMap<StepInDTO, Step>();
             CreateMap<Step, StepOutDTO>();
-            CreateMap<Country, CountryOutDto>();
-            CreateMap<City, CityOutDto>();
+            CreateMap<Country, CountryOutDTO>();
+            CreateMap<City, CityOutDTO>();
             CreateMap<UserRegisterDTO, User>();
             CreateMap<User, UserOutDTO>();
+            CreateMap<UserCategory, UserCategoryOutDTO>();
         }
     }
 }

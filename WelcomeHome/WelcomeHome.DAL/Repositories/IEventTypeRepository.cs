@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WelcomeHome.DAL.Models;
+﻿using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
@@ -12,10 +6,10 @@ namespace WelcomeHome.DAL.Repositories
     {
         IEnumerable<EventType> GetAll();
 
-        Task<EventType?> GetByIdAsync(Guid id);
+        Task<EventType?> GetByIdAsync(int id);
         Task AddAsync(EventType newEventType);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(int id);
 
         Task UpdateAsync(EventType editedEventType);
     }

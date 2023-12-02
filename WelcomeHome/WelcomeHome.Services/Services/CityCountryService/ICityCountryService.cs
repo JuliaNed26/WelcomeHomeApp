@@ -4,9 +4,9 @@ namespace WelcomeHome.Services.Services;
 
 public interface ICityCountryService
 {
-    IEnumerable<CountryOutDto> GetAllCountries();
+    IEnumerable<CountryOutDTO> GetAllCountries();
 
-    IEnumerable<CityOutDto> GetAllCities();
+    IEnumerable<CityOutDTO> GetAllCities();
 
-    IEnumerable<CityOutDto> GetAllCitiesForCountry(Guid countryId);
+    IEnumerable<CityOutDTO> GetAllCitiesForCountry(int countryId);
 }

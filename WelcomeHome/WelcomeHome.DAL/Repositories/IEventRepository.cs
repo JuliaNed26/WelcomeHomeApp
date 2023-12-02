@@ -1,17 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WelcomeHome.DAL.Models;
+﻿using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
-    public interface IEventRepository 
+    public interface IEventRepository
     {
         IEnumerable<Event> GetAll();
 
-        Task<Event?> GetByIdAsync(Guid id);
+        Task<Event?> GetByIdAsync(int id);
 
         Task AddAsync(Event newEvent);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(int id);
 
         Task UpdateAsync(Event editedEvent);
     }

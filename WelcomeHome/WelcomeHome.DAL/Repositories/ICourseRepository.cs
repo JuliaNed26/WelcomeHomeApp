@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WelcomeHome.DAL.Models;
+﻿using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
@@ -11,11 +6,11 @@ namespace WelcomeHome.DAL.Repositories
     {
         IEnumerable<Course> GetAll();
 
-        Task<Course?> GetByIdAsync(Guid id);
+        Task<Course?> GetByIdAsync(int id);
 
         Task AddAsync(Course newCourse);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(int id);
 
         Task UpdateAsync(Course editedCourse);
     }

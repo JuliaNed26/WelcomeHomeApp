@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WelcomeHome.Services.DTO
+﻿namespace WelcomeHome.Services.DTO
 {
     public class StepOutDTO
     {
         public int Id { get; set; }
 
         public int SequenceNumber { get; set; }
-        
+
         public string Description { get; set; }
 
         public ICollection<EstablishmentOutDTO>? Establishments { get; set; }

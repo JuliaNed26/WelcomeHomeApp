@@ -4,13 +4,13 @@ namespace WelcomeHome.DAL.Repositories;
 
 public interface ICityRepository
 {
-	Task<City?> GetByIdAsync(Guid id);
+    Task<City?> GetByIdAsync(int id);
 
-	IEnumerable<City> GetAll();
+    IEnumerable<City> GetAll();
 
-	Task AddAsync(City city);
+    Task AddAsync(City city);
 
-	Task UpdateAsync(City city);
+    Task UpdateAsync(City city);
 
-	Task DeleteAsync(Guid id);
+    Task DeleteAsync(int id);
 }
