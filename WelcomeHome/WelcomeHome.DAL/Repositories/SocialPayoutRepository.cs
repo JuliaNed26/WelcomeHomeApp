@@ -19,6 +19,7 @@ public class SocialPayoutRepository : ISocialPayoutRepository
                          .AsNoTracking()
                          .Include(p => p.PaymentSteps)
                          .ThenInclude(ps => ps.Step)
+                         .Include(p => p.UserCategories)
                          .Select(sp => sp);
     }
 
@@ -34,17 +35,35 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 
     public async Task AddWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps)
     {
+        if (socialPayout.UserCategories != null)
+        {
+            AttachUserCategories(socialPayout.UserCategories);
+        }
+
+        await _dbContext.SocialPayouts.AddAsync(socialPayout).ConfigureAwait(false);
+
+        if (steps != null)
+        {
+            AddStepsToSocialPayout(steps, socialPayout);
+        }
+
+        await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+    }
+
+    public async Task UpdateWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps)
+    {
         try
         {
-
             if (socialPayout.UserCategories != null)
             {
                 AttachUserCategories(socialPayout.UserCategories);
             }
 
-            await _dbContext.SocialPayouts.AddAsync(socialPayout).ConfigureAwait(false);
-
-            AddStepsToSicialPayout(steps, socialPayout);
+            if (steps != null)
+            {
+                AddStepsToSocialPayout(steps, socialPayout);
+            }
+            _dbContext.SocialPayouts.Update(socialPayout);
 
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -52,12 +71,6 @@ public class SocialPayoutRepository : ISocialPayoutRepository
         {
             Console.WriteLine(ex.ToString());
         }
-    }
-
-    public async Task UpdateWithStepsAsync(SocialPayout socialPayout, IEnumerable<int> stepIds)
-    {
-        _dbContext.SocialPayouts.Update(socialPayout);
-        await _dbContext.SaveChangesAsync().ConfigureAwait(false);
     }
 
     public async Task DeleteAsync(int socialPayoutId)
@@ -70,11 +83,21 @@ public class SocialPayoutRepository : ISocialPayoutRepository
     }
 
 
-    private void AddStepsToSicialPayout(Dictionary<int, Step> steps, SocialPayout socialPayout)
+    private void AddStepsToSocialPayout(Dictionary<int, Step> steps, SocialPayout socialPayout)
     {
         _dbContext.Steps.AddRange(steps.Values);
-        socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
+        var newPaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
+
+        if (socialPayout.PaymentSteps == null)
+        {
+            socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
+        }
+        else
+        {
+            socialPayout.PaymentSteps.AddRange(newPaymentSteps);
+        }
     }
+
 
     private List<PaymentStep> GeneratePaymentStep(int SocialPayoutId, Dictionary<int, Step> steps)
     {
@@ -117,11 +140,6 @@ public class SocialPayoutRepository : ISocialPayoutRepository
         _dbContext.Steps.Attach(step);
         _dbContext.Entry(step).State = EntityState.Unchanged;
     }
-
-
-
-
-
 
 
 }

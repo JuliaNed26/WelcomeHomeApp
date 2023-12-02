@@ -1,4 +1,5 @@
 ﻿using WelcomeHome.Services.DTO;
+
 namespace WelcomeHome.Services.Services
 {
     public interface ISocialPayoutService
@@ -11,7 +12,7 @@ namespace WelcomeHome.Services.Services
 
         Task AddAsync(SocialPayoutInDTO newPayout);
 
-        Task UpdateAsync(SocialPayoutOutDTO payoutWithUpdateInfo);
+        //Task UpdateAsync(SocialPayoutInDTO payoutWithUpdateInfo);
 
         Task DeleteAsync(int id);
     }

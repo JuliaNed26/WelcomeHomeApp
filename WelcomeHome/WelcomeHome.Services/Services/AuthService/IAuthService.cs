@@ -5,7 +5,9 @@ namespace WelcomeHome.Services.Services
 {
     public interface IAuthService
     {
-        Task<string?> LoginUserAsync(UserLoginDTO user);
+        Task<TokensDTO> LoginUserAsync(UserLoginDTO user);
         Task<User?> RegisterUserAsync(UserRegisterDTO user, string? role = null);
+        Task<TokensDTO> RefreshTokenAsync(string refreshToken);
+        Task LogoutAsync(Guid userId);
     }
 }
