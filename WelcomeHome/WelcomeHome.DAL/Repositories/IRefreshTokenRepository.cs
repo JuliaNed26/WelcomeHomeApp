@@ -10,7 +10,7 @@ public interface IRefreshTokenRepository
 
     Task UpdateAsync(RefreshToken updatedRefreshToken);
 
-    Task DeleteForUserAsync(Guid id);
+    Task DeleteForUserAsync(int id);
 
-    Task DeleteAllForUserAsync(Guid userId);
+    Task DeleteAllForUserAsync(int userId);
 }

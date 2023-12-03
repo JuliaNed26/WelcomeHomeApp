@@ -36,7 +36,7 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         await _context.SaveChangesAsync().ConfigureAwait(false);
     }
 
-    public async Task DeleteForUserAsync(Guid userId)
+    public async Task DeleteForUserAsync(int userId)
     {
         var foundRefreshToken = await _context.RefreshTokens
                                               .SingleOrDefaultAsync(rt => rt.UserId == userId)
@@ -48,7 +48,7 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         }
     }
 
-    public async Task DeleteAllForUserAsync(Guid userId)
+    public async Task DeleteAllForUserAsync(int userId)
     {
         var allTokens = await _context.RefreshTokens.ToListAsync();
 

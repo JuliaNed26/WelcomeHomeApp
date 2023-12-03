@@ -7,7 +7,7 @@ namespace WelcomeHome.Web.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class CityController : ControllerBase
 {
     private readonly ICityCountryService _cityCountryService;

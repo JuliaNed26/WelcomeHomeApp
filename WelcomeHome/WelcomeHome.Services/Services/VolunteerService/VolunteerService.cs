@@ -55,7 +55,7 @@ namespace WelcomeHome.Services.Services
             return result;
         }
 
-        public async Task<VolunteerOutDTO> GetAsync(Guid id)
+        public async Task<VolunteerOutDTO> GetAsync(int id)
         {
             var foundVolunteer = await _unitOfWork.VolunteerRepository.GetByIdAsync(id);
             return foundVolunteer == null

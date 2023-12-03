@@ -22,7 +22,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserOutDTO>> GetAsync(Guid id)
+    public async Task<ActionResult<UserOutDTO>> GetAsync(int id)
     {
         var foundUser = await _userManager.FindByIdAsync(id.ToString()).ConfigureAwait(false);
         return Ok(_mapper.Map<UserOutDTO>(foundUser));

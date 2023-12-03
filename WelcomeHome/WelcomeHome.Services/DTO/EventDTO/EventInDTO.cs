@@ -16,7 +16,7 @@ namespace WelcomeHome.Services.DTO
 
         public int EventTypeId { get; set; }
 
-        public Guid VolunteerId { get; set; }
+        public int VolunteerId { get; set; }
 
     }
 }

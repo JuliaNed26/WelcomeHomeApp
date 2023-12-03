@@ -7,6 +7,6 @@ namespace WelcomeHome.Services.Services
         Task<string> GenerateJwtAsync(User user);
 
         Task<string> GenerateNewRefreshTokenAsync(User user);
-        Task UnvalidateTokensAsync(Guid userId);
+        Task UnvalidateTokensAsync(int userId);
     }
 }

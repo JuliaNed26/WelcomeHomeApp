@@ -72,7 +72,7 @@ namespace WelcomeHome.Services.Services
             {
                 var refreshToken = new RefreshToken
                 {
-                    Id = Guid.NewGuid(),
+                    //Id = Guid.NewGuid(),
                     Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
                     Expires = DateTime.Now.AddDays(7),
                     UserId = user.Id
@@ -81,7 +81,7 @@ namespace WelcomeHome.Services.Services
             }
         }
 
-        public async Task UnvalidateTokensAsync(Guid userId)
+        public async Task UnvalidateTokensAsync(int userId)
         {
             _unitOfWork.RefreshTokenRepository.DeleteAllForUserAsync(userId).ConfigureAwait(false);
         }

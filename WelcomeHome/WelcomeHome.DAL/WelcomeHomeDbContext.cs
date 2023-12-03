@@ -6,11 +6,12 @@ using WelcomeHome.DAL.Scripts;
 
 namespace WelcomeHome.DAL;
 
-public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
     public WelcomeHomeDbContext(DbContextOptions<WelcomeHomeDbContext> options)
         : base(options)
     {
+        Database.EnsureDeleted();
         var dbCreated = Database.EnsureCreated();
         if (dbCreated)
         {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Security.Claims;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services;
@@ -78,11 +79,11 @@ namespace WelcomeHome.Web.Controllers
         {
             var id = HttpContext.User.FindFirstValue("id");
 
-            if (!Guid.TryParse(id, out Guid userId))
+            if (int.TryParse(id, out int idInt))
             {
                 return Unauthorized();
             }
-            await _authService.LogoutAsync(userId);
+            await _authService.LogoutAsync(idInt);
 
             return Ok();
         }

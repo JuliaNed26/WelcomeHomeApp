@@ -8,6 +8,6 @@ namespace WelcomeHome.Services.Services
         Task<TokensDTO> LoginUserAsync(UserLoginDTO user);
         Task<User?> RegisterUserAsync(UserRegisterDTO user, string? role = null);
         Task<TokensDTO> RefreshTokenAsync(string refreshToken);
-        Task LogoutAsync(Guid userId);
+        Task LogoutAsync(int userId);
     }
 }

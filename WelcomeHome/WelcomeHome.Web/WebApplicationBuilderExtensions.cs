@@ -20,14 +20,14 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
         builder.Services.AddDbContext<WelcomeHomeDbContext>(options => options
-                                                                     .UseSqlServer(builder.Configuration.GetConnectionString("JuliaNConnectionString"))
+                                                                     .UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString"))
                                                                      .UseExceptionProcessor());
 
-        builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
+        builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
         })
-            .AddRoles<IdentityRole<Guid>>()
+            .AddRoles<IdentityRole<int>>()
             .AddEntityFrameworkStores<WelcomeHomeDbContext>()
             .AddDefaultTokenProviders();
 

@@ -9,6 +9,6 @@ namespace WelcomeHome.Services.Services
 
         IEnumerable<VolunteerOutDTO> GetAll();
 
-        Task<VolunteerOutDTO> GetAsync(Guid id);
+        Task<VolunteerOutDTO> GetAsync(int id);
     }
 }

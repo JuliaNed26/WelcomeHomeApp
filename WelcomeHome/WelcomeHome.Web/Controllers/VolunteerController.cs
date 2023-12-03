@@ -18,7 +18,7 @@ public class VolunteerController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<VolunteerOutDTO>> GetAsync(Guid id)
+    public async Task<ActionResult<VolunteerOutDTO>> GetAsync(int id)
     {
         var foundVolunteer = await _volunteerService.GetAsync(id).ConfigureAwait(false);
         return Ok(foundVolunteer);

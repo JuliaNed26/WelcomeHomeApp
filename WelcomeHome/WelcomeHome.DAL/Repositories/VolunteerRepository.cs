@@ -22,7 +22,7 @@ public sealed class VolunteerRepository : IVolunteerRepository
                        .Select(v => v);
     }
 
-    public async Task<Volunteer?> GetByIdAsync(Guid id)
+    public async Task<Volunteer?> GetByIdAsync(int id)
     {
         return await _context.Volunteers
                              .Include(v => v.Establishment)
@@ -32,7 +32,7 @@ public sealed class VolunteerRepository : IVolunteerRepository
                              .ConfigureAwait(false);
     }
 
-    public async Task<Volunteer?> AddAsync(Guid id, Volunteer volunteer)
+    public async Task<Volunteer?> AddAsync(int id, Volunteer volunteer)
     {
         volunteer.UserId = id;
 
@@ -52,7 +52,7 @@ public sealed class VolunteerRepository : IVolunteerRepository
         await _context.SaveChangesAsync().ConfigureAwait(false);
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(int id)
     {
         var foundVolunteer = await _context.Volunteers
                                            .FindAsync(id)
