@@ -17,16 +17,16 @@ namespace WelcomeHome.DAL.Migrations
             ");
 
             migrationBuilder.Sql(@"
-                INSERT INTO Countries (Name) VALUES ('Ukraine');
+                INSERT INTO Countries (Name) VALUES (N'Україна');
             ");
 
             migrationBuilder.Sql(@"
-                INSERT INTO dbo.EstablishmentTypes(Name) VALUES ('Волонтерська організація');
+                INSERT INTO dbo.EstablishmentTypes(Name) VALUES (N'Волонтерська організація');
             ");
 
             migrationBuilder.Sql(@"
                 INSERT INTO Cities (Name, CountryId)
-                VALUES ('Kyiv', (SELECT TOP 1 Id FROM dbo.Countries WHERE Name = 'Ukraine'));
+                VALUES (N'Київ', (SELECT TOP 1 Id FROM dbo.Countries WHERE Name = N'Україна'));
             ");
         }
 
