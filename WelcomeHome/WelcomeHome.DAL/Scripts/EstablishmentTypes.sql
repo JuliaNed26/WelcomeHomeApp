@@ -1,3 +1,3 @@
-INSERT INTO dbo.EstablishmentTypes(Id, Name)
+INSERT INTO dbo.EstablishmentTypes(Name)
 VALUES 
-	(0, 'Волонтерська організація');
+	('Волонтерська організація');
