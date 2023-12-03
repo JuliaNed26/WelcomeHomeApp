@@ -1,3 +1,3 @@
 INSERT INTO dbo.AspNetRoles(Id, Name, NormalizedName, ConcurrencyStamp)
 VALUES 
-	(NEWID(), 'Volunteer', 'VOLUNTEER',null);
+	(0, 'Volunteer', 'VOLUNTEER',null);

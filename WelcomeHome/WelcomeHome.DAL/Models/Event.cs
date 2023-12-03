@@ -10,7 +10,7 @@ namespace WelcomeHome.DAL.Models
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public int EstablishmentId { get; set; }
-        public Guid EventTypeId { get; set; }
+        public int EventTypeId { get; set; }
         public Guid VolunteerId { get; set; }
         public Establishment Establishment { get; set; }
         public EventType EventType { get; set; }
