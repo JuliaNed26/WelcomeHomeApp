@@ -67,7 +67,7 @@ namespace WelcomeHome.Services.Services
         public async Task AddVolunteerAsync(EstablishmentVolunteerInDTO newEstablishment)
         {
             var entity = _mapper.Map<Establishment>(newEstablishment);
-            entity.EstablishmentTypeId = 0;
+            entity.EstablishmentTypeId = 1;
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
                                                             .EstablishmentRepository
                                                             .AddAsync(entity))

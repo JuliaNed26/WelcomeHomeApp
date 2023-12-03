@@ -1,1 +1,0 @@
-INSERT INTO dbo.Countries (Name) VALUES ('Ukraine');

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WelcomeHome.DAL.Models;
-using WelcomeHome.DAL.Scripts;
 
 namespace WelcomeHome.DAL;
 
@@ -11,13 +10,6 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
     public WelcomeHomeDbContext(DbContextOptions<WelcomeHomeDbContext> options)
         : base(options)
     {
-        Database.EnsureDeleted();
-        var dbCreated = Database.EnsureCreated();
-        if (dbCreated)
-        {
-            var connectionString = Database.GetConnectionString()!;
-            SeedWithPredefinedData(connectionString);
-        }
     }
 
     public DbSet<Event> Events { get; set; }
@@ -118,23 +110,6 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
                                            .HasForeignKey<RefreshToken>(rt => rt.UserId);
 
         base.OnModelCreating(modelBuilder);
-    }
-
-    private static void SeedWithPredefinedData(string connectionString)
-    {
-        var solutionDirectoryPath = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent!.FullName;
-
-        string countriesSeedScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\CountriesSeed.sql");
-        SqlScriptExecutor.Execute(countriesSeedScriptPath, connectionString);
-
-        string citiesSeedScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\CitiesSeed.sql");
-        SqlScriptExecutor.Execute(citiesSeedScriptPath, connectionString);
-
-        string rolesSeedScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\RolesSeed.sql");
-        SqlScriptExecutor.Execute(rolesSeedScriptPath, connectionString);
-
-        string establishmentTypesSeedScriptPath = Path.Combine(solutionDirectoryPath, "WelcomeHome.DAL\\Scripts\\EstablishmentTypes.sql");
-        SqlScriptExecutor.Execute(establishmentTypesSeedScriptPath, connectionString);
     }
 
 }
