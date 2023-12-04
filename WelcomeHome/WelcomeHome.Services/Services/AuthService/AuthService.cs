@@ -36,6 +36,7 @@ namespace WelcomeHome.Services.Services
                 var refreshToken = await _tokenService.GenerateNewRefreshTokenAsync(existingUser).ConfigureAwait(false);
                 return new()
                 {
+                    User = existingUser,
                     JwtToken = jwtToken,
                     RefreshToken = refreshToken,
                 };
@@ -65,6 +66,25 @@ namespace WelcomeHome.Services.Services
             return null;
         }
 
+        public async Task<UserLoginResponseDTO> GetUserLoginResponseAsync(User user, string accessToken)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            string? userRole = null;
+
+            if (roles.Any())
+            {
+                userRole = roles[0];
+            }
+            var response = new UserLoginResponseDTO()
+            {
+                UserId = user.Id,
+                UserName = user.FullName,
+                Role = userRole,
+                AccessToken = accessToken
+            };
+
+            return response;
+        }
         public async Task<TokensDTO> RefreshTokenAsync(string refreshToken)
         {
             var foundRefreshToken = await _unitOfWork.RefreshTokenRepository

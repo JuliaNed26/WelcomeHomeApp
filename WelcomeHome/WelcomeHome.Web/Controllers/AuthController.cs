@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Security.Claims;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services;
@@ -21,11 +20,15 @@ namespace WelcomeHome.Web.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<string>> Login(UserLoginDTO user)
+        public async Task<ActionResult<UserLoginResponseDTO>> Login(UserLoginDTO user)
         {
             var loginResponse = await _authService.LoginUserAsync(user).ConfigureAwait(false);
+
             AddRefreshTokenToCookie(loginResponse.RefreshToken);
-            return Ok(loginResponse.JwtToken);
+
+            var response = await _authService.GetUserLoginResponseAsync(loginResponse.User, loginResponse.JwtToken);
+
+            return Ok(response);
         }
 
         [HttpPost("Register")]
