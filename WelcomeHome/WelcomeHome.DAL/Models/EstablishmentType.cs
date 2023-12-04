@@ -7,5 +7,7 @@ namespace WelcomeHome.DAL.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; } = null!;
+        public ICollection<Establishment>? Establishments { get; set; }
+        public ICollection<Step>? Steps { get; set; }
     }
 }

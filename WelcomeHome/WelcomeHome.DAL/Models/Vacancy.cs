@@ -9,6 +9,7 @@ namespace WelcomeHome.DAL.Models
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public float Salary { get; set; }
+        public int EstablishmentId { get; set; }
         public Establishment Establishment { get; set; } = null!;
         public string PageURL { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
