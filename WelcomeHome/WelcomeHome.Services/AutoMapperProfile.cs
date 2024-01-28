@@ -29,6 +29,8 @@ namespace WelcomeHome.Services
             CreateMap<UserRegisterDTO, User>();
             CreateMap<User, UserOutDTO>();
             CreateMap<UserCategory, UserCategoryOutDTO>();
+            CreateMap<SocialPayout, SocialPayoutListItemDTO>();
+            CreateMap<SocialPayout, SocialPayoutOutDTO>();
         }
     }
 }

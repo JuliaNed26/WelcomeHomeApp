@@ -9,7 +9,7 @@ namespace WelcomeHome.Web.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-[Authorize(Roles = "volunteer")]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly UserManager<User> _userManager;
