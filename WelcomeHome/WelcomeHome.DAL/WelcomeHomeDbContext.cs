@@ -9,12 +9,15 @@ public sealed class WelcomeHomeDbContext : DbContext
 	public WelcomeHomeDbContext(DbContextOptions<WelcomeHomeDbContext> options)
 		: base(options)
 	{
-		var dbCreated = Database.EnsureCreated();
-		if (dbCreated)
-		{
-			var connectionString = Database.GetConnectionString()!;
-			SeedWithPredefinedData(connectionString);
-		}
+        if (Database.IsRelational())
+        {
+            var dbCreated = Database.EnsureCreated();
+		    if (dbCreated)
+		    {
+			    var connectionString = Database.GetConnectionString()!;
+			    SeedWithPredefinedData(connectionString);
+		    }
+        }
 	}
 
 	public DbSet<Event> Events { get; set; }
