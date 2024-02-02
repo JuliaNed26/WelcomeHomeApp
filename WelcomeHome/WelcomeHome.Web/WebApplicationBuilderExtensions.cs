@@ -20,7 +20,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
         builder.Services.AddDbContext<WelcomeHomeDbContext>(options => options
-                                                                     .UseSqlServer(builder.Configuration.GetConnectionString("DimaConnectionString"))
+                                                                     .UseSqlServer(builder.Configuration.GetConnectionString("JuliaNConnectionString"))
                                                                      .UseExceptionProcessor());
 
         builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
@@ -48,6 +48,16 @@ public static class WebApplicationBuilderExtensions
                 ValidAudience = builder.Configuration.GetSection("Jwt:Audience").Value,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:Key").Value))
             };
+        });
+
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy(AuthorizationPolicies.VolunteerOnly.ToString(), p =>
+                p.RequireRole("volunteer"));
+            options.AddPolicy(AuthorizationPolicies.ModeratorOnly.ToString(), p =>
+                p.RequireRole("moderator"));
+            options.AddPolicy(AuthorizationPolicies.VolunteerOrModerator.ToString(), p =>
+                p.RequireRole("volunteer", "moderator"));
         });
 
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
