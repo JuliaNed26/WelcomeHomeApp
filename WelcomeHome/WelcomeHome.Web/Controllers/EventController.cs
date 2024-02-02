@@ -32,6 +32,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
     public async Task<IActionResult> AddAsync(EventInDTO newEvent)
     {
         await _eventService.AddAsync(newEvent).ConfigureAwait(false);
@@ -39,6 +40,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
     public async Task<IActionResult> UpdateAsync(EventOutDTO updateEvent)
     {
         await _eventService.UpdateAsync(updateEvent).ConfigureAwait(false);
@@ -46,6 +48,7 @@ public class EventController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _eventService.DeleteAsync(id).ConfigureAwait(false);
