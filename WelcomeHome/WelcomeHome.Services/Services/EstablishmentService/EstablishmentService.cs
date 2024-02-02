@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO;
+using WelcomeHome.Services.DTO.EstablishmentDTO;
 using WelcomeHome.Services.Exceptions;
 using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 
@@ -31,29 +33,12 @@ namespace WelcomeHome.Services.Services
                 : _mapper.Map<EstablishmentOutDTO>(foundEstablishment);
         }
 
-        public IEnumerable<EstablishmentOutDTO> GetAll()
+        public IEnumerable<EstablishmentOutDTO> GetAll(EstablishmentFiltersDto filters)
         {
-            return _unitOfWork.EstablishmentRepository.GetAll()
-                                                      .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
-        }
+            var filtersToRetrieve = _mapper.Map<EstablishmentRetrievalFiltersDto>(filters); 
 
-        public IEnumerable<EstablishmentOutDTO> GetByEstablishmentType(int typeId)
-        {
-            return _unitOfWork.EstablishmentRepository.GetAll()
-                                                      .Where(e => e.EstablishmentTypeId == typeId)
+            return _unitOfWork.EstablishmentRepository.GetAll(filtersToRetrieve)
                                                       .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
-        }
-
-        public IEnumerable<EstablishmentOutDTO> GetByCity(int cityId)
-        {
-            return _unitOfWork.EstablishmentRepository.GetAll()
-                                                      .Where(e => e.CityId == cityId)
-                                                      .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
-        }
-
-        public IEnumerable<EstablishmentOutDTO> GetByTypeAndCity(int typeId, int cityId)
-        {
-            return GetByEstablishmentType(typeId).Where(e => e.City.Id == cityId);
         }
 
         public async Task AddAsync(EstablishmentInDTO newEstablishment)

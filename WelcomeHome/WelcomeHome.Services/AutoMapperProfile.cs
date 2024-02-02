@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.Services.DTO;
+using WelcomeHome.Services.DTO.EstablishmentDTO;
 
 namespace WelcomeHome.Services
 {
@@ -31,6 +33,7 @@ namespace WelcomeHome.Services
             CreateMap<UserCategory, UserCategoryOutDTO>();
             CreateMap<SocialPayout, SocialPayoutListItemDTO>();
             CreateMap<SocialPayout, SocialPayoutOutDTO>();
+            CreateMap<EstablishmentFiltersDto, EstablishmentRetrievalFiltersDto>();
         }
     }
 }

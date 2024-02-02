@@ -1,17 +1,13 @@
 ﻿using WelcomeHome.Services.DTO;
+using WelcomeHome.Services.DTO.EstablishmentDTO;
+
 namespace WelcomeHome.Services.Services
 {
     public interface IEstablishmentService
     {
         Task<EstablishmentOutDTO> GetAsync(int id);
 
-        IEnumerable<EstablishmentOutDTO> GetAll();
-
-        IEnumerable<EstablishmentOutDTO> GetByEstablishmentType(int typeId);
-
-        IEnumerable<EstablishmentOutDTO> GetByCity(int cityId);
-
-        IEnumerable<EstablishmentOutDTO> GetByTypeAndCity(int typeId, int cityId);
+        IEnumerable<EstablishmentOutDTO> GetAll(EstablishmentFiltersDto filters);
 
         Task AddAsync(EstablishmentInDTO newEstablishment);
 
