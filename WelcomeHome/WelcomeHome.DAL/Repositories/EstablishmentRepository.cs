@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
@@ -13,13 +14,21 @@ namespace WelcomeHome.DAL.Repositories
             this._context = context;
         }
 
-        public IEnumerable<Establishment> GetAll()
+        public IEnumerable<Establishment> GetAll(EstablishmentRetrievalFiltersDto? filters = null)
         {
-            return _context.Establishments.Include(e => e.Events)
-                                          .Include(e => e.City)
-                                          .Include(e => e.EstablishmentType)
-                                          .AsNoTracking()
-                                          .Select(e => e);
+            var allEstablishments = _context.Establishments.Include(e => e.Events)
+                                                           .Include(e => e.City)
+                                                           .Include(e => e.EstablishmentType)
+                                                           .AsQueryable();
+
+            if (filters != null)
+            {
+                allEstablishments = allEstablishments
+                                    .Where(e => filters.EstablishmentTypeId == null || e.EstablishmentTypeId == filters.EstablishmentTypeId)
+                                    .Where(e => filters.CityId == null || e.CityId == filters.CityId);
+            }
+
+            return allEstablishments;
         }
 
         public async Task<Establishment?> GetByIdAsync(int id)
