@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO;
+using WelcomeHome.Services.DTO.EstablishmentDTO;
 using WelcomeHome.Services.Services;
 
 namespace WelcomeHome.Web.Controllers;
@@ -25,31 +26,10 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetAll()
+    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetAll([FromQuery]EstablishmentFiltersDto filters)
     {
-        var allEstablishments = _establishmentService.GetAll();
+        var allEstablishments = _establishmentService.GetAll(filters);
         return Ok(allEstablishments);
-    }
-
-    [HttpGet("byType/{cityId}")]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByEstablishmentType(int typeId)
-    {
-        var establishmentsByType = _establishmentService.GetByEstablishmentType(typeId);
-        return Ok(establishmentsByType);
-    }
-
-    [HttpGet("byCity/{cityId}")]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByCity(int cityId)
-    {
-        var establishmentsByCity = _establishmentService.GetByCity(cityId);
-        return Ok(establishmentsByCity);
-    }
-
-    [HttpGet("/byType/{typeId}/byCity/{cityId}")]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByTypeAndCity(int typeId, int cityId)
-    {
-        var establishmentsByTypeAndCity = _establishmentService.GetByTypeAndCity(typeId, cityId);
-        return Ok(establishmentsByTypeAndCity);
     }
 
     [HttpGet("types")]
