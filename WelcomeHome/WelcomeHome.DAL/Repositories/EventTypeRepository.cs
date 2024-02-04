@@ -30,7 +30,7 @@ namespace WelcomeHome.DAL.Repositories
         public async Task<EventType?> GetByNameAsync(string name)
         {
             return await _context.EventTypes.Include(et => et.Events)
-                                            .FirstOrDefaultAsync(e => e.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase))
+                                            .FirstOrDefaultAsync(e => e.Name == name)
                                             .ConfigureAwait(false);
         }
 

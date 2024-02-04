@@ -78,7 +78,7 @@ namespace WelcomeHome.Services.Services.EventService
         private async Task<EventType> GetEventTypeForPsychoServiceAsync()
         {
             var eventType = await _unitOfWork.EventTypeRepository
-                                .GetByNameAsync("психолог")
+                                .GetByNameAsync("Психологічний сервіс")
                                 .ConfigureAwait(false)
                             ?? throw new BusinessException("Event type for psychological services was not found");
             return eventType;

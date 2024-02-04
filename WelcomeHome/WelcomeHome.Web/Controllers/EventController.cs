@@ -24,8 +24,8 @@ public class EventController : ControllerBase
         return Ok(allEvents);
     }
 
-    [HttpPost("psychologicalServices")]
-    public async Task<ActionResult<IEnumerable<EventOutDTO>>> GetPsychologicalServicesAsync(EventInDTO newEvent)
+    [HttpGet("psychologicalServices")]
+    public async Task<ActionResult<IEnumerable<EventOutDTO>>> GetPsychologicalServicesAsync()
     {
         var psychologicalServices = await _eventService.GetPsychologicalServicesAsync().ConfigureAwait(false);
         return Ok(psychologicalServices);
