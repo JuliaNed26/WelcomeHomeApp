@@ -10,5 +10,7 @@ namespace WelcomeHome.Services.Services
         IEnumerable<VolunteerOutDTO> GetAll();
 
         Task<VolunteerOutDTO> GetAsync(int id);
+
+        Task AddVolunteerOrganizationAsync(EstablishmentVolunteerInDTO newEstablishment);
     }
 }

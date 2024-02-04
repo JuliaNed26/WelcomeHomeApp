@@ -7,7 +7,7 @@ using WelcomeHome.Services.DTO.EstablishmentDTO;
 using WelcomeHome.Services.Exceptions;
 using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 
-namespace WelcomeHome.Services.Services
+namespace WelcomeHome.Services.Services.EstablishmentService
 {
 
     public sealed class EstablishmentService : IEstablishmentService
@@ -47,16 +47,6 @@ namespace WelcomeHome.Services.Services
                                                              .EstablishmentRepository
                                                              .AddAsync(_mapper.Map<Establishment>(newEstablishment)))
                 .ConfigureAwait(false);
-        }
-
-        public async Task AddVolunteerAsync(EstablishmentVolunteerInDTO newEstablishment)
-        {
-            var entity = _mapper.Map<Establishment>(newEstablishment);
-            entity.EstablishmentTypeId = 1;
-            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
-                                                            .EstablishmentRepository
-                                                            .AddAsync(entity))
-               .ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(EstablishmentOutDTO updatedEstablishment)

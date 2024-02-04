@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.DTO.EstablishmentDTO;
-using WelcomeHome.Services.Services;
+using WelcomeHome.Services.Services.EstablishmentService;
 
 namespace WelcomeHome.Web.Controllers;
 
@@ -47,16 +47,8 @@ public class EstablishmentController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("volunteer")]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
-    public async Task<IActionResult> AddVolunteerEstablishmentAsync(EstablishmentVolunteerInDTO newEstablishment)
-    {
-        await _establishmentService.AddVolunteerAsync(newEstablishment).ConfigureAwait(false);
-        return NoContent();
-    }
-
     [HttpPut]
-    [Authorize(Roles = "volunteer")]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
     public async Task<IActionResult> UpdateAsync(EstablishmentOutDTO updateEstablishment)
     {
         await _establishmentService.UpdateAsync(updateEstablishment).ConfigureAwait(false);
@@ -64,7 +56,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "volunteer")]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _establishmentService.DeleteAsync(id).ConfigureAwait(false);

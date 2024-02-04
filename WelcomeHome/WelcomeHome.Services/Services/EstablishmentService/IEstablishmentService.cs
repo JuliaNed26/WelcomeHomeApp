@@ -1,7 +1,7 @@
 ﻿using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.DTO.EstablishmentDTO;
 
-namespace WelcomeHome.Services.Services
+namespace WelcomeHome.Services.Services.EstablishmentService
 {
     public interface IEstablishmentService
     {
@@ -10,8 +10,6 @@ namespace WelcomeHome.Services.Services
         IEnumerable<EstablishmentOutDTO> GetAll(EstablishmentFiltersDto filters);
 
         Task AddAsync(EstablishmentInDTO newEstablishment);
-
-        Task AddVolunteerAsync(EstablishmentVolunteerInDTO newEstablishment);
 
         Task UpdateAsync(EstablishmentOutDTO updatedEstablishment);
 
