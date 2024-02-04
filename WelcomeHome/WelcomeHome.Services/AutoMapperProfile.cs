@@ -3,6 +3,7 @@ using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.DTO.EstablishmentDTO;
+using WelcomeHome.Services.DTO.EventDto;
 
 namespace WelcomeHome.Services
 {
