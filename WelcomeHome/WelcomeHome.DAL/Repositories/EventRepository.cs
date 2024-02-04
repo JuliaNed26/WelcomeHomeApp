@@ -27,8 +27,19 @@ namespace WelcomeHome.DAL.Repositories
             return await _context.Events.Include(e => e.Establishment)
                                         .Include(e => e.EventType)
                                         .Include(e => e.Volunteer)
+                                        .AsNoTracking()
                                         .FirstOrDefaultAsync(e => e.Id == id)
                                         .ConfigureAwait(false);
+        }
+
+        public IEnumerable<Event> GetByEventType(int eventTypeId)
+        {
+            return _context.Events.Include(e => e.Establishment)
+                                  .Include(e => e.EventType)
+                                  .Include(e => e.Volunteer)
+                                  .AsNoTracking()
+                                  .Where(e => e.EventTypeId == eventTypeId)
+                                  .Select(e => e);
         }
 
         public async Task AddAsync(Event newEvent)
