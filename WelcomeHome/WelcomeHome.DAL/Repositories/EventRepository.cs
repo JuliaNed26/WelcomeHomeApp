@@ -46,9 +46,17 @@ namespace WelcomeHome.DAL.Repositories
         {
 
             await _context.Events.AddAsync(newEvent).ConfigureAwait(false);
-            AttachEstablishment(newEvent.Establishment);
+
             AttachEventType(newEvent.EventType);
-            AttachVolunteer(newEvent.Volunteer);
+            if (newEvent.Establishment != null)
+            {
+                AttachEstablishment(newEvent.Establishment);
+            }
+
+            if (newEvent.Volunteer != null)
+            {
+                AttachVolunteer(newEvent.Volunteer);
+            }
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -66,9 +74,16 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Event editedEvent)
         {
-            AttachEstablishment(editedEvent.Establishment);
             AttachEventType(editedEvent.EventType);
-            AttachVolunteer(editedEvent.Volunteer);
+            if (editedEvent.Establishment != null)
+            {
+                AttachEstablishment(editedEvent.Establishment);
+            }
+
+            if (editedEvent.Volunteer != null)
+            {
+                AttachVolunteer(editedEvent.Volunteer);
+            }
             _context.Events.Update(editedEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
