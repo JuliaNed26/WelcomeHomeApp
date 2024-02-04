@@ -27,6 +27,13 @@ namespace WelcomeHome.DAL.Repositories
                                             .ConfigureAwait(false);
         }
 
+        public async Task<EventType?> GetByNameAsync(string name)
+        {
+            return await _context.EventTypes.Include(et => et.Events)
+                                            .FirstOrDefaultAsync(e => e.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase))
+                                            .ConfigureAwait(false);
+        }
+
         public async Task AddAsync(EventType newEventType)
         {
 
