@@ -1,5 +1,4 @@
-﻿using System.Xml;
-using WelcomeHome.DAL.Repositories;
+﻿using WelcomeHome.DAL.Repositories;
 
 namespace WelcomeHome.DAL.UnitOfWork;
 
@@ -16,6 +15,7 @@ public sealed class UnitOfWork : IUnitOfWork
     private readonly Lazy<IEstablishmentTypeRepository> _establishmentTypeRepository;
 	private readonly Lazy<IUserCategoryRepository> _userCategoryRepository;
 	private readonly Lazy<IRefreshTokenRepository> _refreshTokenRepository;
+    private readonly Lazy<IEventTypeRepository> _eventTypeRepository;
 
     public UnitOfWork(WelcomeHomeDbContext context)
 	{
@@ -30,9 +30,12 @@ public sealed class UnitOfWork : IUnitOfWork
         _establishmentTypeRepository = new Lazy<IEstablishmentTypeRepository>(() => new EstablishmentTypeRepository(context));
 		_userCategoryRepository = new Lazy<IUserCategoryRepository>(() => new UserCategoryRepository(context));
 		_refreshTokenRepository = new Lazy<IRefreshTokenRepository>(() => new RefreshTokenRepository(context));
+		_eventTypeRepository = new Lazy<IEventTypeRepository>(() => new EventTypeRepository(context));
     }
   
 	public IEventRepository EventRepository => _eventRepository.Value;
+
+	public IEventTypeRepository EventTypeRepository => _eventTypeRepository.Value;
 
     public IUserCategoryRepository UserCategoryRepository => _userCategoryRepository.Value;
 
@@ -41,10 +44,15 @@ public sealed class UnitOfWork : IUnitOfWork
 	public ICountryRepository CountryRepository => _countryRepository.Value;
 
 	public IVolunteerRepository VolunteerRepository => _volunteerRepository.Value;
+
 	public ISocialPayoutRepository SocialPayoutRepository => _socialPayoutRepository.Value;
+
 	public IStepRepository StepRepository => _stepRepository.Value;
+
 	public IDocumentRepository DocumentRepository => _documentRepository.Value;
+
 	public IEstablishmentRepository EstablishmentRepository => _establishmentRepository.Value;
+
     public IEstablishmentTypeRepository EstablishmentTypeRepository => _establishmentTypeRepository.Value;
 
 	public IRefreshTokenRepository RefreshTokenRepository => _refreshTokenRepository.Value;
