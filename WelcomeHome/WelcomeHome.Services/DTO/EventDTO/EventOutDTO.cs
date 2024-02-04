@@ -1,4 +1,4 @@
-﻿namespace WelcomeHome.Services.DTO
+﻿namespace WelcomeHome.Services.DTO.EventDto
 {
     public record EventOutDTO
     {
@@ -10,10 +10,10 @@
 
         public string Description { get; set; }
 
-        public EstablishmentOutDTO Establishment { get; set; }
+        public EstablishmentOutDTO? Establishment { get; set; }
 
         public string EventTypeName { get; set; }
 
-        public VolunteerOutDTO Volunteer { get; set; }
+        public VolunteerOutDTO? Volunteer { get; set; }
     }
 }
