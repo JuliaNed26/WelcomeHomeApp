@@ -57,6 +57,19 @@ namespace WelcomeHome.Web.Controllers
             return BadRequest();
         }
 
+        [HttpPost("RegisterModerator")]
+        public async Task<IActionResult> RegisterModeratorAsync(UserRegisterDTO user)
+        {
+            var registered = await _authService.RegisterUserAsync(user, "moderator").ConfigureAwait(false);
+
+            if (registered != null)
+            {
+                return Ok("Moderator registered successfully!");
+            }
+
+            return BadRequest();
+        }
+
         [HttpPut("Refresh")]
         public async Task<ActionResult<string>> RefreshJwtTokenAsync()
         {

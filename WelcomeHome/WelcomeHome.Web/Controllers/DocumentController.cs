@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Extensions;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services;
 
@@ -46,6 +47,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
     public async Task<IActionResult> AddAsync(DocumentInDTO newDocument)
     {
         await _documentService.AddAsync(newDocument).ConfigureAwait(false);
@@ -53,6 +55,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
     public async Task<IActionResult> UpdateAsync(DocumentOutDTO updateDocument)
     {
         await _documentService.UpdateAsync(updateDocument).ConfigureAwait(false);
@@ -60,6 +63,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _documentService.DeleteAsync(id).ConfigureAwait(false);

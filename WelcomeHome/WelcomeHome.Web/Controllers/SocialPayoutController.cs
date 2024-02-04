@@ -16,7 +16,7 @@ namespace WelcomeHome.Web.Controllers
             _socialPayoutService = socialPayoutService;
         }
         [HttpPost]
-        [Authorize(Roles = "volunteer")]
+        [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
         public async Task<IActionResult> AddAsync(SocialPayoutInDTO newPayOut)
         {
             await _socialPayoutService.AddAsync(newPayOut);
@@ -40,7 +40,7 @@ namespace WelcomeHome.Web.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "volunteer")]
+        [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
         public async Task<IActionResult> Delete(int id)
         {
             await _socialPayoutService.DeleteAsync(id);

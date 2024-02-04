@@ -60,7 +60,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "volunteer")]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
     public async Task<IActionResult> AddAsync(EstablishmentInDTO newEstablishment)
     {
         await _establishmentService.AddAsync(newEstablishment).ConfigureAwait(false);
@@ -68,7 +68,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpPost("volunteer")]
-    [Authorize(Roles = "volunteer")]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
     public async Task<IActionResult> AddVolunteerEstablishmentAsync(EstablishmentVolunteerInDTO newEstablishment)
     {
         await _establishmentService.AddVolunteerAsync(newEstablishment).ConfigureAwait(false);
