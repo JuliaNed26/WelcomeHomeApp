@@ -27,13 +27,13 @@ namespace WelcomeHome.Services.Tests.Countries
             await using (var context = new WelcomeHomeDbContext(_options))
             {
                 // Add test data
-                var country1 = new Country { Id = Guid.NewGuid(), Name = "Country1", Cities  = new List<City>()};
-                country1.Cities.Add(new City { Id = Guid.NewGuid(), Name = "City1" });
-                country1.Cities.Add(new City { Id = Guid.NewGuid(), Name = "City2" });
+                var country1 = new Country { Id = 1, Name = "Country1", Cities  = new List<City>()};
+                country1.Cities.Add(new City { Id = 1, Name = "City1" });
+                country1.Cities.Add(new City { Id = 2, Name = "City2" });
                 context.Countries.Add(country1);
 
-                var country2 = new Country { Id = Guid.NewGuid(), Name = "Country2", Cities = new List<City>() };
-                country2.Cities.Add(new City { Id = Guid.NewGuid(), Name = "City3" });
+                var country2 = new Country { Id = 2, Name = "Country2", Cities = new List<City>() };
+                country2.Cities.Add(new City { Id = 3, Name = "City3" });
                 context.Countries.Add(country2);
 
                 await context.SaveChangesAsync();
@@ -67,7 +67,7 @@ namespace WelcomeHome.Services.Tests.Countries
                 .UseInMemoryDatabase(databaseName: "Test_AddAsync_Database")
                 .Options;
             // Arrange
-            var countryId = Guid.NewGuid();
+            var countryId = 1;
             var newCountry = new Country
             {
                 Id = countryId,
@@ -98,7 +98,7 @@ namespace WelcomeHome.Services.Tests.Countries
                 .UseInMemoryDatabase(databaseName: "Test_DeleteAsync_Database")
                 .Options;
             // Arrange
-            var countryId = Guid.NewGuid();
+            var countryId = 1;
             var newCountry = new Country
             {
                 Id = countryId,
@@ -131,7 +131,7 @@ namespace WelcomeHome.Services.Tests.Countries
                 .UseInMemoryDatabase(databaseName: "Test_UpdateAsync_Database")
                 .Options;
             // Arrange
-            var countryId = Guid.NewGuid();
+            var countryId = 1;
             var newCountry = new Country
             {
                 Id = countryId,

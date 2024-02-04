@@ -18,15 +18,15 @@ namespace WelcomeHome.Services.Tests.Documents
         private Mock<IUnitOfWork> _mockUnitOfWork;
         private Mock<IMapper> _mockMapper;
         private ExceptionHandlerMediator _exceptionHandlerMediator;
-        private static readonly Guid Guid = Guid.NewGuid();
+        private static readonly int Guid = 1;
         private static readonly Document Document = new Document
         {
             Id = Guid,
             Name = "document1",
             StepDocuments = new List<StepDocument>()
            {
-            new StepDocument { StepId = Guid.NewGuid(), DocumentId = Guid, ToReceive = false },
-            new StepDocument { StepId = Guid.NewGuid(), DocumentId = Guid, ToReceive = true }
+            new StepDocument { StepId = 1, DocumentId = Guid, ToReceive = false },
+            new StepDocument { StepId = 2, DocumentId = Guid, ToReceive = true }
             }
         };
 
@@ -65,7 +65,7 @@ namespace WelcomeHome.Services.Tests.Documents
         public void GetAsync_WhenDocumentDoesNotExist_ThrowsRecordNotFoundException()
         {
             // Arrange
-            Guid nonExistentId = Guid.NewGuid();
+            int nonExistentId = 5;
 
             _mockUnitOfWork.Setup(uow => uow.DocumentRepository.GetByIdAsync(nonExistentId)).ReturnsAsync(null as Document);
 
@@ -80,7 +80,7 @@ namespace WelcomeHome.Services.Tests.Documents
             var documents = new List<Document>
             {
                 Document,
-                new Document { Id = Guid.NewGuid(), Name = "document2" },
+                new Document { Id = 2, Name = "document2" },
             };
 
             var expectedDocumentOutDtos = documents.Select(d => new DocumentOutDTO { Id = d.Id, Name = d.Name }).ToList();
@@ -107,12 +107,12 @@ namespace WelcomeHome.Services.Tests.Documents
         public void GetByStepNeeded_ReturnsDocumentsFilteredByStepIdAndToReceiveFlagFalse()
         {
             // Arrange
-            var stepId = Guid.NewGuid();
+            var stepId = 1;
             var documents = new List<Document>
             {
-                new Document { Id = Guid.NewGuid(), Name = "Document1", StepDocuments = new List<StepDocument> { new StepDocument { StepId = stepId, ToReceive = false } } },
-                new Document { Id = Guid.NewGuid(), Name = "Document2", StepDocuments = new List<StepDocument> { new StepDocument { StepId = stepId, ToReceive = true } } },
-                new Document { Id = Guid.NewGuid(), Name = "Document3", StepDocuments = new List<StepDocument> { new StepDocument { StepId = Guid.NewGuid(), ToReceive = false } } },
+                new Document { Id = 1, Name = "Document1", StepDocuments = new List<StepDocument> { new StepDocument { StepId = stepId, ToReceive = false } } },
+                new Document { Id = 2, Name = "Document2", StepDocuments = new List<StepDocument> { new StepDocument { StepId = stepId, ToReceive = true } } },
+                new Document { Id = 3, Name = "Document3", StepDocuments = new List<StepDocument> { new StepDocument { StepId = 4, ToReceive = false } } },
             };
 
             var expectedDocuments = documents
@@ -138,12 +138,12 @@ namespace WelcomeHome.Services.Tests.Documents
         public void GetByStepReceived_ReturnsDocumentsFilteredByStepIdAndToReceiveFlagTrue()
         {
             // Arrange
-            var stepId = Guid.NewGuid();
+            var stepId = 1;
             var documents = new List<Document>
             {
-                new Document { Id = Guid.NewGuid(), Name = "Document1", StepDocuments = new List<StepDocument> { new StepDocument { StepId = stepId, ToReceive = false } } },
-                new Document { Id = Guid.NewGuid(), Name = "Document2", StepDocuments = new List<StepDocument> { new StepDocument { StepId = stepId, ToReceive = true } } },
-                new Document { Id = Guid.NewGuid(), Name = "Document3", StepDocuments = new List<StepDocument> { new StepDocument { StepId = Guid.NewGuid(), ToReceive = true } } },
+                new Document { Id = 1, Name = "Document1", StepDocuments = new List<StepDocument> { new StepDocument { StepId = stepId, ToReceive = false } } },
+                new Document { Id = 2, Name = "Document2", StepDocuments = new List<StepDocument> { new StepDocument { StepId = stepId, ToReceive = true } } },
+                new Document { Id = 3, Name = "Document3", StepDocuments = new List<StepDocument> { new StepDocument { StepId = 4, ToReceive = true } } },
             };
 
             var expectedDocuments = documents
@@ -211,7 +211,7 @@ namespace WelcomeHome.Services.Tests.Documents
         public async Task UpdateAsync_WhenDocumentUpdated_CheckUpdateAndPropertyName()
         {
             // Arrange
-            var documentOutDto = new DocumentOutDTO { Id = Guid.NewGuid(), Name = "document1" };
+            var documentOutDto = new DocumentOutDTO { Id = 1, Name = "document1" };
             var mappedDocument = new Document { Id = documentOutDto.Id, Name = "document1" };
             var updatedDocument = new Document { Id = documentOutDto.Id, Name = "updatedDocument" };
 
@@ -236,7 +236,7 @@ namespace WelcomeHome.Services.Tests.Documents
         public async Task DeleteAsync_WhenDocumentDeleted_DeleteMethodCalledOnceWithCorrectId()
         {
             // Arrange
-            var documentId = Guid.NewGuid();
+            var documentId = 1;
 
             _mockUnitOfWork.Setup(uow => uow.DocumentRepository.DeleteAsync(documentId))
                            .Returns(Task.CompletedTask);
