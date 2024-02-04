@@ -27,6 +27,17 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
 builder.RegisterServices();
 
 var app = builder.Build();
@@ -39,12 +50,12 @@ if (app.Environment.IsDevelopment())
 
 }
 
-/*app.UseCors(options =>
-options.WithOrigins("http://localhost:3000")
-.AllowAnyMethod().AllowAnyHeader().AllowCredentials()
-);
-*/
 //app.UseHttpsRedirection();
+
+app.UseCors(options => options
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 app.UseAuthentication();
 app.UseAuthorization();
