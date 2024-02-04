@@ -10,6 +10,7 @@ using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services;
 using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 using WelcomeHome.Services.Services;
+using WelcomeHome.Services.Services.EventService;
 
 namespace WelcomeHome.Web;
 
