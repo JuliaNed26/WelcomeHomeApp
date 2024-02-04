@@ -31,6 +31,7 @@ public class VolunteerController : ControllerBase
         return Ok(allVolunteers);
     }
 
+    //TODO: Moderator can update volunteer info or delete it
 
     //[HttpPut]
     //public async Task<IActionResult> UpdateAsync(VolunteerOutDTO updateVolunteer)

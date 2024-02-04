@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Data;
+using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
@@ -62,8 +64,19 @@ namespace WelcomeHome.Services.Services
 
                 return newUser;
             }
-
+            ThrowExceptionIfUserCreationFailed();
             return null;
+
+            void ThrowExceptionIfUserCreationFailed()
+            {
+                StringBuilder errorMessage = new StringBuilder();
+                foreach (var error in result.Errors)
+                {
+                    errorMessage.Append(error.Description + " ");
+                }
+
+                throw new BusinessException(errorMessage.ToString());
+            }
         }
 
         public async Task<UserLoginResponseDTO> GetUserLoginResponseAsync(User user, string accessToken)
