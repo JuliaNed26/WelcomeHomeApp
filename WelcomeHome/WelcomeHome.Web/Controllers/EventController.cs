@@ -17,7 +17,6 @@ public class EventController : ControllerBase
         _eventService = eventService;
     }
 
-
     [HttpGet]
     public ActionResult<IEnumerable<EventOutDTO>> GetAll()
     {
@@ -48,6 +47,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPost("psychologicalService")]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
     public async Task<IActionResult> AddPsychologicalServiceAsync(EventInDTO newEvent)
     {
         await _eventService.AddPsychologicalServiceAsync(newEvent).ConfigureAwait(false);
