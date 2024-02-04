@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
-using WelcomeHome.Services.DTO;
+using WelcomeHome.Services.DTO.EventDto;
 using WelcomeHome.Services.Exceptions;
 using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 
-namespace WelcomeHome.Services.Services
+namespace WelcomeHome.Services.Services.EventService
 {
     public class EventService : IEventService
     {
@@ -26,6 +26,18 @@ namespace WelcomeHome.Services.Services
                                                               .EventRepository
                                                               .AddAsync(_mapper.Map<Event>(newEvent)))
                 .ConfigureAwait(false);
+        }
+
+        public async Task AddPsychologicalServiceAsync(EventInDTO newEvent)
+        {
+            var eventType = await _unitOfWork.EventTypeRepository
+                                             .GetByNameAsync("психолог")
+                                             .ConfigureAwait(false)
+                            ?? throw new BusinessException("Event type for psychological services was not found");
+
+            newEvent.EventTypeId = eventType.Id;
+
+            await AddAsync(newEvent).ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)

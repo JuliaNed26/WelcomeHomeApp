@@ -1,6 +1,6 @@
-﻿using WelcomeHome.Services.DTO;
+﻿using WelcomeHome.Services.DTO.EventDto;
 
-namespace WelcomeHome.Services.Services
+namespace WelcomeHome.Services.Services.EventService
 {
     public interface IEventService
     {
@@ -11,6 +11,8 @@ namespace WelcomeHome.Services.Services
         IEnumerable<EventOutDTO> GetAll();
 
         Task AddAsync(EventInDTO newEvent);
+
+        Task AddPsychologicalServiceAsync(EventInDTO newEvent);
 
         Task UpdateAsync(EventOutDTO eventWithUpdateInfo);
 
