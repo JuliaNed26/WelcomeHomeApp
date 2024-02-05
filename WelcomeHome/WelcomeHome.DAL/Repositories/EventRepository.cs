@@ -44,10 +44,11 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task AddAsync(Event newEvent)
         {
+            await AttachEventTypeAsync(newEvent.EventTypeId).ConfigureAwait(false);
+            await AttachEstablishmentAsync(newEvent.EstablishmentId).ConfigureAwait(false);
+            await AttachVolunteerAsync(newEvent.VolunteerId).ConfigureAwait(false);
+
             await _context.Events.AddAsync(newEvent).ConfigureAwait(false);
-            AttachEventType(newEvent);
-            AttachEstablishment(newEvent);
-            AttachVolunteer(newEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -65,36 +66,56 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Event editedEvent)
         {
-            AttachEventType(editedEvent);
-            AttachEstablishment(editedEvent);
-            AttachVolunteer(editedEvent);
+            await AttachEventTypeAsync(editedEvent.EventTypeId).ConfigureAwait(false);
+            await AttachEstablishmentAsync(editedEvent.EstablishmentId).ConfigureAwait(false);
+            await AttachVolunteerAsync(editedEvent.VolunteerId).ConfigureAwait(false);
+
+            if (editedEvent.Id == 0)
+            {
+                throw new NotFoundException($"Event with id {editedEvent.Id} was not found");
+            }
 
             _context.Events.Update(editedEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void AttachEstablishment(Event eventEntity)
+        private async Task AttachEstablishmentAsync(int? establishmentId)
         {
-            if (eventEntity.Establishment != null)
+            if (establishmentId != null)
             {
-                _context.Establishments.Attach(eventEntity.Establishment);
-                _context.Entry(eventEntity.Establishment).State = EntityState.Unchanged;
+                var foundEstablishment = await _context.Establishments
+                                                       .FirstOrDefaultAsync(e => e.Id == establishmentId)
+                                                       .ConfigureAwait(false)
+                                         ?? throw new NotFoundException($"Establishment with id {establishmentId} was not found");
+
+                _context.Establishments.Attach(foundEstablishment);
+                _context.Entry(foundEstablishment).State = EntityState.Unchanged;
             }
         }
 
-        private void AttachEventType(Event eventEntity)
+        private async Task AttachEventTypeAsync(int eventTypeId)
         {
-            _context.EventTypes.Attach(eventEntity.EventType);
-            _context.Entry(eventEntity.EventType).State = EntityState.Unchanged;
+            var foundEventType = await _context.EventTypes
+                                               .FirstOrDefaultAsync(et => et.Id == eventTypeId)
+                                               .ConfigureAwait(false)
+                                 ?? throw new NotFoundException($"Event type with id {eventTypeId} was not found");
+
+            _context.EventTypes.Attach(foundEventType);
+            _context.Entry(foundEventType).State = EntityState.Unchanged;
         }
 
-        private void AttachVolunteer(Event eventEntity)
+        private async Task AttachVolunteerAsync(int? volunteerId)
         {
-            if (eventEntity.Volunteer != null)
+            if (volunteerId != null)
             {
-                _context.Volunteers.Attach(eventEntity.Volunteer);
-                _context.Entry(eventEntity.Volunteer).State = EntityState.Unchanged;
+                var foundVolunteer = await _context.Volunteers
+                                                   .FirstOrDefaultAsync(v => v.UserId == volunteerId)
+                                                   .ConfigureAwait(false)
+                                     ?? throw new NotFoundException($"Volunteer with id {volunteerId} was not found");
+
+                _context.Volunteers.Attach(foundVolunteer);
+                _context.Entry(foundVolunteer).State = EntityState.Unchanged;
             }
         }
     }

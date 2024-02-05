@@ -10,10 +10,10 @@
 
         public string Description { get; set; }
 
-        public EstablishmentFullInfoDTO? Establishment { get; set; }
+        public int? EstablishmentId { get; set; }
 
-        public string EventTypeName { get; set; }
+        public int EventTypeId { get; set; }
 
-        public VolunteerOutDTO? Volunteer { get; set; }
+        public int? VolunteerId { get; set; }
     }
 }
