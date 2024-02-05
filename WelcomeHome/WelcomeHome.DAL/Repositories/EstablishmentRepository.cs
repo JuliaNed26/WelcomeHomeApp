@@ -43,9 +43,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task AddAsync(Establishment newEstablishment)
         {
+            await AttachEstablishmentTypeAsync(newEstablishment.EstablishmentTypeId).ConfigureAwait(false);
+            await AttachCityAsync(newEstablishment.CityId).ConfigureAwait(false);
             await _context.Establishments.AddAsync(newEstablishment).ConfigureAwait(false);
-            AttachEstablishmentType(newEstablishment);
-            AttachCity(newEstablishment);
+
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
@@ -62,23 +63,33 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Establishment editedEstablishment)
         {
+            await AttachEstablishmentTypeAsync(editedEstablishment.EstablishmentTypeId).ConfigureAwait(false);
+            await AttachCityAsync(editedEstablishment.CityId).ConfigureAwait(false);
             _context.Establishments.Update(editedEstablishment);
-            AttachEstablishmentType(editedEstablishment);
-            AttachCity(editedEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void AttachEstablishmentType(Establishment establishment)
+        private async Task AttachEstablishmentTypeAsync(int establishmentTypeId)
         {
-            _context.EstablishmentTypes.Attach(establishment.EstablishmentType);
-            _context.Entry(establishment.EstablishmentType).State = EntityState.Unchanged;
+            var foundType = await _context.EstablishmentTypes
+                                          .FirstOrDefaultAsync(et => et.Id == establishmentTypeId)
+                                          .ConfigureAwait(false)
+                            ?? throw new NotFoundException($"Establishment type with id {establishmentTypeId} was not found");
+
+            _context.EstablishmentTypes.Attach(foundType);
+            _context.Entry(foundType).State = EntityState.Unchanged;
         }
 
-        private void AttachCity(Establishment establishment)
+        private async Task AttachCityAsync(int cityId)
         {
-            _context.Cities.Attach(establishment.City);
-            _context.Entry(establishment.City).State = EntityState.Unchanged;
+            var foundCity = await _context.Cities
+                                .FirstOrDefaultAsync(c => c.Id == cityId)
+                                .ConfigureAwait(false)
+                            ?? throw new NotFoundException($"City with id {cityId} was not found");
+
+            _context.Cities.Attach(foundCity);
+            _context.Entry(foundCity).State = EntityState.Unchanged;
         }
     }
 }
