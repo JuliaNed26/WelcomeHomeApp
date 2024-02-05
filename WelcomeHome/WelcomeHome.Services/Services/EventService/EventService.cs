@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using WelcomeHome.DAL.EventTypeNameRetriever;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO.EventDto;
@@ -78,9 +79,9 @@ namespace WelcomeHome.Services.Services.EventService
         private async Task<EventType> GetEventTypeForPsychoServiceAsync()
         {
             var eventType = await _unitOfWork.EventTypeRepository
-                                .GetByNameAsync("Психологічний сервіс")
+                                .GetByNameAsync(EventTypeNames.PsychologicalService)
                                 .ConfigureAwait(false)
-                            ?? throw new BusinessException("Event type for psychological services was not found");
+                            ?? throw new RecordNotFoundException("Event type for psychological service was not found");
             return eventType;
         }
     }
