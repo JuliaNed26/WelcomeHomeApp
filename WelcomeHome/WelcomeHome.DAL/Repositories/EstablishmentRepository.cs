@@ -36,6 +36,7 @@ namespace WelcomeHome.DAL.Repositories
             return await _context.Establishments.Include(e => e.Events)
                                                 .Include(e => e.City)
                                                 .Include(e => e.EstablishmentType)
+                                                .AsNoTracking()
                                                 .FirstOrDefaultAsync(e => e.Id == id)
                                                 .ConfigureAwait(false);
         }
@@ -68,21 +69,14 @@ namespace WelcomeHome.DAL.Repositories
 
         private void AttachEstablishmentType(Establishment establishment)
         {
-            if (establishment.EstablishmentType != null)
-            {
-                _context.EstablishmentTypes.Attach(establishment.EstablishmentType);
-                _context.Entry(establishment.EstablishmentType).State = EntityState.Unchanged;
-            }
+            _context.EstablishmentTypes.Attach(establishment.EstablishmentType);
+            _context.Entry(establishment.EstablishmentType).State = EntityState.Unchanged;
         }
 
         private void AttachCity(Establishment establishment)
         {
-            if (establishment.City != null)
-            {
-                _context.Cities.Attach(establishment.City);
-                _context.Entry(establishment.City).State = EntityState.Unchanged;
-            }
-
+            _context.Cities.Attach(establishment.City);
+            _context.Entry(establishment.City).State = EntityState.Unchanged;
         }
     }
 }
