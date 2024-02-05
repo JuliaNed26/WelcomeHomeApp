@@ -65,6 +65,11 @@ namespace WelcomeHome.DAL.Repositories
         {
             await AttachEstablishmentTypeAsync(editedEstablishment.EstablishmentTypeId).ConfigureAwait(false);
             await AttachCityAsync(editedEstablishment.CityId).ConfigureAwait(false);
+
+            if (editedEstablishment.Id == 0)
+            {
+                throw new NotFoundException($"Establishment with id {editedEstablishment.Id} was not found");
+            }
             _context.Establishments.Update(editedEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
