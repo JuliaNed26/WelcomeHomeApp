@@ -1,6 +1,6 @@
 ﻿namespace WelcomeHome.Services.DTO.EventDto
 {
-    public record EventOutDTO
+    public record EventFullInfoDTO
     {
         public int Id { get; set; }
 

@@ -21,27 +21,27 @@ namespace WelcomeHome.Services.Services.EventService
             _exceptionHandler = exceptionHandler;
         }
 
-        public IEnumerable<EventOutDTO> GetAll()
+        public IEnumerable<EventFullInfoDTO> GetAll()
         {
             var events = _unitOfWork.EventRepository.GetAll();
-            return events.Select(e => _mapper.Map<EventOutDTO>(e));
+            return events.Select(e => _mapper.Map<EventFullInfoDTO>(e));
         }
 
-        public async Task<IEnumerable<EventOutDTO>> GetPsychologicalServicesAsync()
+        public async Task<IEnumerable<EventFullInfoDTO>> GetPsychologicalServicesAsync()
         {
             var psychologicalServiceType = await GetEventTypeForPsychoServiceAsync().ConfigureAwait(false);
             var psychologicalServices = _unitOfWork.EventRepository
                                                                        .GetByEventType(psychologicalServiceType.Id)
-                                                                       .Select(e => _mapper.Map<EventOutDTO>(e));
+                                                                       .Select(e => _mapper.Map<EventFullInfoDTO>(e));
             return psychologicalServices;
         }
 
-        public async Task<EventOutDTO> GetAsync(int id)
+        public async Task<EventFullInfoDTO> GetAsync(int id)
         {
             var foundEvent = await _unitOfWork.EventRepository.GetByIdAsync(id);
             return foundEvent == null
                 ? throw new RecordNotFoundException("No event with such id")
-                : _mapper.Map<EventOutDTO>(foundEvent);
+                : _mapper.Map<EventFullInfoDTO>(foundEvent);
         }
 
         public async Task AddAsync(EventInDTO newEvent)
@@ -60,7 +60,7 @@ namespace WelcomeHome.Services.Services.EventService
             await AddAsync(newEvent).ConfigureAwait(false);
         }
 
-        public async Task UpdateAsync(EventOutDTO eventWithUpdateInfo)
+        public async Task UpdateAsync(EventFullInfoDTO eventWithUpdateInfo)
         {
             var eventEntity = _mapper.Map<Event>(eventWithUpdateInfo);
 

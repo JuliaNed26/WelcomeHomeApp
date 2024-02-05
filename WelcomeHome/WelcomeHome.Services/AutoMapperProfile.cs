@@ -19,8 +19,8 @@ namespace WelcomeHome.Services
             CreateMap<DocumentInDTO, Document>();
             CreateMap<DocumentOutDTO, Document>();
             CreateMap<EventInDTO, Event>();
-            CreateMap<Event, EventOutDTO>();
-            CreateMap<EventOutDTO, Event>();
+            CreateMap<Event, EventFullInfoDTO>();
+            CreateMap<EventFullInfoDTO, Event>();
             CreateMap<VolunteerRegisterDTO, Volunteer>();
             CreateMap<Volunteer, VolunteerOutDTO>();
             CreateMap<VolunteerOutDTO, Volunteer>();

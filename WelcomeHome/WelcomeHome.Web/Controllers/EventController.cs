@@ -18,21 +18,21 @@ public class EventController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<EventOutDTO>> GetAll()
+    public ActionResult<IEnumerable<EventFullInfoDTO>> GetAll()
     {
         var allEvents = _eventService.GetAll();
         return Ok(allEvents);
     }
 
     [HttpGet("psychologicalServices")]
-    public async Task<ActionResult<IEnumerable<EventOutDTO>>> GetPsychologicalServicesAsync()
+    public async Task<ActionResult<IEnumerable<EventFullInfoDTO>>> GetPsychologicalServicesAsync()
     {
         var psychologicalServices = await _eventService.GetPsychologicalServicesAsync().ConfigureAwait(false);
         return Ok(psychologicalServices);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<EventOutDTO>> GetAsync(int id)
+    public async Task<ActionResult<EventFullInfoDTO>> GetAsync(int id)
     {
         var foundEvent = await _eventService.GetAsync(id).ConfigureAwait(false);
         return Ok(foundEvent);
@@ -56,7 +56,7 @@ public class EventController : ControllerBase
 
     [HttpPut]
     [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
-    public async Task<IActionResult> UpdateAsync(EventOutDTO updateEvent)
+    public async Task<IActionResult> UpdateAsync(EventFullInfoDTO updateEvent)
     {
         await _eventService.UpdateAsync(updateEvent).ConfigureAwait(false);
         return NoContent();

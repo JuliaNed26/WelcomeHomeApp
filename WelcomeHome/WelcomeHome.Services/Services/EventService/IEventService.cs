@@ -4,17 +4,17 @@ namespace WelcomeHome.Services.Services.EventService
 {
     public interface IEventService
     {
-        Task<EventOutDTO> GetAsync(int id);
+        Task<EventFullInfoDTO> GetAsync(int id);
 
-        IEnumerable<EventOutDTO> GetAll();
+        IEnumerable<EventFullInfoDTO> GetAll();
 
-        Task<IEnumerable<EventOutDTO>> GetPsychologicalServicesAsync();
+        Task<IEnumerable<EventFullInfoDTO>> GetPsychologicalServicesAsync();
 
         Task AddAsync(EventInDTO newEvent);
 
         Task AddPsychologicalServiceAsync(EventInDTO newEvent);
 
-        Task UpdateAsync(EventOutDTO eventWithUpdateInfo);
+        Task UpdateAsync(EventFullInfoDTO eventWithUpdateInfo);
 
         Task DeleteAsync(int id);
     }
