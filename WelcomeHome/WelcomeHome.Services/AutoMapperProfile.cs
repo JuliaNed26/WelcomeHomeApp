@@ -11,9 +11,9 @@ namespace WelcomeHome.Services
     {
         public AutoMapperProfile()
         {
-            CreateMap<Establishment, EstablishmentOutDTO>();
+            CreateMap<Establishment, EstablishmentFullInfoDTO>();
             CreateMap<EstablishmentInDTO, Establishment>();
-            CreateMap<EstablishmentOutDTO, Establishment>();
+            CreateMap<EstablishmentFullInfoDTO, Establishment>();
             CreateMap<EstablishmentType, EstablishmentTypeOutDTO>();
             CreateMap<Document, DocumentOutDTO>();
             CreateMap<DocumentInDTO, Document>();

@@ -10,7 +10,7 @@
 
         public string Description { get; set; }
 
-        public EstablishmentOutDTO? Establishment { get; set; }
+        public EstablishmentFullInfoDTO? Establishment { get; set; }
 
         public string EventTypeName { get; set; }
 

@@ -8,7 +8,7 @@
 
         public string Description { get; set; }
 
-        public ICollection<EstablishmentOutDTO>? Establishments { get; set; }
+        public ICollection<EstablishmentFullInfoDTO>? Establishments { get; set; }
 
         public ICollection<DocumentOutDTO>? DocumentsBring { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace WelcomeHome.Services.DTO
 {
-    public record EstablishmentOutDTO
+    public record EstablishmentFullInfoDTO
     {
         public int Id { get; init; }
         public string Name { get; init; }
@@ -10,7 +10,7 @@ namespace WelcomeHome.Services.DTO
         public string? PageURL { get; init; }
         public string? PhoneNumber { get; init; }
         public string? OtherContacts { get; init; }
-        public City City { get; init; }
-        public EstablishmentTypeOutDTO EstablishmentType { get; init; }
+        public int CityId { get; init; }
+        public int EstablishmentTypeId { get; init; }
     }
 }

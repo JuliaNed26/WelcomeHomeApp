@@ -19,14 +19,14 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<EstablishmentOutDTO>> GetAsync(int id)
+    public async Task<ActionResult<EstablishmentFullInfoDTO>> GetAsync(int id)
     {
         var foundEstablishment = await _establishmentService.GetAsync(id).ConfigureAwait(false);
         return Ok(foundEstablishment);
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetAll([FromQuery]EstablishmentFiltersDto filters)
+    public ActionResult<IEnumerable<EstablishmentFullInfoDTO>> GetAll([FromQuery]EstablishmentFiltersDto filters)
     {
         var allEstablishments = _establishmentService.GetAll(filters);
         return Ok(allEstablishments);
@@ -49,7 +49,7 @@ public class EstablishmentController : ControllerBase
 
     [HttpPut]
     [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
-    public async Task<IActionResult> UpdateAsync(EstablishmentOutDTO updateEstablishment)
+    public async Task<IActionResult> UpdateAsync(EstablishmentFullInfoDTO updateEstablishment)
     {
         await _establishmentService.UpdateAsync(updateEstablishment).ConfigureAwait(false);
         return NoContent();
