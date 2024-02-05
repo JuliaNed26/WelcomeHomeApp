@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WelcomeHome.Services.DTO
+namespace WelcomeHome.Services.DTO.EventDto
 {
     public record EventInDTO
     {
@@ -12,11 +12,11 @@ namespace WelcomeHome.Services.DTO
         [Required]
         public string Description { get; set; } = null!;
 
-        public int EstablishmentId { get; set; }
+        public int? EstablishmentId { get; set; }
 
-        public int EventTypeId { get; set; }
+        public int? EventTypeId { get; set; }
 
-        public int VolunteerId { get; set; }
+        public int? VolunteerId { get; set; }
 
     }
 }

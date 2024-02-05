@@ -27,17 +27,28 @@ namespace WelcomeHome.DAL.Repositories
             return await _context.Events.Include(e => e.Establishment)
                                         .Include(e => e.EventType)
                                         .Include(e => e.Volunteer)
+                                        .AsNoTracking()
                                         .FirstOrDefaultAsync(e => e.Id == id)
                                         .ConfigureAwait(false);
         }
 
+        public IEnumerable<Event> GetByEventType(int eventTypeId)
+        {
+            return _context.Events.Include(e => e.Establishment)
+                                  .Include(e => e.EventType)
+                                  .Include(e => e.Volunteer)
+                                  .AsNoTracking()
+                                  .Where(e => e.EventTypeId == eventTypeId)
+                                  .Select(e => e);
+        }
+
         public async Task AddAsync(Event newEvent)
         {
+            await AttachEventTypeAsync(newEvent.EventTypeId).ConfigureAwait(false);
+            await AttachEstablishmentAsync(newEvent.EstablishmentId).ConfigureAwait(false);
+            await AttachVolunteerAsync(newEvent.VolunteerId).ConfigureAwait(false);
 
             await _context.Events.AddAsync(newEvent).ConfigureAwait(false);
-            AttachEstablishment(newEvent.Establishment);
-            AttachEventType(newEvent.EventType);
-            AttachVolunteer(newEvent.Volunteer);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -55,29 +66,57 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Event editedEvent)
         {
-            AttachEstablishment(editedEvent.Establishment);
-            AttachEventType(editedEvent.EventType);
-            AttachVolunteer(editedEvent.Volunteer);
+            await AttachEventTypeAsync(editedEvent.EventTypeId).ConfigureAwait(false);
+            await AttachEstablishmentAsync(editedEvent.EstablishmentId).ConfigureAwait(false);
+            await AttachVolunteerAsync(editedEvent.VolunteerId).ConfigureAwait(false);
+
+            if (editedEvent.Id == 0)
+            {
+                throw new NotFoundException($"Event with id {editedEvent.Id} was not found");
+            }
+
             _context.Events.Update(editedEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void AttachEstablishment(Establishment establishment)
+        private async Task AttachEstablishmentAsync(int? establishmentId)
         {
-            _context.Establishments.Attach(establishment);
-            _context.Entry(establishment).State = EntityState.Unchanged;
+            if (establishmentId != null)
+            {
+                var foundEstablishment = await _context.Establishments
+                                                       .FirstOrDefaultAsync(e => e.Id == establishmentId)
+                                                       .ConfigureAwait(false)
+                                         ?? throw new NotFoundException($"Establishment with id {establishmentId} was not found");
+
+                _context.Establishments.Attach(foundEstablishment);
+                _context.Entry(foundEstablishment).State = EntityState.Unchanged;
+            }
         }
 
-        private void AttachEventType(EventType eventType)
+        private async Task AttachEventTypeAsync(int eventTypeId)
         {
-            _context.EventTypes.Attach(eventType);
-            _context.Entry(eventType).State = EntityState.Unchanged;
+            var foundEventType = await _context.EventTypes
+                                               .FirstOrDefaultAsync(et => et.Id == eventTypeId)
+                                               .ConfigureAwait(false)
+                                 ?? throw new NotFoundException($"Event type with id {eventTypeId} was not found");
+
+            _context.EventTypes.Attach(foundEventType);
+            _context.Entry(foundEventType).State = EntityState.Unchanged;
         }
-        private void AttachVolunteer(Volunteer volunteer)
+
+        private async Task AttachVolunteerAsync(int? volunteerId)
         {
-            _context.Volunteers.Attach(volunteer);
-            _context.Entry(volunteer).State = EntityState.Unchanged;
+            if (volunteerId != null)
+            {
+                var foundVolunteer = await _context.Volunteers
+                                                   .FirstOrDefaultAsync(v => v.UserId == volunteerId)
+                                                   .ConfigureAwait(false)
+                                     ?? throw new NotFoundException($"Volunteer with id {volunteerId} was not found");
+
+                _context.Volunteers.Attach(foundVolunteer);
+                _context.Entry(foundVolunteer).State = EntityState.Unchanged;
+            }
         }
     }
 }

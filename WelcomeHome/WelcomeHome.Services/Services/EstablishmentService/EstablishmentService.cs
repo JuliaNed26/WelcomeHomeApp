@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
+using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO;
+using WelcomeHome.Services.DTO.EstablishmentDTO;
 using WelcomeHome.Services.Exceptions;
 using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 
-namespace WelcomeHome.Services.Services
+namespace WelcomeHome.Services.Services.EstablishmentService
 {
 
     public sealed class EstablishmentService : IEstablishmentService
@@ -21,39 +23,20 @@ namespace WelcomeHome.Services.Services
             _exceptionHandler = exceptionHandler;
         }
 
-        //TODO: AddAsync exceptions
-
-        public async Task<EstablishmentOutDTO> GetAsync(int id)
+        public async Task<EstablishmentFullInfoDTO> GetAsync(int id)
         {
             var foundEstablishment = await _unitOfWork.EstablishmentRepository.GetByIdAsync(id).ConfigureAwait(false);
             return foundEstablishment == null
                 ? throw new RecordNotFoundException("Establishment was not found")
-                : _mapper.Map<EstablishmentOutDTO>(foundEstablishment);
+                : _mapper.Map<EstablishmentFullInfoDTO>(foundEstablishment);
         }
 
-        public IEnumerable<EstablishmentOutDTO> GetAll()
+        public IEnumerable<EstablishmentFullInfoDTO> GetAll(EstablishmentFiltersDto filters)
         {
-            return _unitOfWork.EstablishmentRepository.GetAll()
-                                                      .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
-        }
+            var filtersToRetrieve = _mapper.Map<EstablishmentRetrievalFiltersDto>(filters); 
 
-        public IEnumerable<EstablishmentOutDTO> GetByEstablishmentType(int typeId)
-        {
-            return _unitOfWork.EstablishmentRepository.GetAll()
-                                                      .Where(e => e.EstablishmentTypeId == typeId)
-                                                      .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
-        }
-
-        public IEnumerable<EstablishmentOutDTO> GetByCity(int cityId)
-        {
-            return _unitOfWork.EstablishmentRepository.GetAll()
-                                                      .Where(e => e.CityId == cityId)
-                                                      .Select(e => _mapper.Map<EstablishmentOutDTO>(e));
-        }
-
-        public IEnumerable<EstablishmentOutDTO> GetByTypeAndCity(int typeId, int cityId)
-        {
-            return GetByEstablishmentType(typeId).Where(e => e.City.Id == cityId);
+            return _unitOfWork.EstablishmentRepository.GetAll(filtersToRetrieve)
+                                                      .Select(e => _mapper.Map<EstablishmentFullInfoDTO>(e));
         }
 
         public async Task AddAsync(EstablishmentInDTO newEstablishment)
@@ -64,17 +47,7 @@ namespace WelcomeHome.Services.Services
                 .ConfigureAwait(false);
         }
 
-        public async Task AddVolunteerAsync(EstablishmentVolunteerInDTO newEstablishment)
-        {
-            var entity = _mapper.Map<Establishment>(newEstablishment);
-            entity.EstablishmentTypeId = 1;
-            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
-                                                            .EstablishmentRepository
-                                                            .AddAsync(entity))
-               .ConfigureAwait(false);
-        }
-
-        public async Task UpdateAsync(EstablishmentOutDTO updatedEstablishment)
+        public async Task UpdateAsync(EstablishmentFullInfoDTO updatedEstablishment)
         {
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
                                                               .EstablishmentRepository

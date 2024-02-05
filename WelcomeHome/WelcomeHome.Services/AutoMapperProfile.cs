@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.Services.DTO;
+using WelcomeHome.Services.DTO.EstablishmentDTO;
+using WelcomeHome.Services.DTO.EventDto;
 
 namespace WelcomeHome.Services
 {
@@ -8,16 +11,16 @@ namespace WelcomeHome.Services
     {
         public AutoMapperProfile()
         {
-            CreateMap<Establishment, EstablishmentOutDTO>();
+            CreateMap<Establishment, EstablishmentFullInfoDTO>();
             CreateMap<EstablishmentInDTO, Establishment>();
-            CreateMap<EstablishmentOutDTO, Establishment>();
+            CreateMap<EstablishmentFullInfoDTO, Establishment>();
             CreateMap<EstablishmentType, EstablishmentTypeOutDTO>();
             CreateMap<Document, DocumentOutDTO>();
             CreateMap<DocumentInDTO, Document>();
             CreateMap<DocumentOutDTO, Document>();
             CreateMap<EventInDTO, Event>();
-            CreateMap<Event, EventOutDTO>();
-            CreateMap<EventOutDTO, Event>();
+            CreateMap<Event, EventFullInfoDTO>();
+            CreateMap<EventFullInfoDTO, Event>();
             CreateMap<VolunteerRegisterDTO, Volunteer>();
             CreateMap<Volunteer, VolunteerOutDTO>();
             CreateMap<VolunteerOutDTO, Volunteer>();
@@ -31,6 +34,7 @@ namespace WelcomeHome.Services
             CreateMap<UserCategory, UserCategoryOutDTO>();
             CreateMap<SocialPayout, SocialPayoutListItemDTO>();
             CreateMap<SocialPayout, SocialPayoutOutDTO>();
+            CreateMap<EstablishmentFiltersDto, EstablishmentRetrievalFiltersDto>();
         }
     }
 }

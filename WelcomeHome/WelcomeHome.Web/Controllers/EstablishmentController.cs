@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO;
-using WelcomeHome.Services.Services;
+using WelcomeHome.Services.DTO.EstablishmentDTO;
+using WelcomeHome.Services.Services.EstablishmentService;
 
 namespace WelcomeHome.Web.Controllers;
 
@@ -18,38 +19,17 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<EstablishmentOutDTO>> GetAsync(int id)
+    public async Task<ActionResult<EstablishmentFullInfoDTO>> GetAsync(int id)
     {
         var foundEstablishment = await _establishmentService.GetAsync(id).ConfigureAwait(false);
         return Ok(foundEstablishment);
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetAll()
+    public ActionResult<IEnumerable<EstablishmentFullInfoDTO>> GetAll([FromQuery]EstablishmentFiltersDto filters)
     {
-        var allEstablishments = _establishmentService.GetAll();
+        var allEstablishments = _establishmentService.GetAll(filters);
         return Ok(allEstablishments);
-    }
-
-    [HttpGet("byType/{cityId}")]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByEstablishmentType(int typeId)
-    {
-        var establishmentsByType = _establishmentService.GetByEstablishmentType(typeId);
-        return Ok(establishmentsByType);
-    }
-
-    [HttpGet("byCity/{cityId}")]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByCity(int cityId)
-    {
-        var establishmentsByCity = _establishmentService.GetByCity(cityId);
-        return Ok(establishmentsByCity);
-    }
-
-    [HttpGet("/byType/{typeId}/byCity/{cityId}")]
-    public ActionResult<IEnumerable<EstablishmentOutDTO>> GetByTypeAndCity(int typeId, int cityId)
-    {
-        var establishmentsByTypeAndCity = _establishmentService.GetByTypeAndCity(typeId, cityId);
-        return Ok(establishmentsByTypeAndCity);
     }
 
     [HttpGet("types")]
@@ -67,24 +47,16 @@ public class EstablishmentController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("volunteer")]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
-    public async Task<IActionResult> AddVolunteerEstablishmentAsync(EstablishmentVolunteerInDTO newEstablishment)
-    {
-        await _establishmentService.AddVolunteerAsync(newEstablishment).ConfigureAwait(false);
-        return NoContent();
-    }
-
     [HttpPut]
-    [Authorize(Roles = "volunteer")]
-    public async Task<IActionResult> UpdateAsync(EstablishmentOutDTO updateEstablishment)
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
+    public async Task<IActionResult> UpdateAsync(EstablishmentFullInfoDTO updateEstablishment)
     {
         await _establishmentService.UpdateAsync(updateEstablishment).ConfigureAwait(false);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "volunteer")]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _establishmentService.DeleteAsync(id).ConfigureAwait(false);

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WelcomeHome.Services.DTO;
-using WelcomeHome.Services.Services;
+using WelcomeHome.Services.DTO.EventDto;
+using WelcomeHome.Services.Services.EventService;
 
 namespace WelcomeHome.Web.Controllers;
 
@@ -17,18 +17,25 @@ public class EventController : ControllerBase
         _eventService = eventService;
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<EventOutDTO>> GetAsync(int id)
-    {
-        var foundEvent = await _eventService.GetAsync(id).ConfigureAwait(false);
-        return Ok(foundEvent);
-    }
-
     [HttpGet]
-    public ActionResult<IEnumerable<EventOutDTO>> GetAll()
+    public ActionResult<IEnumerable<EventFullInfoDTO>> GetAll()
     {
         var allEvents = _eventService.GetAll();
         return Ok(allEvents);
+    }
+
+    [HttpGet("psychologicalServices")]
+    public async Task<ActionResult<IEnumerable<EventFullInfoDTO>>> GetPsychologicalServicesAsync()
+    {
+        var psychologicalServices = await _eventService.GetPsychologicalServicesAsync().ConfigureAwait(false);
+        return Ok(psychologicalServices);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<EventFullInfoDTO>> GetAsync(int id)
+    {
+        var foundEvent = await _eventService.GetAsync(id).ConfigureAwait(false);
+        return Ok(foundEvent);
     }
 
     [HttpPost]
@@ -39,9 +46,17 @@ public class EventController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("psychologicalService")]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
+    public async Task<IActionResult> AddPsychologicalServiceAsync(EventInDTO newEvent)
+    {
+        await _eventService.AddPsychologicalServiceAsync(newEvent).ConfigureAwait(false);
+        return NoContent();
+    }
+
     [HttpPut]
     [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
-    public async Task<IActionResult> UpdateAsync(EventOutDTO updateEvent)
+    public async Task<IActionResult> UpdateAsync(EventFullInfoDTO updateEvent)
     {
         await _eventService.UpdateAsync(updateEvent).ConfigureAwait(false);
         return NoContent();
