@@ -23,15 +23,15 @@ namespace WelcomeHome.Services.Services.EventService
         public IEnumerable<EventOutDTO> GetAll()
         {
             var events = _unitOfWork.EventRepository.GetAll();
-
             return events.Select(e => _mapper.Map<EventOutDTO>(e));
         }
 
         public async Task<IEnumerable<EventOutDTO>> GetPsychologicalServicesAsync()
         {
             var psychologicalServiceType = await GetEventTypeForPsychoServiceAsync().ConfigureAwait(false);
-            var psychologicalServices = _unitOfWork.EventRepository.GetByEventType(psychologicalServiceType.Id)
-                                                                   .Select(e => _mapper.Map<EventOutDTO>(e));
+            var psychologicalServices = _unitOfWork.EventRepository
+                                                                       .GetByEventType(psychologicalServiceType.Id)
+                                                                       .Select(e => _mapper.Map<EventOutDTO>(e));
             return psychologicalServices;
         }
 

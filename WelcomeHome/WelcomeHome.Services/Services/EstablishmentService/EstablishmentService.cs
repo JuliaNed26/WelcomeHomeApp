@@ -23,8 +23,6 @@ namespace WelcomeHome.Services.Services.EstablishmentService
             _exceptionHandler = exceptionHandler;
         }
 
-        //TODO: AddAsync exceptions
-
         public async Task<EstablishmentOutDTO> GetAsync(int id)
         {
             var foundEstablishment = await _unitOfWork.EstablishmentRepository.GetByIdAsync(id).ConfigureAwait(false);
