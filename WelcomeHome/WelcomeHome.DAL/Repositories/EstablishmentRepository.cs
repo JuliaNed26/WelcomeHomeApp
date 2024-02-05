@@ -44,6 +44,8 @@ namespace WelcomeHome.DAL.Repositories
         public async Task AddAsync(Establishment newEstablishment)
         {
             await _context.Establishments.AddAsync(newEstablishment).ConfigureAwait(false);
+            AttachEstablishmentType(newEstablishment);
+            AttachCity(newEstablishment);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
@@ -60,9 +62,9 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Establishment editedEstablishment)
         {
+            _context.Establishments.Update(editedEstablishment);
             AttachEstablishmentType(editedEstablishment);
             AttachCity(editedEstablishment);
-            _context.Establishments.Update(editedEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

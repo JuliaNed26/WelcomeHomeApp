@@ -45,10 +45,9 @@ namespace WelcomeHome.DAL.Repositories
         public async Task AddAsync(Event newEvent)
         {
             await _context.Events.AddAsync(newEvent).ConfigureAwait(false);
-
-            AttachEventType(newEvent.EventType);
-            AttachEstablishment(newEvent.Establishment);
-            AttachVolunteer(newEvent.Volunteer);
+            AttachEventType(newEvent);
+            AttachEstablishment(newEvent);
+            AttachVolunteer(newEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -66,36 +65,36 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Event editedEvent)
         {
-            AttachEventType(editedEvent.EventType);
-            AttachEstablishment(editedEvent.Establishment);
-            AttachVolunteer(editedEvent.Volunteer);
+            AttachEventType(editedEvent);
+            AttachEstablishment(editedEvent);
+            AttachVolunteer(editedEvent);
 
             _context.Events.Update(editedEvent);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void AttachEstablishment(Establishment? establishment)
+        private void AttachEstablishment(Event eventEntity)
         {
-            if (establishment != null)
+            if (eventEntity.Establishment != null)
             {
-                _context.Establishments.Attach(establishment);
-                _context.Entry(establishment).State = EntityState.Unchanged;
+                _context.Establishments.Attach(eventEntity.Establishment);
+                _context.Entry(eventEntity.Establishment).State = EntityState.Unchanged;
             }
         }
 
-        private void AttachEventType(EventType eventType)
+        private void AttachEventType(Event eventEntity)
         {
-            _context.EventTypes.Attach(eventType);
-            _context.Entry(eventType).State = EntityState.Unchanged;
+            _context.EventTypes.Attach(eventEntity.EventType);
+            _context.Entry(eventEntity.EventType).State = EntityState.Unchanged;
         }
 
-        private void AttachVolunteer(Volunteer? volunteer)
+        private void AttachVolunteer(Event eventEntity)
         {
-            if (volunteer != null)
+            if (eventEntity.Volunteer != null)
             {
-                _context.Volunteers.Attach(volunteer);
-                _context.Entry(volunteer).State = EntityState.Unchanged;
+                _context.Volunteers.Attach(eventEntity.Volunteer);
+                _context.Entry(eventEntity.Volunteer).State = EntityState.Unchanged;
             }
         }
     }
