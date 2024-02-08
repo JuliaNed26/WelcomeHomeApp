@@ -19,7 +19,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             var foundVacancy = await _context.Vacancies
                                              .FindAsync(id)
@@ -37,7 +37,7 @@ namespace WelcomeHome.DAL.Repositories
                 .Select(v => v);
         }
 
-        public async Task<Vacancy?> GetByIdAsync(int id)
+        public async Task<Vacancy?> GetByIdAsync(long id)
         {
             return await _context.Vacancies
                 .Include(v => v.Establishment)

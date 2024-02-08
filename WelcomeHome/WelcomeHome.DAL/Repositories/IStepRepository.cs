@@ -6,13 +6,13 @@ public interface IStepRepository
 {
 	IEnumerable<Step> GetAll();
 
-	Task<Step?> GetByIdAsync(int id);
+	Task<Step?> GetByIdAsync(long id);
 
 	Task AddAsync(Step step);
 
 	Task UpdateAsync(Step step);
 
-	Task DeleteAsync(int id);
+	Task DeleteAsync(long id);
 
-	Task<Step?> GetByEstablishmentTypeAndDocuments(int establishmentTypeId, ICollection<int> documentsRecieveIds, ICollection<int> documentsBringIds);
+	Task<Step?> GetByEstablishmentTypeAndDocuments(long establishmentTypeId, ICollection<long> documentsRecieveIds, ICollection<long> documentsBringIds);
 }

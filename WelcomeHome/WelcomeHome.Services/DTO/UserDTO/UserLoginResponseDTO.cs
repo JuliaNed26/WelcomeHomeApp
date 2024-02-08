@@ -2,7 +2,7 @@
 {
     public class UserLoginResponseDTO
     {
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         public string UserName { get; set; } = string.Empty;
 

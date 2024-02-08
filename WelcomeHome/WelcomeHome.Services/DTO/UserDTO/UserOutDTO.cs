@@ -2,7 +2,7 @@
 {
     public record UserOutDTO
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string FullName { get; set; } = null!;
 

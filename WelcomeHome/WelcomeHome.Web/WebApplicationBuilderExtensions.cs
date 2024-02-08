@@ -25,11 +25,11 @@ public static class WebApplicationBuilderExtensions
                                                                      .UseSqlServer(builder.Configuration.GetConnectionString("JuliaNConnectionString"))
                                                                      .UseExceptionProcessor());
 
-        builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+        builder.Services.AddIdentity<User, IdentityRole<long>>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
         })
-            .AddRoles<IdentityRole<int>>()
+            .AddRoles<IdentityRole<long>>()
             .AddEntityFrameworkStores<WelcomeHomeDbContext>()
             .AddDefaultTokenProviders();
 

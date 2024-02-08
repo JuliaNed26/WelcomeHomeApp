@@ -6,13 +6,13 @@ namespace WelcomeHome.DAL.Repositories
     {
         IEnumerable<Event> GetAll();
 
-        Task<Event?> GetByIdAsync(int id);
+        Task<Event?> GetByIdAsync(long id);
 
-        IEnumerable<Event> GetByEventType(int eventTypeId);
+        IEnumerable<Event> GetByEventType(long eventTypeId);
 
         Task AddAsync(Event newEvent);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(long id);
 
         Task UpdateAsync(Event editedEvent);
     }

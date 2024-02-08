@@ -2,7 +2,7 @@
 
 namespace WelcomeHome.DAL.Models
 {
-    public class User : IdentityUser<int>
+    public class User : IdentityUser<long>
     {
         public string FullName { get; set; }
         public RefreshToken RefreshToken { get; set; }

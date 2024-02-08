@@ -58,7 +58,7 @@ namespace WelcomeHome.Services.Services
             {
                 if (role != null)
                 {
-                    var identityRole = new IdentityRole<int>(role);
+                    var identityRole = new IdentityRole<long>(role);
                     await _userManager.AddToRoleAsync(newUser, identityRole.Name);
                 }
 
@@ -123,7 +123,7 @@ namespace WelcomeHome.Services.Services
             };
         }
 
-        public async Task LogoutAsync(int userId)
+        public async Task LogoutAsync(long userId)
         {
             await _tokenService.UnvalidateTokensAsync(userId);
         }

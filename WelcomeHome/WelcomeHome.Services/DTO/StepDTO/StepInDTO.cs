@@ -6,7 +6,7 @@
 
         public string Description { get; set; }
 
-        public int EstablishmentTypeId { get; set; }
+        public long EstablishmentTypeId { get; set; }
 
         public ICollection<int> DocumentsBringId { get; set; }
 

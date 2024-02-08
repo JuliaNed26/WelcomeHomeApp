@@ -31,7 +31,7 @@ namespace WelcomeHome.DAL.Repositories
             return allEstablishments;
         }
 
-        public async Task<Establishment?> GetByIdAsync(int id)
+        public async Task<Establishment?> GetByIdAsync(long id)
         {
             return await _context.Establishments.Include(e => e.Events)
                                                 .Include(e => e.City)
@@ -50,7 +50,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             var existingEstablishment = await _context.Establishments
                                               .FindAsync(id)
@@ -75,7 +75,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private async Task AttachEstablishmentTypeAsync(int establishmentTypeId)
+        private async Task AttachEstablishmentTypeAsync(long establishmentTypeId)
         {
             var foundType = await _context.EstablishmentTypes
                                           .FirstOrDefaultAsync(et => et.Id == establishmentTypeId)
@@ -86,7 +86,7 @@ namespace WelcomeHome.DAL.Repositories
             _context.Entry(foundType).State = EntityState.Unchanged;
         }
 
-        private async Task AttachCityAsync(int cityId)
+        private async Task AttachCityAsync(long cityId)
         {
             var foundCity = await _context.Cities
                                 .FirstOrDefaultAsync(c => c.Id == cityId)

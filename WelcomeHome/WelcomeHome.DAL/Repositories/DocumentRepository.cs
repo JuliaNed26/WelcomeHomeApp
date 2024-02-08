@@ -17,7 +17,7 @@ public sealed class DocumentRepository : IDocumentRepository
         return _dbContext.Documents.Select(d => d);
     }
 
-    public async Task<Document?> GetByIdAsync(int id)
+    public async Task<Document?> GetByIdAsync(long id)
     {
         return await _dbContext.Documents.FindAsync(id).ConfigureAwait(false);
     }
@@ -34,7 +34,7 @@ public sealed class DocumentRepository : IDocumentRepository
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(long id)
     {
         var document = await _dbContext.Documents.FindAsync(id).ConfigureAwait(false)
                        ?? throw new NotFoundException($"Document with Id {id} not found for deletion.");

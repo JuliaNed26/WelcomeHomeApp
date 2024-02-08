@@ -12,11 +12,11 @@ namespace WelcomeHome.Services.DTO.EventDto
         [Required]
         public string Description { get; set; } = null!;
 
-        public int? EstablishmentId { get; set; }
+        public long? EstablishmentId { get; set; }
 
-        public int? EventTypeId { get; set; }
+        public long? EventTypeId { get; set; }
 
-        public int? VolunteerId { get; set; }
+        public long? VolunteerId { get; set; }
 
     }
 }

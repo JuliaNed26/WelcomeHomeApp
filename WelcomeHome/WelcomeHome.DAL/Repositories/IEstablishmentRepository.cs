@@ -7,11 +7,11 @@ namespace WelcomeHome.DAL.Repositories
     {
         IEnumerable<Establishment> GetAll(EstablishmentRetrievalFiltersDto? filters = null);
 
-        Task<Establishment?> GetByIdAsync(int id);
+        Task<Establishment?> GetByIdAsync(long id);
 
         Task AddAsync(Establishment newEstablishment);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(long id);
 
         Task UpdateAsync(Establishment editedEstablishment);
     }

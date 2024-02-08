@@ -9,7 +9,7 @@ namespace WelcomeHome.Services.Services
 
         IEnumerable<VolunteerOutDTO> GetAll();
 
-        Task<VolunteerOutDTO> GetAsync(int id);
+        Task<VolunteerOutDTO> GetAsync(long id);
 
         Task AddVolunteerOrganizationAsync(EstablishmentVolunteerInDTO newEstablishment);
     }

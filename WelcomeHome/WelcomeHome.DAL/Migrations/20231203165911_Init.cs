@@ -14,7 +14,7 @@ namespace WelcomeHome.DAL.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -30,7 +30,7 @@ namespace WelcomeHome.DAL.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -57,7 +57,7 @@ namespace WelcomeHome.DAL.Migrations
                 name: "Countries",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -71,7 +71,7 @@ namespace WelcomeHome.DAL.Migrations
                 name: "Courses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -88,7 +88,7 @@ namespace WelcomeHome.DAL.Migrations
                 name: "Documents",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -101,7 +101,7 @@ namespace WelcomeHome.DAL.Migrations
                 name: "EstablishmentTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -114,7 +114,7 @@ namespace WelcomeHome.DAL.Migrations
                 name: "EventTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -127,7 +127,7 @@ namespace WelcomeHome.DAL.Migrations
                 name: "SocialPayouts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -142,7 +142,7 @@ namespace WelcomeHome.DAL.Migrations
                 name: "UserCategories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -155,9 +155,9 @@ namespace WelcomeHome.DAL.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -176,9 +176,9 @@ namespace WelcomeHome.DAL.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -200,7 +200,7 @@ namespace WelcomeHome.DAL.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -217,8 +217,8 @@ namespace WelcomeHome.DAL.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,7 +241,7 @@ namespace WelcomeHome.DAL.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -261,11 +261,11 @@ namespace WelcomeHome.DAL.Migrations
                 name: "RefreshTokens",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Expires = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -282,10 +282,10 @@ namespace WelcomeHome.DAL.Migrations
                 name: "Cities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: false)
+                    CountryId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -302,10 +302,10 @@ namespace WelcomeHome.DAL.Migrations
                 name: "Steps",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EstablishmentTypeId = table.Column<int>(type: "int", nullable: false)
+                    EstablishmentTypeId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -322,8 +322,8 @@ namespace WelcomeHome.DAL.Migrations
                 name: "SocialPayoutUserCategory",
                 columns: table => new
                 {
-                    SocialPayoutsId = table.Column<int>(type: "int", nullable: false),
-                    UserCategoriesId = table.Column<int>(type: "int", nullable: false)
+                    SocialPayoutsId = table.Column<long>(type: "bigint", nullable: false),
+                    UserCategoriesId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -346,12 +346,12 @@ namespace WelcomeHome.DAL.Migrations
                 name: "Establishments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EstablishmentTypeId = table.Column<int>(type: "int", nullable: false),
-                    CityId = table.Column<int>(type: "int", nullable: false),
+                    EstablishmentTypeId = table.Column<long>(type: "bigint", nullable: false),
+                    CityId = table.Column<long>(type: "bigint", nullable: false),
                     PageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OtherContacts = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -377,8 +377,8 @@ namespace WelcomeHome.DAL.Migrations
                 name: "PaymentSteps",
                 columns: table => new
                 {
-                    SocialPayoutId = table.Column<int>(type: "int", nullable: false),
-                    StepId = table.Column<int>(type: "int", nullable: false),
+                    SocialPayoutId = table.Column<long>(type: "bigint", nullable: false),
+                    StepId = table.Column<long>(type: "bigint", nullable: false),
                     SequenceNumber = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -402,8 +402,8 @@ namespace WelcomeHome.DAL.Migrations
                 name: "StepsDocuments",
                 columns: table => new
                 {
-                    StepId = table.Column<int>(type: "int", nullable: false),
-                    DocumentId = table.Column<int>(type: "int", nullable: false),
+                    StepId = table.Column<long>(type: "bigint", nullable: false),
+                    DocumentId = table.Column<long>(type: "bigint", nullable: false),
                     ToReceive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -427,12 +427,12 @@ namespace WelcomeHome.DAL.Migrations
                 name: "Vacancies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Salary = table.Column<float>(type: "real", nullable: false),
-                    EstablishmentId = table.Column<int>(type: "int", nullable: false),
+                    EstablishmentId = table.Column<long>(type: "bigint", nullable: false),
                     PageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OtherContacts = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -452,9 +452,9 @@ namespace WelcomeHome.DAL.Migrations
                 name: "Volunteers",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     SocialUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EstablishmentId = table.Column<int>(type: "int", nullable: true)
+                    EstablishmentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -476,14 +476,14 @@ namespace WelcomeHome.DAL.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EstablishmentId = table.Column<int>(type: "int", nullable: false),
-                    EventTypeId = table.Column<int>(type: "int", nullable: false),
-                    VolunteerId = table.Column<int>(type: "int", nullable: false)
+                    EstablishmentId = table.Column<long>(type: "bigint", nullable: false),
+                    EventTypeId = table.Column<long>(type: "bigint", nullable: false),
+                    VolunteerId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {

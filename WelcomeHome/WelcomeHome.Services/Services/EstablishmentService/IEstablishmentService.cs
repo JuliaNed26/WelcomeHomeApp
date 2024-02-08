@@ -5,7 +5,7 @@ namespace WelcomeHome.Services.Services.EstablishmentService
 {
     public interface IEstablishmentService
     {
-        Task<EstablishmentFullInfoDTO> GetAsync(int id);
+        Task<EstablishmentFullInfoDTO> GetAsync(long id);
 
         IEnumerable<EstablishmentFullInfoDTO> GetAll(EstablishmentFiltersDto filters);
 
@@ -13,7 +13,7 @@ namespace WelcomeHome.Services.Services.EstablishmentService
 
         Task UpdateAsync(EstablishmentFullInfoDTO updatedEstablishment);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(long id);
 
         IEnumerable<EstablishmentTypeOutDTO> GetAllEstablishmentTypes();
     }

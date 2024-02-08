@@ -20,7 +20,7 @@ namespace WelcomeHome.DAL.Repositories
                                               .Select(et => et);
         }
 
-        public async Task<EstablishmentType?> GetByIdAsync(int id)
+        public async Task<EstablishmentType?> GetByIdAsync(long id)
         {
             return await _context.EstablishmentTypes.Include(et => et.Establishments)
                                                     .FirstOrDefaultAsync(e => e.Id == id)
@@ -35,7 +35,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             var existingEstablishmentType = await _context.EstablishmentTypes
                                                           .FindAsync(id)

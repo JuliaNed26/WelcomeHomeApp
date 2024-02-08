@@ -81,7 +81,7 @@ namespace WelcomeHome.Services.Services
             }
         }
 
-        public async Task UnvalidateTokensAsync(int userId)
+        public async Task UnvalidateTokensAsync(long userId)
         {
             _unitOfWork.RefreshTokenRepository.DeleteAllForUserAsync(userId).ConfigureAwait(false);
         }

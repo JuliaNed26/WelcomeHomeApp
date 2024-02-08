@@ -17,7 +17,7 @@ namespace WelcomeHome.Services.Services.UserCategoryService
             _mapper = mapper;
         }
 
-        public async Task<UserCategoryOutDTO> GetAsync(int id)
+        public async Task<UserCategoryOutDTO> GetAsync(long id)
         {
             var foundCategory = await _unitOfWork.UserCategoryRepository.GetByIdAsync(id).ConfigureAwait(false);
             return foundCategory == null

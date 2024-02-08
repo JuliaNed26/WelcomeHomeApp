@@ -23,7 +23,7 @@ public class SocialPayoutRepository : ISocialPayoutRepository
                          .Select(sp => sp);
     }
 
-    public async Task<SocialPayout?> GetByIdAsync(int id)
+    public async Task<SocialPayout?> GetByIdAsync(long id)
     {
         return await _dbContext.SocialPayouts
                                .AsNoTracking()
@@ -73,7 +73,7 @@ public class SocialPayoutRepository : ISocialPayoutRepository
         }
     }
 
-    public async Task DeleteAsync(int socialPayoutId)
+    public async Task DeleteAsync(long socialPayoutId)
     {
         var socialPayout = await _dbContext.SocialPayouts.FindAsync(socialPayoutId)
                            ?? throw new NotFoundException($"SocialPayout with Id {socialPayoutId} not found for delete.");
@@ -99,7 +99,7 @@ public class SocialPayoutRepository : ISocialPayoutRepository
     }
 
 
-    private List<PaymentStep> GeneratePaymentStep(int SocialPayoutId, Dictionary<int, Step> steps)
+    private List<PaymentStep> GeneratePaymentStep(long SocialPayoutId, Dictionary<int, Step> steps)
     {
         List<PaymentStep> paymentSteps = new List<PaymentStep>();
         foreach (var step in steps)

@@ -20,7 +20,7 @@ namespace WelcomeHome.DAL.Repositories
                                       .Select(et => et);
         }
 
-        public async Task<EventType?> GetByIdAsync(int id)
+        public async Task<EventType?> GetByIdAsync(long id)
         {
             return await _context.EventTypes.Include(et => et.Events)
                                             .FirstOrDefaultAsync(e => e.Id == id)
@@ -42,7 +42,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             var existingEventType = await _context.EventTypes
                                                   .FindAsync(id)

@@ -6,10 +6,10 @@ namespace WelcomeHome.DAL.Repositories
     {
         IEnumerable<EstablishmentType> GetAll();
 
-        Task<EstablishmentType?> GetByIdAsync(int id);
+        Task<EstablishmentType?> GetByIdAsync(long id);
         Task AddAsync(EstablishmentType newEstablishmentType);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(long id);
 
         Task UpdateAsync(EstablishmentType editedEstablishmentType);
     }

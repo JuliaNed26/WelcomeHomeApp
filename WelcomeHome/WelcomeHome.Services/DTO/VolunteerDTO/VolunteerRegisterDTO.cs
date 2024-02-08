@@ -16,7 +16,7 @@ namespace WelcomeHome.Services.DTO
         [Required]
         public string SocialUrl { get; set; }
 
-        public int? EstablishmentId { get; set; }
+        public long? EstablishmentId { get; set; }
 
         [Required]
         public string Password { get; set; }

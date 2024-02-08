@@ -22,7 +22,7 @@ public sealed class StepRepository : IStepRepository
 			             .Select(s => s);
 	}
 
-	public async Task<Step?> GetByIdAsync(int id)
+	public async Task<Step?> GetByIdAsync(long id)
 	{
 		return await _dbContext.Steps
 			                   .AsNoTracking()
@@ -44,7 +44,7 @@ public sealed class StepRepository : IStepRepository
 		await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 	}
 
-	public async Task DeleteAsync(int id)
+	public async Task DeleteAsync(long id)
 	{
 		var step = await _dbContext.Steps.FindAsync(id).ConfigureAwait(false)
 				   ?? throw new NotFoundException($"Step with Id {id} not found for deletion.");
@@ -54,7 +54,7 @@ public sealed class StepRepository : IStepRepository
 	}
 
 	
-	public async Task<Step?> GetByEstablishmentTypeAndDocuments(int establishmentTypeId, ICollection<int> documentsRecieveIds, ICollection<int> documentsBringIds)
+	public async Task<Step?> GetByEstablishmentTypeAndDocuments(long establishmentTypeId, ICollection<long> documentsRecieveIds, ICollection<long> documentsBringIds)
 	{
 		var step = await _dbContext.Steps
 			.Where(s =>

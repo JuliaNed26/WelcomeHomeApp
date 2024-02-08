@@ -5,7 +5,7 @@ using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL;
 
-public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<int>, int>
+public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<long>, long>
 {
     public WelcomeHomeDbContext(DbContextOptions<WelcomeHomeDbContext> options)
         : base(options)

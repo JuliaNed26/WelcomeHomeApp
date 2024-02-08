@@ -22,7 +22,7 @@ namespace WelcomeHome.DAL.Repositories
                                   .Select(e => e);
         }
 
-        public async Task<Event?> GetByIdAsync(int id)
+        public async Task<Event?> GetByIdAsync(long id)
         {
             return await _context.Events.Include(e => e.Establishment)
                                         .Include(e => e.EventType)
@@ -32,7 +32,7 @@ namespace WelcomeHome.DAL.Repositories
                                         .ConfigureAwait(false);
         }
 
-        public IEnumerable<Event> GetByEventType(int eventTypeId)
+        public IEnumerable<Event> GetByEventType(long eventTypeId)
         {
             return _context.Events.Include(e => e.Establishment)
                                   .Include(e => e.EventType)
@@ -53,7 +53,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             var existingEvent = await _context.Events
                                               .FindAsync(id)
@@ -80,7 +80,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private async Task AttachEstablishmentAsync(int? establishmentId)
+        private async Task AttachEstablishmentAsync(long? establishmentId)
         {
             if (establishmentId != null)
             {
@@ -94,7 +94,7 @@ namespace WelcomeHome.DAL.Repositories
             }
         }
 
-        private async Task AttachEventTypeAsync(int eventTypeId)
+        private async Task AttachEventTypeAsync(long eventTypeId)
         {
             var foundEventType = await _context.EventTypes
                                                .FirstOrDefaultAsync(et => et.Id == eventTypeId)
@@ -105,7 +105,7 @@ namespace WelcomeHome.DAL.Repositories
             _context.Entry(foundEventType).State = EntityState.Unchanged;
         }
 
-        private async Task AttachVolunteerAsync(int? volunteerId)
+        private async Task AttachVolunteerAsync(long? volunteerId)
         {
             if (volunteerId != null)
             {

@@ -35,7 +35,7 @@ namespace WelcomeHome.Services.Services
 
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork.SocialPayoutRepository.DeleteAsync(id))
                                    .ConfigureAwait(false);
@@ -52,7 +52,7 @@ namespace WelcomeHome.Services.Services
             return dtos;
         }
 
-        public async Task<SocialPayoutOutDTO> GetAsync(int id)
+        public async Task<SocialPayoutOutDTO> GetAsync(long id)
         {
             var socialPayout = await _unitOfWork.SocialPayoutRepository.GetByIdAsync(id);
             if (socialPayout == null)

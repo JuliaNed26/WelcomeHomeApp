@@ -163,14 +163,14 @@ namespace WelcomeHome.Services.Tests.Volunteers
             _mockMapper.Setup(mapper => mapper.Map<Volunteer>(volunteerRegisterDto)).Returns(addedVolunteer);
 
 
-            _mockVolunteerRepository.Setup(repo => repo.AddAsync(It.IsAny<int>(), addedVolunteer))
+            _mockVolunteerRepository.Setup(repo => repo.AddAsync(It.IsAny<long>(), addedVolunteer))
                     .ReturnsAsync(addedVolunteer);
 
             // Act
             resultVolunteer = await _volunteerService.RegisterVolunteerAsync(volunteerRegisterDto);
 
             // Assert
-            _mockVolunteerRepository.Verify(repo => repo.AddAsync(It.IsAny<int>(), It.IsAny<Volunteer>()), Times.Once);
+            _mockVolunteerRepository.Verify(repo => repo.AddAsync(It.IsAny<long>(), It.IsAny<Volunteer>()), Times.Once);
             Assert.IsNotNull(resultVolunteer);
             Assert.That(resultVolunteer?.SocialUrl, Is.EqualTo(volunteerRegisterDto.SocialUrl));
         }

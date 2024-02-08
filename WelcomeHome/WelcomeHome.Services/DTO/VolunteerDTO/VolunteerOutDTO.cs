@@ -2,7 +2,7 @@
 {
     public record VolunteerOutDTO
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string FullName { get; set; }
 
