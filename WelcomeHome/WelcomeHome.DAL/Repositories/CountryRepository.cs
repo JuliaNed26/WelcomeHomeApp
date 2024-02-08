@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories;
@@ -37,6 +38,11 @@ public sealed class CountryRepository : ICountryRepository
 
     public async Task UpdateAsync(Country country)
     {
+        if (country.Id == 0)
+        {
+            throw new NotFoundException($"Country with id {country.Id} was not found");
+        }
+
         _context.Countries.Update(country);
         await _context.SaveChangesAsync().ConfigureAwait(false);
     }

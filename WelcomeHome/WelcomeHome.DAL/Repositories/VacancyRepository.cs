@@ -48,6 +48,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Vacancy vacancy)
         {
+            if (vacancy.Id == 0)
+            {
+                throw new NotFoundException($"Vacancy with id {vacancy.Id} was not found");
+            }
             AttachEstablishment(vacancy);
             _context.Vacancies.Update(vacancy);
 

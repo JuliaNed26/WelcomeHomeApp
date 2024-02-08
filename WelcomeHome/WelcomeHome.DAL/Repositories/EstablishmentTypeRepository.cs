@@ -48,6 +48,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(EstablishmentType editedEstablishmentType)
         {
+            if (editedEstablishmentType.Id == 0)
+            {
+                throw new NotFoundException($"Establishment type with id {editedEstablishmentType.Id} was not found");
+            }
             _context.EstablishmentTypes.Update(editedEstablishmentType);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);

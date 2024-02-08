@@ -46,6 +46,10 @@ public sealed class VolunteerRepository : IVolunteerRepository
 
     public async Task UpdateAsync(Volunteer volunteer)
     {
+        if (volunteer.UserId == 0)
+        {
+            throw new NotFoundException($"Volunter with id {volunteer.UserId} was not found");
+        }
         AttachEstablishment(volunteer);
         _context.Volunteers.Update(volunteer);
 

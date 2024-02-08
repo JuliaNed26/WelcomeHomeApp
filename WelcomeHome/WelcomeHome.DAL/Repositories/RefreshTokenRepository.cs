@@ -32,6 +32,10 @@ public class RefreshTokenRepository : IRefreshTokenRepository
 
     public async Task UpdateAsync(RefreshToken refreshToken)
     {
+        if (refreshToken.Id == 0)
+        {
+            throw new NotFoundException($"Refresh token with id {refreshToken.Id} was not found");
+        }
         _context.RefreshTokens.Update(refreshToken);
         await _context.SaveChangesAsync().ConfigureAwait(false);
     }

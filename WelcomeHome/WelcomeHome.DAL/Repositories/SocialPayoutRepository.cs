@@ -52,6 +52,10 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 
     public async Task UpdateWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps)
     {
+        if (socialPayout.Id == 0)
+        {
+            throw new NotFoundException($"Social payout with id {socialPayout.Id} was not found");
+        }
         try
         {
             if (socialPayout.UserCategories != null)

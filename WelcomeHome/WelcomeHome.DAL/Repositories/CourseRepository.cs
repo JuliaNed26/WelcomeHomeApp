@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
@@ -39,6 +40,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Course editedCourse)
         {
+            if (editedCourse.Id == 0)
+            {
+                throw new NotFoundException($"Course with id {editedCourse.Id} was not found");
+            }
             _context.Courses.Update(editedCourse);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);

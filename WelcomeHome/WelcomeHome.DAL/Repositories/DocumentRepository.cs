@@ -30,6 +30,10 @@ public sealed class DocumentRepository : IDocumentRepository
 
     public async Task UpdateAsync(Document document)
     {
+        if (document.Id == 0)
+        {
+            throw new NotFoundException($"Document with id {document.Id} was not found");
+        }
         _dbContext.Documents.Update(document);
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
     }

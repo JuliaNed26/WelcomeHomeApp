@@ -55,6 +55,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(EventType editedEventType)
         {
+            if (editedEventType.Id == 0)
+            {
+                throw new NotFoundException($"Event type with id {editedEventType.Id} was not found");
+            }
             _context.EventTypes.Update(editedEventType);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);

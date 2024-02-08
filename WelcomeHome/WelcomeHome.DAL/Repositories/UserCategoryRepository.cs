@@ -55,6 +55,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(UserCategory userCategory)
         {
+            if (userCategory.Id == 0)
+            {
+                throw new NotFoundException($"User category with id {userCategory.Id} was not found");
+            }
             _context.UserCategories.Update(userCategory);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

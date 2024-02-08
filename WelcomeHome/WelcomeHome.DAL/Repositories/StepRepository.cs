@@ -39,8 +39,12 @@ public sealed class StepRepository : IStepRepository
 	}
 
 	public async Task UpdateAsync(Step step)
-	{
-		_dbContext.Steps.Update(step);
+    {
+        if (step.Id == 0)
+        {
+            throw new NotFoundException($"Step with id {step.Id} was not found");
+        }
+        _dbContext.Steps.Update(step);
 		await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 	}
 
