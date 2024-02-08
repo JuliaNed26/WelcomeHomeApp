@@ -12,7 +12,7 @@
 
         public string SocialUrl { get; set; }
 
-        public EstablishmentOutDTO Establishment { get; set; }
+        public EstablishmentFullInfoDTO Establishment { get; set; }
 
     }
 }

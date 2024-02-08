@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WelcomeHome.DAL;
 
@@ -11,9 +12,11 @@ using WelcomeHome.DAL;
 namespace WelcomeHome.DAL.Migrations
 {
     [DbContext(typeof(WelcomeHomeDbContext))]
-    partial class WelcomeHomeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240202135507_InsertModeratorRole")]
+    partial class InsertModeratorRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,7 +335,7 @@ namespace WelcomeHome.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EstablishmentId")
+                    b.Property<int>("EstablishmentId")
                         .HasColumnType("int");
 
                     b.Property<int>("EventTypeId")
@@ -342,7 +345,7 @@ namespace WelcomeHome.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("VolunteerId")
+                    b.Property<int>("VolunteerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -730,7 +733,8 @@ namespace WelcomeHome.DAL.Migrations
                     b.HasOne("WelcomeHome.DAL.Models.Establishment", "Establishment")
                         .WithMany("Events")
                         .HasForeignKey("EstablishmentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WelcomeHome.DAL.Models.EventType", "EventType")
                         .WithMany("Events")
@@ -741,7 +745,8 @@ namespace WelcomeHome.DAL.Migrations
                     b.HasOne("WelcomeHome.DAL.Models.Volunteer", "Volunteer")
                         .WithMany("Events")
                         .HasForeignKey("VolunteerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Establishment");
 

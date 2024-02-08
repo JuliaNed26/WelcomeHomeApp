@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.Services;
+using WelcomeHome.Services.Services.EstablishmentService;
 
 namespace WelcomeHome.Web.Controllers;
 
@@ -31,6 +32,15 @@ public class VolunteerController : ControllerBase
         return Ok(allVolunteers);
     }
 
+    [HttpPost("organization")]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
+    public async Task<IActionResult> AddVolunteerOrganizationAsync(EstablishmentVolunteerInDTO newEstablishment)
+    {
+        await _volunteerService.AddVolunteerOrganizationAsync(newEstablishment).ConfigureAwait(false);
+        return NoContent();
+    }
+
+    //TODO: Moderator can update volunteer info or delete it
 
     //[HttpPut]
     //public async Task<IActionResult> UpdateAsync(VolunteerOutDTO updateVolunteer)

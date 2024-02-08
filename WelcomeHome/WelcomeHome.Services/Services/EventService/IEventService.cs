@@ -1,18 +1,20 @@
-﻿using WelcomeHome.Services.DTO;
+﻿using WelcomeHome.Services.DTO.EventDto;
 
-namespace WelcomeHome.Services.Services
+namespace WelcomeHome.Services.Services.EventService
 {
     public interface IEventService
     {
-        int GetCount();
+        Task<EventFullInfoDTO> GetAsync(int id);
 
-        Task<EventOutDTO> GetAsync(int id);
+        IEnumerable<EventFullInfoDTO> GetAll();
 
-        IEnumerable<EventOutDTO> GetAll();
+        Task<IEnumerable<EventFullInfoDTO>> GetPsychologicalServicesAsync();
 
         Task AddAsync(EventInDTO newEvent);
 
-        Task UpdateAsync(EventOutDTO eventWithUpdateInfo);
+        Task AddPsychologicalServiceAsync(EventInDTO newEvent);
+
+        Task UpdateAsync(EventFullInfoDTO eventWithUpdateInfo);
 
         Task DeleteAsync(int id);
     }

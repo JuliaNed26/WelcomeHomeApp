@@ -8,6 +8,8 @@ namespace WelcomeHome.DAL.Repositories
 
         Task<Event?> GetByIdAsync(int id);
 
+        IEnumerable<Event> GetByEventType(int eventTypeId);
+
         Task AddAsync(Event newEvent);
 
         Task DeleteAsync(int id);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
@@ -13,13 +14,21 @@ namespace WelcomeHome.DAL.Repositories
             this._context = context;
         }
 
-        public IEnumerable<Establishment> GetAll()
+        public IEnumerable<Establishment> GetAll(EstablishmentRetrievalFiltersDto? filters = null)
         {
-            return _context.Establishments.Include(e => e.Events)
-                                          .Include(e => e.City)
-                                          .Include(e => e.EstablishmentType)
-                                          .AsNoTracking()
-                                          .Select(e => e);
+            var allEstablishments = _context.Establishments.Include(e => e.Events)
+                                                           .Include(e => e.City)
+                                                           .Include(e => e.EstablishmentType)
+                                                           .AsQueryable();
+
+            if (filters != null)
+            {
+                allEstablishments = allEstablishments
+                                    .Where(e => filters.EstablishmentTypeId == null || e.EstablishmentTypeId == filters.EstablishmentTypeId)
+                                    .Where(e => filters.CityId == null || e.CityId == filters.CityId);
+            }
+
+            return allEstablishments;
         }
 
         public async Task<Establishment?> GetByIdAsync(int id)
@@ -27,13 +36,17 @@ namespace WelcomeHome.DAL.Repositories
             return await _context.Establishments.Include(e => e.Events)
                                                 .Include(e => e.City)
                                                 .Include(e => e.EstablishmentType)
+                                                .AsNoTracking()
                                                 .FirstOrDefaultAsync(e => e.Id == id)
                                                 .ConfigureAwait(false);
         }
 
         public async Task AddAsync(Establishment newEstablishment)
         {
+            await AttachEstablishmentTypeAsync(newEstablishment.EstablishmentTypeId).ConfigureAwait(false);
+            await AttachCityAsync(newEstablishment.CityId).ConfigureAwait(false);
             await _context.Establishments.AddAsync(newEstablishment).ConfigureAwait(false);
+
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
@@ -50,30 +63,38 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Establishment editedEstablishment)
         {
-            AttachEstablishmentType(editedEstablishment);
-            AttachCity(editedEstablishment);
+            await AttachEstablishmentTypeAsync(editedEstablishment.EstablishmentTypeId).ConfigureAwait(false);
+            await AttachCityAsync(editedEstablishment.CityId).ConfigureAwait(false);
+
+            if (editedEstablishment.Id == 0)
+            {
+                throw new NotFoundException($"Establishment with id {editedEstablishment.Id} was not found");
+            }
             _context.Establishments.Update(editedEstablishment);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void AttachEstablishmentType(Establishment establishment)
+        private async Task AttachEstablishmentTypeAsync(int establishmentTypeId)
         {
-            if (establishment.EstablishmentType != null)
-            {
-                _context.EstablishmentTypes.Attach(establishment.EstablishmentType);
-                _context.Entry(establishment.EstablishmentType).State = EntityState.Unchanged;
-            }
+            var foundType = await _context.EstablishmentTypes
+                                          .FirstOrDefaultAsync(et => et.Id == establishmentTypeId)
+                                          .ConfigureAwait(false)
+                            ?? throw new NotFoundException($"Establishment type with id {establishmentTypeId} was not found");
+
+            _context.EstablishmentTypes.Attach(foundType);
+            _context.Entry(foundType).State = EntityState.Unchanged;
         }
 
-        private void AttachCity(Establishment establishment)
+        private async Task AttachCityAsync(int cityId)
         {
-            if (establishment.City != null)
-            {
-                _context.Cities.Attach(establishment.City);
-                _context.Entry(establishment.City).State = EntityState.Unchanged;
-            }
+            var foundCity = await _context.Cities
+                                .FirstOrDefaultAsync(c => c.Id == cityId)
+                                .ConfigureAwait(false)
+                            ?? throw new NotFoundException($"City with id {cityId} was not found");
 
+            _context.Cities.Attach(foundCity);
+            _context.Entry(foundCity).State = EntityState.Unchanged;
         }
     }
 }

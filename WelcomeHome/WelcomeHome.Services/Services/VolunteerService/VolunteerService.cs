@@ -62,5 +62,16 @@ namespace WelcomeHome.Services.Services
                 ? throw new RecordNotFoundException("No volunteer with such id")
                 : _mapper.Map<VolunteerOutDTO>(foundVolunteer);
         }
+
+
+        public async Task AddVolunteerOrganizationAsync(EstablishmentVolunteerInDTO newEstablishment)
+        {
+            var entity = _mapper.Map<Establishment>(newEstablishment);
+            entity.EstablishmentTypeId = 1;
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+                                                             .EstablishmentRepository
+                                                             .AddAsync(entity))
+                                                         .ConfigureAwait(false);
+        }
     }
 }

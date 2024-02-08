@@ -142,7 +142,7 @@ namespace WelcomeHome.Services.Services
             var stepEstablishments = establishments.Where(e => e.EstablishmentTypeId == establishmentTypeId);
             if (stepEstablishments.Any())
             {
-                step.Establishments = _mapper.Map<List<EstablishmentOutDTO>>(stepEstablishments);
+                step.Establishments = _mapper.Map<List<EstablishmentFullInfoDTO>>(stepEstablishments);
             }
         }
 
