@@ -16,7 +16,7 @@ public sealed class VolunteerRepository : IVolunteerRepository
     public IEnumerable<Volunteer> GetAll()
     {
         return _context.Volunteers
-                       .Include(v => v.Establishment)
+                       .Include(v => v.Organization)
                        .Include(v => v.User)
                        .AsNoTracking()
                        .Select(v => v);
@@ -25,7 +25,7 @@ public sealed class VolunteerRepository : IVolunteerRepository
     public async Task<Volunteer?> GetByIdAsync(long id)
     {
         return await _context.Volunteers
-                             .Include(v => v.Establishment)
+                             .Include(v => v.Organization)
                              .Include(v => v.User)
                              .AsNoTracking()
                              .SingleOrDefaultAsync(v => v.UserId == id)
@@ -35,7 +35,7 @@ public sealed class VolunteerRepository : IVolunteerRepository
     public async Task<Volunteer?> AddAsync(long id, Volunteer volunteer)
     {
         volunteer.UserId = id;
-
+        await AttachOrganizationAsync(volunteer.OrganizationId).ConfigureAwait(false);
         await _context.Volunteers.AddAsync(volunteer).ConfigureAwait(false);
         await _context.SaveChangesAsync().ConfigureAwait(false);
 
@@ -48,9 +48,9 @@ public sealed class VolunteerRepository : IVolunteerRepository
     {
         if (volunteer.UserId == 0)
         {
-            throw new NotFoundException($"Volunter with id {volunteer.UserId} was not found");
+            throw new NotFoundException($"Volunteer with id {volunteer.UserId} was not found");
         }
-        AttachEstablishment(volunteer);
+        await AttachOrganizationAsync(volunteer.OrganizationId).ConfigureAwait(false);
         _context.Volunteers.Update(volunteer);
 
         await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -59,7 +59,8 @@ public sealed class VolunteerRepository : IVolunteerRepository
     public async Task DeleteAsync(long id)
     {
         var foundVolunteer = await _context.Volunteers
-                                           .FindAsync(id)
+                                           .Include(v => v.Establishments)
+                                           .FirstOrDefaultAsync(v => v.UserId == id)
                                            .ConfigureAwait(false)
                              ?? throw new NotFoundException($"Volunteer with Id {id} not found for deletion.");
 
@@ -67,12 +68,13 @@ public sealed class VolunteerRepository : IVolunteerRepository
         await _context.SaveChangesAsync().ConfigureAwait(false);
     }
 
-    private void AttachEstablishment(Volunteer volunteer)
+    private async Task AttachOrganizationAsync(long organizationId)
     {
-        if (volunteer.Establishment != null)
-        {
-            _context.Establishments.Attach(volunteer.Establishment);
-            _context.Entry(volunteer.Establishment).State = EntityState.Unchanged;
-        }
+        var foundOrganization = await _context.Establishments
+                                                          .FirstOrDefaultAsync(e => e.Id == organizationId)
+                                                          .ConfigureAwait(false)
+                                             ?? throw new NotFoundException($"Volunteer organization with id {organizationId} ws not found");
+        _context.Establishments.Attach(foundOrganization);
+        _context.Entry(foundOrganization).State = EntityState.Unchanged;
     }
 }

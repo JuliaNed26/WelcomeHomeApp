@@ -43,6 +43,7 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task AddAsync(Establishment newEstablishment)
         {
+            await AttachVolunteerAsync(newEstablishment.CreatorId).ConfigureAwait(false);
             await AttachEstablishmentTypeAsync(newEstablishment.EstablishmentTypeId).ConfigureAwait(false);
             await AttachCityAsync(newEstablishment.CityId).ConfigureAwait(false);
             await _context.Establishments.AddAsync(newEstablishment).ConfigureAwait(false);
@@ -63,6 +64,7 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Establishment editedEstablishment)
         {
+            await AttachVolunteerAsync(editedEstablishment.CreatorId).ConfigureAwait(false);
             await AttachEstablishmentTypeAsync(editedEstablishment.EstablishmentTypeId).ConfigureAwait(false);
             await AttachCityAsync(editedEstablishment.CityId).ConfigureAwait(false);
 
@@ -95,6 +97,17 @@ namespace WelcomeHome.DAL.Repositories
 
             _context.Cities.Attach(foundCity);
             _context.Entry(foundCity).State = EntityState.Unchanged;
+        }
+
+        private async Task AttachVolunteerAsync(long volunteerId)
+        {
+            var foundVolunteer = await _context.Volunteers
+                                .FirstOrDefaultAsync(v => v.UserId == volunteerId)
+                                .ConfigureAwait(false)
+                            ?? throw new NotFoundException($"Volunteer with id {volunteerId} was not found");
+
+            _context.Volunteers.Attach(foundVolunteer);
+            _context.Entry(foundVolunteer).State = EntityState.Unchanged;
         }
     }
 }

@@ -102,6 +102,16 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
                                         .WithOne(u => u.Volunteer)
                                         .HasForeignKey<Volunteer>(u => u.UserId);
 
+        modelBuilder.Entity<Volunteer>().HasOne(v => v.Organization)
+                                        .WithMany(org => org.VolunteersInOrganization)
+                                        .HasForeignKey(v => v.OrganizationId)
+                                        .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Volunteer>().HasMany(v => v.Establishments)
+                                        .WithOne(e => e.Creator)
+                                        .HasForeignKey(e => e.CreatorId)
+                                        .OnDelete(DeleteBehavior.NoAction);
+
         modelBuilder.Entity<User>().HasOne(u => u.RefreshToken)
                                    .WithOne(rt => rt.User);
 
