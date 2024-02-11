@@ -95,7 +95,7 @@ namespace WelcomeHome.Web.Controllers
         {
             var id = HttpContext.User.FindFirstValue("id");
 
-            if (int.TryParse(id, out int idInt))
+            if (!long.TryParse(id, out long idInt))
             {
                 return Unauthorized();
             }
