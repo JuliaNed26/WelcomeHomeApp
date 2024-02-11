@@ -42,6 +42,11 @@ namespace WelcomeHome.Services.Services
                 claims.Add(new Claim(ClaimTypes.Role, (await _userManager.GetRolesAsync(user))[0]));
             }
 
+            if (user.Volunteer != null)
+            {
+                claims.Add(new Claim(nameof(Volunteer.IsVerified), user.Volunteer.IsVerified.ToString()));
+            }
+
             var secret = Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt:Key").Value);
 
             var key = new SymmetricSecurityKey(secret);
