@@ -68,13 +68,17 @@ public sealed class VolunteerRepository : IVolunteerRepository
         await _context.SaveChangesAsync().ConfigureAwait(false);
     }
 
-    private async Task AttachOrganizationAsync(long organizationId)
+    private async Task AttachOrganizationAsync(long? organizationId)
     {
-        var foundOrganization = await _context.Establishments
-                                                          .FirstOrDefaultAsync(e => e.Id == organizationId)
-                                                          .ConfigureAwait(false)
-                                             ?? throw new NotFoundException($"Volunteer organization with id {organizationId} ws not found");
-        _context.Establishments.Attach(foundOrganization);
-        _context.Entry(foundOrganization).State = EntityState.Unchanged;
+        if (organizationId != null)
+        {
+            var foundOrganization = await _context.Establishments
+                                        .FirstOrDefaultAsync(e => e.Id == organizationId)
+                                        .ConfigureAwait(false)
+                                    ?? throw new NotFoundException(
+                                        $"Volunteer organization with id {organizationId} ws not found");
+            _context.Establishments.Attach(foundOrganization);
+            _context.Entry(foundOrganization).State = EntityState.Unchanged;
+        }
     }
 }

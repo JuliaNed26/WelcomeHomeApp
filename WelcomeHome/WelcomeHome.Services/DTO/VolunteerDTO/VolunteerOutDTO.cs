@@ -12,6 +12,8 @@
 
         public string SocialUrl { get; set; }
 
+        public bool IsVerified { get; set; }
+
         public EstablishmentFullInfoDTO Establishment { get; set; }
 
     }
