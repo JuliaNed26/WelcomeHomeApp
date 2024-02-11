@@ -47,7 +47,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOnly))]
     public async Task<IActionResult> AddAsync(DocumentInDTO newDocument)
     {
         await _documentService.AddAsync(newDocument).ConfigureAwait(false);
@@ -55,7 +55,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpPut]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOrModerator))]
     public async Task<IActionResult> UpdateAsync(DocumentOutDTO updateDocument)
     {
         await _documentService.UpdateAsync(updateDocument).ConfigureAwait(false);
@@ -63,7 +63,7 @@ public class DocumentController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOrModerator))]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _documentService.DeleteAsync(id).ConfigureAwait(false);

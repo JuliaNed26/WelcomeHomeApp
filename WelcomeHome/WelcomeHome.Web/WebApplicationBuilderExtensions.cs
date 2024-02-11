@@ -58,8 +58,15 @@ public static class WebApplicationBuilderExtensions
                 p.RequireRole("volunteer"));
             options.AddPolicy(AuthorizationPolicies.ModeratorOnly.ToString(), p =>
                 p.RequireRole("moderator"));
-            options.AddPolicy(AuthorizationPolicies.VolunteerOrModerator.ToString(), p =>
-                p.RequireRole("volunteer", "moderator"));
+            options.AddPolicy(AuthorizationPolicies.VerifiedVolunteerOrModerator.ToString(), p =>
+            {
+                p.RequireAssertion(context => context.User.IsInRole("moderator") ||
+                           (context.User.IsInRole("volunteer") &&
+                           context.User.HasClaim(nameof(Volunteer.IsVerified), "True")));
+            });
+            options.AddPolicy(AuthorizationPolicies.VerifiedVolunteerOnly.ToString(), p =>
+                p.RequireRole("volunteer")
+                 .RequireClaim(nameof(Volunteer.IsVerified), "True"));
         });
 
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

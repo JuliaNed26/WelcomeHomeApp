@@ -2,7 +2,8 @@
 
 public enum AuthorizationPolicies
 {
+    VerifiedVolunteerOnly,
     VolunteerOnly,
     ModeratorOnly,
-    VolunteerOrModerator,
+    VerifiedVolunteerOrModerator,
 }
