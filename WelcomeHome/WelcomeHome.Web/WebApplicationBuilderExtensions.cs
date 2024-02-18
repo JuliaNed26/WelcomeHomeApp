@@ -46,9 +46,11 @@ public static class WebApplicationBuilderExtensions
                 ValidateAudience = true,
                 RequireExpirationTime = true,
                 ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
                 ValidIssuer = builder.Configuration.GetSection("Jwt:Issuer").Value,
                 ValidAudience = builder.Configuration.GetSection("Jwt:Audience").Value,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:Key").Value!))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:Key").Value!)),
+                ClockSkew = TimeSpan.Zero
             };
         });
 
