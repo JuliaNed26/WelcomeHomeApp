@@ -24,14 +24,11 @@ namespace WelcomeHome.Services.Services
 
         public async Task AddAsync(SocialPayoutInDTO newPayout)
         {
-            var socialPayoutWithSteps = await ConvertDtoIntoEntities(newPayout);
+            var socialPayout = await ConvertDtoIntoEntities(newPayout);
 
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
-                                                              .SocialPayoutRepository
-                                                              .AddWithStepsAsync(socialPayoutWithSteps.Item1,
-                                                              socialPayoutWithSteps.Item2
-                                                              ))
-                .ConfigureAwait(false);
+                                                              .SocialPayoutRepository.AddAsync(socialPayout))
+                                                              .ConfigureAwait(false);
 
         }
 
@@ -77,30 +74,25 @@ namespace WelcomeHome.Services.Services
             throw new NotImplementedException();
         }
 
-        //public async Task UpdateAsync(SocialPayoutInDTO payoutWithUpdateInfo)
-        //{
-        //    var socialPayoutWithSteps = await ConvertDtoIntoEntities(payoutWithUpdateInfo);
-        //    socialPayoutWithSteps.Item1.Id = (Guid)payoutWithUpdateInfo.Id;
-
-        //    await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
-        //                                                      .SocialPayoutRepository
-        //                                                      .UpdateWithStepsAsync(socialPayoutWithSteps.Item1,
-        //                                                      socialPayoutWithSteps.Item2
-        //                                                      ))
-        //        .ConfigureAwait(false);
-        //}
+        public async Task UpdateAsync(SocialPayoutOutDTO payoutWithUpdateInfo)
+        {
+            var newSocialPayout  = _mapper.Map<SocialPayout>(payoutWithUpdateInfo);
 
 
+            await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
+                                                              .SocialPayoutRepository
+                                                              .UpdateAsync(newSocialPayout)
+                                                              )
+                .ConfigureAwait(false);
+        }
 
-        private async Task<(SocialPayout, Dictionary<int, Step>)> ConvertDtoIntoEntities(SocialPayoutInDTO newPayout)
+
+
+        private async Task<SocialPayout> ConvertDtoIntoEntities(SocialPayoutInDTO newPayout)
         {
             var socialPayout = await GenerateSocialPayout(newPayout);
 
-
-            var steps = newPayout.NewPaymentSteps == null ? null : GenerateSteps(newPayout.NewPaymentSteps);
-
-
-            return (socialPayout, steps);
+            return socialPayout;
         }
 
         private async Task<SocialPayout> GenerateSocialPayout(SocialPayoutInDTO newPayout)
@@ -123,72 +115,9 @@ namespace WelcomeHome.Services.Services
                 Description = newPayout.Description,
                 Amount = newPayout.Amount,
                 UserCategories = categories,
-                PaymentSteps = newPayout.ExistingPaymentSteps == null ? null : GeneratePaymentStepsforExistingSteps(newPayout.ExistingPaymentSteps)
+                PaymentSteps = GeneratePaymentStepsforExistingSteps(newPayout.PaymentSteps)
             };
             return socialPayout;
-        }
-
-        private Dictionary<int, Step> GenerateSteps(ICollection<StepInDTO> stepsDTO)
-        {
-            Dictionary<int, Step> steps = new Dictionary<int, Step>();
-
-            foreach (var step in stepsDTO)
-            {
-                //пошук існуючих степів в БД. Пошук працює, проте не ясно, як додати всі степи без помилки у бд,
-                //не додаючи існуючий,
-                //тому поки в коменті
-
-                /*   var foundStep = await _unitOfWork.StepRepository.GetByEstablishmentTypeAndDocuments(step.EstablishmentTypeId, step.DocumentsReceiveId, step.DocumentsBringId);
-                   if (foundStep != null)
-                   {
-                       steps.Add(step.SequenceNumber, foundStep);
-                   }
-                   else
-                   {*/
-                var stepEntity = _mapper.Map<Step>(step);
-
-                stepEntity.StepDocuments = new List<StepDocument>();
-
-                stepEntity.StepDocuments.AddRange(GenerateStepDocumentsToReceive(step.DocumentsReceiveId));
-                stepEntity.StepDocuments.AddRange(GenerateStepDocumentsToBring(step.DocumentsBringId));
-
-                steps.Add(step.SequenceNumber, stepEntity);
-            }
-            //}
-
-            return steps;
-        }
-
-        private ICollection<StepDocument> GenerateStepDocumentsToReceive(ICollection<int> documentsReceive)
-        {
-            ICollection<StepDocument> stepDocuments = new List<StepDocument>();
-            foreach (var document in documentsReceive)
-            {
-                var newStepDoc = new StepDocument
-                {
-                    ToReceive = true,
-                    DocumentId = document
-                };
-                stepDocuments.Add(newStepDoc);
-            }
-
-            return stepDocuments;
-        }
-
-        private ICollection<StepDocument> GenerateStepDocumentsToBring(ICollection<int> documentsBring)
-        {
-            ICollection<StepDocument> stepDocuments = new List<StepDocument>();
-            foreach (var document in documentsBring)
-            {
-                var newStepDoc = new StepDocument
-                {
-                    ToReceive = false,
-                    DocumentId = document
-                };
-                stepDocuments.Add(newStepDoc);
-            }
-
-            return stepDocuments;
         }
 
         private List<PaymentStep> GeneratePaymentStepsforExistingSteps(ICollection<ExistingStepInDTO> steps)

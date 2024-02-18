@@ -10,8 +10,6 @@
 
         public ICollection<int> UserCategoriesId { get; set; }
 
-        public ICollection<StepInDTO>? NewPaymentSteps { get; set; }
-
-        public ICollection<ExistingStepInDTO>? ExistingPaymentSteps { get; set; }
+        public ICollection<ExistingStepInDTO> PaymentSteps { get; set; }
     }
 }

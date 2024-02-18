@@ -34,6 +34,7 @@ namespace WelcomeHome.Services
             CreateMap<UserCategory, UserCategoryOutDTO>();
             CreateMap<SocialPayout, SocialPayoutListItemDTO>();
             CreateMap<SocialPayout, SocialPayoutOutDTO>();
+            CreateMap<SocialPayoutOutDTO, SocialPayout>();
             CreateMap<EstablishmentFiltersDto, EstablishmentRetrievalFiltersDto>();
         }
     }
