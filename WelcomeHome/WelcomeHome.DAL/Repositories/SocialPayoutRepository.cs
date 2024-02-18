@@ -29,11 +29,12 @@ public class SocialPayoutRepository : ISocialPayoutRepository
                                .AsNoTracking()
                                .Include(p => p.PaymentSteps)
                                .ThenInclude(ps => ps.Step)
+                               .Include(p => p.UserCategories)
                                .FirstOrDefaultAsync(p => p.Id == id)
                                .ConfigureAwait(false);
     }
 
-    public async Task AddWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps)
+    public async Task AddAsync(SocialPayout socialPayout)
     {
         if (socialPayout.UserCategories != null)
         {
@@ -42,35 +43,14 @@ public class SocialPayoutRepository : ISocialPayoutRepository
 
         await _dbContext.SocialPayouts.AddAsync(socialPayout).ConfigureAwait(false);
 
-        if (steps != null)
-        {
-            AddStepsToSocialPayout(steps, socialPayout);
-        }
 
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
     }
 
-    public async Task UpdateWithStepsAsync(SocialPayout socialPayout, Dictionary<int, Step> steps)
+    public async Task UpdateAsync(SocialPayout socialPayout)
     {
-        try
-        {
-            if (socialPayout.UserCategories != null)
-            {
-                AttachUserCategories(socialPayout.UserCategories);
-            }
-
-            if (steps != null)
-            {
-                AddStepsToSocialPayout(steps, socialPayout);
-            }
-            _dbContext.SocialPayouts.Update(socialPayout);
-
-            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
+        _dbContext.SocialPayouts.Update(socialPayout);
+        await _dbContext.SaveChangesAsync().ConfigureAwait(false);
     }
 
     public async Task DeleteAsync(int socialPayoutId)
@@ -82,39 +62,6 @@ public class SocialPayoutRepository : ISocialPayoutRepository
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
     }
 
-
-    private void AddStepsToSocialPayout(Dictionary<int, Step> steps, SocialPayout socialPayout)
-    {
-        _dbContext.Steps.AddRange(steps.Values);
-        var newPaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
-
-        if (socialPayout.PaymentSteps == null)
-        {
-            socialPayout.PaymentSteps = GeneratePaymentStep(socialPayout.Id, steps);
-        }
-        else
-        {
-            socialPayout.PaymentSteps.AddRange(newPaymentSteps);
-        }
-    }
-
-
-    private List<PaymentStep> GeneratePaymentStep(int SocialPayoutId, Dictionary<int, Step> steps)
-    {
-        List<PaymentStep> paymentSteps = new List<PaymentStep>();
-        foreach (var step in steps)
-        {
-            var newPaymentStep = new PaymentStep
-            {
-                SocialPayoutId = SocialPayoutId,
-                Step = step.Value,
-                SequenceNumber = step.Key
-            };
-            paymentSteps.Add(newPaymentStep);
-        }
-
-        return paymentSteps;
-    }
 
     private void AttachUserCategories(ICollection<UserCategory> categories)
     {

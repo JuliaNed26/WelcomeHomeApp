@@ -47,5 +47,13 @@ namespace WelcomeHome.Web.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
+        public async Task<IActionResult> Update(SocialPayoutOutDTO newSocialPayout)
+        {
+            await _socialPayoutService.UpdateAsync(newSocialPayout);
+            return Ok();
+        }
+
     }
 }

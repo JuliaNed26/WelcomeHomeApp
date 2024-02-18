@@ -2,7 +2,7 @@
 {
     public class StepInDTO
     {
-        public int SequenceNumber { get; set; }
+        //public int SequenceNumber { get; set; }
 
         public string Description { get; set; }
 

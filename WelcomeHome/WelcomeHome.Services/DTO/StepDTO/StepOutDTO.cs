@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public int SequenceNumber { get; set; }
+        //public int SequenceNumber { get; set; }
 
         public string Description { get; set; }
 
