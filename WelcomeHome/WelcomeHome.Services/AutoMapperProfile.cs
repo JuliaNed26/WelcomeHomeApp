@@ -4,6 +4,7 @@ using WelcomeHome.DAL.Models;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.DTO.EstablishmentDTO;
 using WelcomeHome.Services.DTO.EventDto;
+using WelcomeHome.Services.DTO.VacancyDTO;
 
 namespace WelcomeHome.Services
 {
@@ -36,6 +37,8 @@ namespace WelcomeHome.Services
             CreateMap<SocialPayout, SocialPayoutOutDTO>();
             CreateMap<EstablishmentFiltersDto, EstablishmentRetrievalFiltersDto>();
             CreateMap<EstablishmentVolunteerInDTO, Establishment>();
+
+            CreateMap<PaginationOptionsDTO, PaginationOptionsDto>();
         }
     }
 }
