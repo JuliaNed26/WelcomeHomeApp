@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO.VacancyDTO;
 using WelcomeHome.Services.ServiceClients.RobotaUa;
+using WelcomeHome.Services.Validators;
 
 namespace WelcomeHome.Services.Services.VacancyService;
 
@@ -21,9 +24,19 @@ public sealed class VacancyService : IVacancyService
         _robotaUaServiceClient = robotaUaServiceClient;
     }
 
-    public async Task<IEnumerable<VacancyDTO>> GetAllAsync()
+    public async Task<IEnumerable<VacancyDTO>> GetAllAsync(PaginationOptionsDTO paginationOptions)
     {
-        var allVacancies = await _robotaUaServiceClient.GetAllVacanciesAsync().ConfigureAwait(false);
-        return allVacancies;
+        var validator = ValidatorFactory.GetValidatorByType(paginationOptions) as AbstractValidator<PaginationOptionsDTO>;
+        await validator.ValidateAndThrowAsync(paginationOptions);
+
+        var mappedPaginationOptions = _mapper.Map<PaginationOptionsDto>(paginationOptions);
+        var vacanciesFromDatabase = _unitOfWork.VacancyRepository.GetAll(mappedPaginationOptions)
+                                                                               .Select(v => _mapper.Map<VacancyDTO>(v))
+                                                                               .ToList();
+
+        // here change pagination options judging from how many pages is in database vacancies
+        var vacanciesFromRobotaUa = await _robotaUaServiceClient.GetAllVacanciesAsync(paginationOptions)
+                                                                                    .ConfigureAwait(false);
+        return vacanciesFromDatabase.Union(vacanciesFromRobotaUa);
     }
 }

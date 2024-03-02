@@ -3,5 +3,5 @@
 namespace WelcomeHome.Services.Services.VacancyService;
 public interface IVacancyService
 {
-    public Task<IEnumerable<VacancyDTO>> GetAllAsync();
+    public Task<IEnumerable<VacancyDTO>> GetAllAsync(PaginationOptionsDTO paginationOptions);
 }
