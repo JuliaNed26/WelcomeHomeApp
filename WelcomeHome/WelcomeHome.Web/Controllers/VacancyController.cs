@@ -16,9 +16,17 @@ public class VacancyController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<VacancyDTO>>> GetAllAsync()
+    public async Task<ActionResult<IEnumerable<VacancyDTO>>> GetAllAsync(
+        [FromQuery]int page,
+        [FromQuery]int countOnPage)
     {
-        var allVacancies = await _vacancyService.GetAllAsync().ConfigureAwait(false);
+        var paginationOptions = new PaginationOptionsDTO()
+        {
+            PageNumber = page,
+            CountOnPage = countOnPage,
+        };
+
+        var allVacancies = await _vacancyService.GetAllAsync(paginationOptions).ConfigureAwait(false);
         return Ok(allVacancies);
     }
 }
