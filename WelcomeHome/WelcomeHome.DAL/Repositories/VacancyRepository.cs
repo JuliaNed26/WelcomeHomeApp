@@ -32,7 +32,7 @@ namespace WelcomeHome.DAL.Repositories
         public IEnumerable<Vacancy> GetAll()
         {
             return _context.Vacancies
-                .Include(v => v.Establishment)
+                .Include(v => v.City)
                 .AsNoTracking()
                 .Select(v => v);
         }
@@ -40,7 +40,7 @@ namespace WelcomeHome.DAL.Repositories
         public async Task<Vacancy?> GetByIdAsync(long id)
         {
             return await _context.Vacancies
-                .Include(v => v.Establishment)
+                .Include(v => v.City)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(v => v.Id == id)
                 .ConfigureAwait(false);
