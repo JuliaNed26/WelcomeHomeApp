@@ -12,9 +12,9 @@ public record VacancyDTO
 
     public float Salary { get; init; }
 
-    public float SalaryFrom { get; init; }
+    public float? SalaryFrom { get; init; }
 
-    public float SalaryTo { get; init; }
+    public float? SalaryTo { get; init; }
 
     public string? PageURL { get; init; }
 

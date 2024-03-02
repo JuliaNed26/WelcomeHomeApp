@@ -39,6 +39,14 @@ namespace WelcomeHome.Services
             CreateMap<EstablishmentVolunteerInDTO, Establishment>();
 
             CreateMap<PaginationOptionsDTO, PaginationOptionsDto>();
+
+            CreateMap<Vacancy, VacancyDTO>()
+            .ForMember(vacancy => vacancy.CityName, opt => opt.MapFrom(src => src.City.Name))
+            .ForMember(vacancy => vacancy.FromRobotaUa, opt => opt.MapFrom(_ => false))
+            .ForMember(vacancy => vacancy.SalaryFrom, opt => opt.Ignore())
+            .ForMember(vacancy => vacancy.SalaryTo, opt => opt.Ignore())
+            .ForMember(vacancy => vacancy.MetroName, opt => opt.Ignore())
+            .ForMember(vacancy => vacancy.DistrictName, opt => opt.Ignore());
         }
     }
 }
