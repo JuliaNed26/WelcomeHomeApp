@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
@@ -29,11 +30,15 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public IEnumerable<Vacancy> GetAll()
+        public IEnumerable<Vacancy> GetAll(PaginationOptionsDto paginationOptions)
         {
+            var vacanciesToSkip = (paginationOptions.PageNumber - 1) * paginationOptions.CountOnPage;
+
             return _context.Vacancies
                 .Include(v => v.City)
                 .AsNoTracking()
+                .Skip(vacanciesToSkip)
+                .Take(paginationOptions.CountOnPage)
                 .Select(v => v);
         }
 
