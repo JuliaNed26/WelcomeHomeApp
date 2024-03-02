@@ -29,4 +29,6 @@ public record VacancyDTO
     public string? MetroName { get; set; }
 
     public string? DistrictName { get; set; }
+
+    public bool FromRobotaUa { get; set; }
 }
