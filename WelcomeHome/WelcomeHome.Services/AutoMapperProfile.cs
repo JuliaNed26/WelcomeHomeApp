@@ -40,8 +40,7 @@ namespace WelcomeHome.Services
 
             CreateMap<PaginationOptionsDTO, PaginationOptionsDto>();
 
-            CreateMap<Vacancy, VacancyDTO>()
-            .ForMember(vacancy => vacancy.CityName, opt => opt.MapFrom(src => src.City.Name))
+            CreateMap<VacancyWithTotalPagesCount, VacancyDTO>()
             .ForMember(vacancy => vacancy.FromRobotaUa, opt => opt.MapFrom(_ => false))
             .ForMember(vacancy => vacancy.SalaryFrom, opt => opt.Ignore())
             .ForMember(vacancy => vacancy.SalaryTo, opt => opt.Ignore())

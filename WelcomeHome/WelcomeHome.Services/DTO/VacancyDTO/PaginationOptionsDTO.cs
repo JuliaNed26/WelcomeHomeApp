@@ -3,5 +3,5 @@ public record PaginationOptionsDTO
 {
     public int PageNumber { get; init; }
 
-    public int CountOnPage { get; init; }
+    public int CountOnPage { get; set; }
 }

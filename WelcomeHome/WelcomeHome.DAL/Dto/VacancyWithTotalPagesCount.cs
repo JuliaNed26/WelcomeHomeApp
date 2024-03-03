@@ -12,4 +12,5 @@ public class VacancyWithTotalPagesCount
     public string PhoneNumber { get; init; }
     public string? OtherContacts { get; init; }
     public long CityId { get; init; }
+    public string CityName { get; init; }
 }
