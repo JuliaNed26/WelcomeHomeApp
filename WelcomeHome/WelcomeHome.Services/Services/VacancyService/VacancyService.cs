@@ -24,19 +24,51 @@ public sealed class VacancyService : IVacancyService
         _robotaUaServiceClient = robotaUaServiceClient;
     }
 
-    public async Task<IEnumerable<VacancyDTO>> GetAllAsync(PaginationOptionsDTO paginationOptions)
+    public async Task<VacanciesWithTotalPagesCountDto> GetAllAsync(PaginationOptionsDTO paginationOptions)
     {
         var validator = ValidatorFactory.GetValidatorByType(paginationOptions) as AbstractValidator<PaginationOptionsDTO>;
         await validator.ValidateAndThrowAsync(paginationOptions);
 
+        IEnumerable<VacancyDTO> allVacanciesForPage = new List<VacancyDTO>();
+
         var mappedPaginationOptions = _mapper.Map<PaginationOptionsDto>(paginationOptions);
         var vacanciesFromDatabase = _unitOfWork.VacancyRepository.GetAll(mappedPaginationOptions)
-                                                                               .Select(v => _mapper.Map<VacancyDTO>(v))
-                                                                               .ToList();
+                                                                                            .ToList();
 
-        // here change pagination options judging from how many pages is in database vacancies
-        var vacanciesFromRobotaUa = await _robotaUaServiceClient.GetAllVacanciesAsync(paginationOptions)
+        bool shouldGetFromDatabase = false;
+
+        if (vacanciesFromDatabase.Count != 0 && vacanciesFromDatabase[0].TotalPagesCount <= paginationOptions.PageNumber)
+        {
+            allVacanciesForPage = vacanciesFromDatabase.Select(v => _mapper.Map<VacancyDTO>(v));
+            shouldGetFromDatabase = true;
+        }
+
+        var vacanciesFromRobotaUa = await _robotaUaServiceClient.GetAllVacanciesAsync(paginationOptions, shouldGetFromDatabase)
                                                                                     .ConfigureAwait(false);
-        return vacanciesFromDatabase.Union(vacanciesFromRobotaUa);
+
+        if (!shouldGetFromDatabase)
+        {
+            allVacanciesForPage = vacanciesFromRobotaUa.Vacancies;
+        }
+
+        return new()
+        {
+            Vacancies = allVacanciesForPage,
+            PagesCount = GetTotalPagesCount(),
+        };
+
+        int GetTotalPagesCount()
+        {
+            var robotaUaVacanciesPagesCount = (int)(vacanciesFromRobotaUa.TotalCount / paginationOptions.CountOnPage)
+                                                       + ((vacanciesFromRobotaUa.TotalCount % paginationOptions.CountOnPage) == 0
+                                                           ? 0
+                                                           : 1);
+
+            var vacanciesDatabasePagesCount = vacanciesFromDatabase.Count == 0
+                                                  ? 0
+                                                  : vacanciesFromDatabase[0].TotalPagesCount;
+
+            return vacanciesDatabasePagesCount + robotaUaVacanciesPagesCount;
+        }
     }
 }
