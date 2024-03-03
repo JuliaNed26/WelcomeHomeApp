@@ -50,4 +50,11 @@ public class VacancyController : ControllerBase
         await _vacancyService.UpdateAsync(updatedVacancy).ConfigureAwait(false);
         return Ok();
     }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAsync(VacancyDTO deleteVacancy)
+    {
+        await _vacancyService.DeleteAsync(deleteVacancy).ConfigureAwait(false);
+        return Ok();
+    }
 }
