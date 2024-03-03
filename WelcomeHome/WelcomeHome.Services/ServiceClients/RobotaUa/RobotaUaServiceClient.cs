@@ -79,6 +79,8 @@ public sealed class RobotaUaServiceClient : IRobotaUaServiceClient, IDisposable
             SalaryFrom = deserializedResponse.salaryFrom,
             SalaryTo = deserializedResponse.salaryTo,
             PageURL = $"https://robota.ua/company0/vacancy{deserializedResponse.id}",
+            PhoneNumber = deserializedResponse.contactPhone,
+            OtherContacts = deserializedResponse.contactUrl,
             CityId = deserializedResponse.cityId,
             CityName = deserializedResponse.cityName,
             MetroName = deserializedResponse.metroName,

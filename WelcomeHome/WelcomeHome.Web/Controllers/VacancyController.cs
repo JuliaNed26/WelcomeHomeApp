@@ -17,8 +17,8 @@ public class VacancyController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<VacanciesWithTotalPagesCountDto>> GetAllAsync(
-        [FromQuery]int page,
-        [FromQuery]int countOnPage)
+        [FromQuery] int page,
+        [FromQuery] int countOnPage)
     {
         var paginationOptions = new PaginationOptionsDTO()
         {
@@ -28,5 +28,12 @@ public class VacancyController : ControllerBase
 
         var allVacancies = await _vacancyService.GetAllAsync(paginationOptions).ConfigureAwait(false);
         return Ok(allVacancies);
+    }
+
+    [HttpGet("{id}/{fromRobotaUa}")]
+    public async Task<ActionResult<VacancyDTO>> GetAsync(long id, bool fromRobotaUa)
+    {
+        var foundVacancy = await _vacancyService.GetAsync(id, fromRobotaUa).ConfigureAwait(false);
+        return Ok(foundVacancy);
     }
 }
