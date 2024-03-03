@@ -58,6 +58,35 @@ public sealed class RobotaUaServiceClient : IRobotaUaServiceClient, IDisposable
         return (vacancies, deserializedResponse.total);
     }
 
+    public async Task<VacancyDTO> GetAsync(long id)
+    {
+        var getResponse = await _httpClient.GetAsync($"/vacancy?id={id}&ukrainian=true&cid=1").ConfigureAwait(false);
+        if (!getResponse.IsSuccessStatusCode)
+        {
+            throw new BusinessException(getResponse.ReasonPhrase);
+        }
+
+        var jsonResponse = await getResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+        dynamic deserializedResponse = JsonConvert.DeserializeObject(jsonResponse)!;
+
+        return new VacancyDTO()
+        {
+            Id = deserializedResponse.id,
+            Name = deserializedResponse.name,
+            CompanyName = deserializedResponse.companyName,
+            Description = deserializedResponse.description,
+            Salary = deserializedResponse.salary,
+            SalaryFrom = deserializedResponse.salaryFrom,
+            SalaryTo = deserializedResponse.salaryTo,
+            PageURL = $"https://robota.ua/company0/vacancy{deserializedResponse.id}",
+            CityId = deserializedResponse.cityId,
+            CityName = deserializedResponse.cityName,
+            MetroName = deserializedResponse.metroName,
+            DistrictName = deserializedResponse.districtName,
+            FromRobotaUa = true,
+        };
+    }
+
     public void Dispose()
     {
         if (!_disposed)
