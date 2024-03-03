@@ -2,6 +2,7 @@
 using FluentValidation;
 using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Exceptions;
+using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO.VacancyDTO;
 using WelcomeHome.Services.ServiceClients.RobotaUa;
@@ -84,5 +85,11 @@ public sealed class VacancyService : IVacancyService
                            ?? throw new NotFoundException($"Vacancy with id {id} was not found");
 
         return _mapper.Map<VacancyDTO>(foundVacancy);
+    }
+
+    public async Task AddAsync(VacancyAddUpdateDTO newVacancy)
+    {
+        var mappedVacancy = _mapper.Map<Vacancy>(newVacancy);
+        await _unitOfWork.VacancyRepository.AddAsync(mappedVacancy).ConfigureAwait(false);
     }
 }
