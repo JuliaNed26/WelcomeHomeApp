@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using WelcomeHome.DAL.Dto;
+using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO.VacancyDTO;
 using WelcomeHome.Services.ServiceClients.RobotaUa;
@@ -70,5 +71,18 @@ public sealed class VacancyService : IVacancyService
 
             return vacanciesDatabasePagesCount + robotaUaVacanciesPagesCount;
         }
+    }
+
+    public async Task<VacancyDTO> GetAsync(long id, bool fromRobotaUa)
+    {
+        if (fromRobotaUa)
+        {
+            return await _robotaUaServiceClient.GetAsync(id).ConfigureAwait(false);
+        }
+
+        var foundVacancy = await _unitOfWork.VacancyRepository.GetByIdAsync(id).ConfigureAwait(false)
+                           ?? throw new NotFoundException($"Vacancy with id {id} was not found");
+
+        return _mapper.Map<VacancyDTO>(foundVacancy);
     }
 }
