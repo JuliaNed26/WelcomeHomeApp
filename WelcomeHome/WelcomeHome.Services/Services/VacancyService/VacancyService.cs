@@ -97,9 +97,9 @@ public sealed class VacancyService : IVacancyService
         await _unitOfWork.VacancyRepository.AddAsync(mappedVacancy).ConfigureAwait(false);
     }
 
-    public async Task UpdateAsync(VacancyAddUpdateDTO newVacancy)
+    public async Task UpdateAsync(VacancyAddUpdateDTO updatedVacancy)
     {
-        var mappedVacancy = _mapper.Map<Vacancy>(newVacancy);
+        var mappedVacancy = _mapper.Map<Vacancy>(updatedVacancy);
         await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork.VacancyRepository.UpdateAsync(mappedVacancy))
                                .ConfigureAwait(false);
     }

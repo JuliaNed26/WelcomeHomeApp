@@ -43,4 +43,11 @@ public class VacancyController : ControllerBase
         await _vacancyService.AddAsync(newVacancy).ConfigureAwait(false);
         return Ok();
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync(VacancyAddUpdateDTO updatedVacancy)
+    {
+        await _vacancyService.UpdateAsync(updatedVacancy).ConfigureAwait(false);
+        return Ok();
+    }
 }
