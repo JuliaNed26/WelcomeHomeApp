@@ -4,5 +4,5 @@ namespace WelcomeHome.Services.ServiceClients.RobotaUa;
 
 public interface IRobotaUaServiceClient
 {
-    Task<IEnumerable<VacancyDTO>> GetAllVacanciesAsync(PaginationOptionsDTO paginationOptions);
+    Task<(IEnumerable<VacancyDTO> Vacancies, long TotalCount)> GetAllVacanciesAsync(PaginationOptionsDTO paginationOptions, bool getOnlyTotalCount);
 }

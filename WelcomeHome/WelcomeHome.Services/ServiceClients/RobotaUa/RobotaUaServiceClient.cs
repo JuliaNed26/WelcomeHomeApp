@@ -16,8 +16,13 @@ public sealed class RobotaUaServiceClient : IRobotaUaServiceClient, IDisposable
         _httpClient.BaseAddress = new Uri("https://api.rabota.ua");
     }
 
-    public async Task<IEnumerable<VacancyDTO>> GetAllVacanciesAsync(PaginationOptionsDTO paginationOptions)
+    public async Task<(IEnumerable<VacancyDTO> Vacancies, long TotalCount)> GetAllVacanciesAsync(PaginationOptionsDTO paginationOptions, bool getOnlyTotalCount)
     {
+        if (getOnlyTotalCount)
+        {
+            paginationOptions.CountOnPage = 0;
+        }
+
         var getResponse = await _httpClient.GetAsync($"/vacancy/search?page={paginationOptions.PageNumber}" +
                                                               $"&count={paginationOptions.CountOnPage}&ukrainian=true&cityId=1")
                                            .ConfigureAwait(false);
@@ -50,7 +55,7 @@ public sealed class RobotaUaServiceClient : IRobotaUaServiceClient, IDisposable
             });
         }
         
-        return vacancies;
+        return (vacancies, deserializedResponse.total);
     }
 
     public void Dispose()
