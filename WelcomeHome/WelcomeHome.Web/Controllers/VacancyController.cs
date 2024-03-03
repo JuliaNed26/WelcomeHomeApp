@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WelcomeHome.Services.DTO.VacancyDTO;
 using WelcomeHome.Services.Services.VacancyService;
 
 namespace WelcomeHome.Web.Controllers;
 
 [Route("api/[controller]")]
+[Authorize]
 [ApiController]
 public class VacancyController : ControllerBase
 {
@@ -38,6 +40,7 @@ public class VacancyController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOnly))]
     public async Task<IActionResult> AddAsync(VacancyAddUpdateDTO newVacancy)
     {
         await _vacancyService.AddAsync(newVacancy).ConfigureAwait(false);
@@ -45,6 +48,7 @@ public class VacancyController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOnly))]
     public async Task<IActionResult> UpdateAsync(VacancyAddUpdateDTO updatedVacancy)
     {
         await _vacancyService.UpdateAsync(updatedVacancy).ConfigureAwait(false);
@@ -52,6 +56,7 @@ public class VacancyController : ControllerBase
     }
 
     [HttpDelete]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOrModerator))]
     public async Task<IActionResult> DeleteAsync(VacancyDTO deleteVacancy)
     {
         await _vacancyService.DeleteAsync(deleteVacancy).ConfigureAwait(false);
