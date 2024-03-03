@@ -15,5 +15,7 @@ namespace WelcomeHome.DAL.Models
         public string? OtherContacts { get; set; }
         public long CityId { get; set; }
         public City City { get; set; }
+        public long VolunteerId { get; set; }
+        public Volunteer Volunteer { get; set; }
     }
 }

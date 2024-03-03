@@ -124,6 +124,10 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
                                            .WithOne(u => u.RefreshToken)
                                            .HasForeignKey<RefreshToken>(rt => rt.UserId);
 
+        modelBuilder.Entity<Vacancy>().HasOne(v => v.Volunteer)
+                                      .WithMany(v => v.Vacancies)
+                                      .HasForeignKey(v => v.VolunteerId);
+
         base.OnModelCreating(modelBuilder);
     }
 
