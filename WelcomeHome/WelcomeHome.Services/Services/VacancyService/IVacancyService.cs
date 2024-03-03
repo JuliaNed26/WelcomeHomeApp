@@ -10,4 +10,6 @@ public interface IVacancyService
     public Task AddAsync(VacancyAddUpdateDTO newVacancy);
 
     public Task UpdateAsync(VacancyAddUpdateDTO updatedVacancy);
+
+    public Task DeleteAsync(VacancyDTO vacancy);
 }

@@ -5,6 +5,7 @@ using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO.VacancyDTO;
+using WelcomeHome.Services.Exceptions;
 using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 using WelcomeHome.Services.ServiceClients.RobotaUa;
 using WelcomeHome.Services.Validators;
@@ -101,6 +102,17 @@ public sealed class VacancyService : IVacancyService
     {
         var mappedVacancy = _mapper.Map<Vacancy>(updatedVacancy);
         await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork.VacancyRepository.UpdateAsync(mappedVacancy))
+                               .ConfigureAwait(false);
+    }
+
+    public async Task DeleteAsync(VacancyDTO vacancy)
+    {
+        if (vacancy.FromRobotaUa)
+        {
+            throw new BusinessException("Deletion of this vacancy is prohibited");
+        }
+
+        await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork.VacancyRepository.DeleteAsync(vacancy.Id))
                                .ConfigureAwait(false);
     }
 }
