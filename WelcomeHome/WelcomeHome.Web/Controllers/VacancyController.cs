@@ -36,4 +36,11 @@ public class VacancyController : ControllerBase
         var foundVacancy = await _vacancyService.GetAsync(id, fromRobotaUa).ConfigureAwait(false);
         return Ok(foundVacancy);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> AddAsync(VacancyAddUpdateDTO newVacancy)
+    {
+        await _vacancyService.AddAsync(newVacancy).ConfigureAwait(false);
+        return Ok();
+    }
 }
