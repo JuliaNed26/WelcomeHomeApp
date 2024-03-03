@@ -15,7 +15,7 @@ namespace WelcomeHome.DAL.Migrations
 										@countOnPage int = 20
 									AS
 									BEGIN
-										SELECT ROUND((COUNT(*) OVER ()) / @countOnPage, 0) AS TotalPagesCount,
+										SELECT CEILING((COUNT(*) OVER () * 1.0) / (@countOnPage * 1.0)) AS TotalPagesCount,
 										       Vacancies.Id,
 											   Vacancies.Name,
 											   Vacancies.CompanyName,

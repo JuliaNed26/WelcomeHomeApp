@@ -18,13 +18,10 @@ public sealed class RobotaUaServiceClient : IRobotaUaServiceClient, IDisposable
 
     public async Task<(IEnumerable<VacancyDTO> Vacancies, long TotalCount)> GetAllVacanciesAsync(PaginationOptionsDTO paginationOptions, bool getOnlyTotalCount)
     {
-        if (getOnlyTotalCount)
-        {
-            paginationOptions.CountOnPage = 0;
-        }
+        var countToRetrieve = getOnlyTotalCount ? 0 : paginationOptions.CountOnPage;
 
         var getResponse = await _httpClient.GetAsync($"/vacancy/search?page={paginationOptions.PageNumber}" +
-                                                              $"&count={paginationOptions.CountOnPage}&ukrainian=true&cityId=1")
+                                                              $"&count={countToRetrieve}&ukrainian=true&cityId=1")
                                            .ConfigureAwait(false);
         if (!getResponse.IsSuccessStatusCode)
         {

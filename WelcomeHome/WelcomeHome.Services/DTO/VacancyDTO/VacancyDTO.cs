@@ -30,5 +30,7 @@ public record VacancyDTO
 
     public string? DistrictName { get; set; }
 
+    public long? VolunteerId { get; set; }
+
     public bool FromRobotaUa { get; set; }
 }
