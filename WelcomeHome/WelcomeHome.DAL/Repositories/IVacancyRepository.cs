@@ -7,7 +7,7 @@ namespace WelcomeHome.DAL.Repositories
     {
         Task<Vacancy?> GetByIdAsync(long id);
 
-        IEnumerable<Vacancy> GetAll(PaginationOptionsDto paginationOptions);
+        IEnumerable<VacancyWithTotalPagesCount> GetAll(PaginationOptionsDto paginationOptions);
 
         Task AddAsync(Vacancy vacancy);
 

@@ -30,16 +30,12 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public IEnumerable<Vacancy> GetAll(PaginationOptionsDto paginationOptions)
+        public IEnumerable<VacancyWithTotalPagesCount> GetAll(PaginationOptionsDto paginationOptions)
         {
-            var vacanciesToSkip = (paginationOptions.PageNumber - 1) * paginationOptions.CountOnPage;
-
-            return _context.Vacancies
-                .Include(v => v.City)
-                .AsNoTracking()
-                .Skip(vacanciesToSkip)
-                .Take(paginationOptions.CountOnPage)
-                .Select(v => v);
+            var vacancies = _context.VacanciesWithTotalPagesCounts
+                                                                    .FromSqlRaw($"EXEC GetVacancyPageWithTotalVacanciesCount @page = {paginationOptions.PageNumber}," +
+                                                                                $"@countOnPage = {paginationOptions.CountOnPage}");
+            return vacancies;
         }
 
         public async Task<Vacancy?> GetByIdAsync(long id)
