@@ -16,7 +16,7 @@ public class VacancyController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<VacancyDTO>>> GetAllAsync(
+    public async Task<ActionResult<VacanciesWithTotalPagesCountDto>> GetAllAsync(
         [FromQuery]int page,
         [FromQuery]int countOnPage)
     {
