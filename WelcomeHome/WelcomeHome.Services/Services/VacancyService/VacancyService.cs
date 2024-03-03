@@ -5,6 +5,7 @@ using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO.VacancyDTO;
+using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
 using WelcomeHome.Services.ServiceClients.RobotaUa;
 using WelcomeHome.Services.Validators;
 
@@ -15,15 +16,18 @@ public sealed class VacancyService : IVacancyService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IRobotaUaServiceClient _robotaUaServiceClient;
+    private readonly ExceptionHandlerMediatorBase _exceptionHandler;
 
     public VacancyService(
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        IRobotaUaServiceClient robotaUaServiceClient)
+        IRobotaUaServiceClient robotaUaServiceClient,
+        ExceptionHandlerMediatorBase exceptionHandler)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _robotaUaServiceClient = robotaUaServiceClient;
+        _exceptionHandler = exceptionHandler;
     }
 
     public async Task<VacanciesWithTotalPagesCountDto> GetAllAsync(PaginationOptionsDTO paginationOptions)
@@ -91,5 +95,12 @@ public sealed class VacancyService : IVacancyService
     {
         var mappedVacancy = _mapper.Map<Vacancy>(newVacancy);
         await _unitOfWork.VacancyRepository.AddAsync(mappedVacancy).ConfigureAwait(false);
+    }
+
+    public async Task UpdateAsync(VacancyAddUpdateDTO newVacancy)
+    {
+        var mappedVacancy = _mapper.Map<Vacancy>(newVacancy);
+        await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork.VacancyRepository.UpdateAsync(mappedVacancy))
+                               .ConfigureAwait(false);
     }
 }

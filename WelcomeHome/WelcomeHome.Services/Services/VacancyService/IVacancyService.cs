@@ -8,4 +8,6 @@ public interface IVacancyService
     public Task<VacancyDTO> GetAsync(long id, bool fromRobotaUa);
 
     public Task AddAsync(VacancyAddUpdateDTO newVacancy);
+
+    public Task UpdateAsync(VacancyAddUpdateDTO newVacancy);
 }
