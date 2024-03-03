@@ -54,6 +54,8 @@ namespace WelcomeHome.Services
             .ForMember(vacancy => vacancy.SalaryTo, opt => opt.Ignore())
             .ForMember(vacancy => vacancy.MetroName, opt => opt.Ignore())
             .ForMember(vacancy => vacancy.DistrictName, opt => opt.Ignore());
+
+            CreateMap<VacancyAddUpdateDTO, Vacancy>();
         }
     }
 }
