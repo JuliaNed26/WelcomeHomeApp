@@ -8,7 +8,6 @@ namespace WelcomeHome.Web.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-[Authorize]
 public class VolunteerController : ControllerBase
 {
     private readonly IVolunteerService _volunteerService;
@@ -33,7 +32,6 @@ public class VolunteerController : ControllerBase
     }
 
     [HttpPost("organization")]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
     public async Task<IActionResult> AddVolunteerOrganizationAsync(EstablishmentVolunteerInDTO newEstablishment)
     {
         await _volunteerService.AddVolunteerOrganizationAsync(newEstablishment).ConfigureAwait(false);

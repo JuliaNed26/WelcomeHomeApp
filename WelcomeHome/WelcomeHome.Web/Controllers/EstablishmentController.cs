@@ -8,7 +8,6 @@ namespace WelcomeHome.Web.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-[Authorize]
 public class EstablishmentController : ControllerBase
 {
     private readonly IEstablishmentService _establishmentService;
