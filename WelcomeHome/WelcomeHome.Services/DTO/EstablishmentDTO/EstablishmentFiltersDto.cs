@@ -2,7 +2,7 @@
 
 public record EstablishmentFiltersDto
 {
-    public int? EstablishmentTypeId { get; init; }
+    public long? EstablishmentTypeId { get; init; }
 
-    public int? CityId { get; init; }
+    public long? CityId { get; init; }
 }

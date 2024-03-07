@@ -2,9 +2,9 @@
 {
 	public class PaymentStep
 	{
-		public int SocialPayoutId { get; set; }
+		public long SocialPayoutId { get; set; }
 
-		public int StepId { get; set; }
+		public long StepId { get; set; }
 
 		public int SequenceNumber { get; set; }
 

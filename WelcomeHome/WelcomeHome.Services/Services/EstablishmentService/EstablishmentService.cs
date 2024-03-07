@@ -23,7 +23,7 @@ namespace WelcomeHome.Services.Services.EstablishmentService
             _exceptionHandler = exceptionHandler;
         }
 
-        public async Task<EstablishmentFullInfoDTO> GetAsync(int id)
+        public async Task<EstablishmentFullInfoDTO> GetAsync(long id)
         {
             var foundEstablishment = await _unitOfWork.EstablishmentRepository.GetByIdAsync(id).ConfigureAwait(false);
             return foundEstablishment == null
@@ -55,7 +55,7 @@ namespace WelcomeHome.Services.Services.EstablishmentService
                 .ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork
                                                               .EstablishmentRepository

@@ -25,11 +25,11 @@ public static class WebApplicationBuilderExtensions
                                                                      .UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString"))
                                                                      .UseExceptionProcessor());
 
-        builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+        builder.Services.AddIdentity<User, IdentityRole<long>>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
         })
-            .AddRoles<IdentityRole<int>>()
+            .AddRoles<IdentityRole<long>>()
             .AddEntityFrameworkStores<WelcomeHomeDbContext>()
             .AddDefaultTokenProviders();
 
@@ -46,9 +46,11 @@ public static class WebApplicationBuilderExtensions
                 ValidateAudience = true,
                 RequireExpirationTime = true,
                 ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
                 ValidIssuer = builder.Configuration.GetSection("Jwt:Issuer").Value,
                 ValidAudience = builder.Configuration.GetSection("Jwt:Audience").Value,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:Key").Value!))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:Key").Value!)),
+                ClockSkew = TimeSpan.Zero
             };
         });
 
@@ -58,8 +60,15 @@ public static class WebApplicationBuilderExtensions
                 p.RequireRole("volunteer"));
             options.AddPolicy(AuthorizationPolicies.ModeratorOnly.ToString(), p =>
                 p.RequireRole("moderator"));
-            options.AddPolicy(AuthorizationPolicies.VolunteerOrModerator.ToString(), p =>
-                p.RequireRole("volunteer", "moderator"));
+            options.AddPolicy(AuthorizationPolicies.VerifiedVolunteerOrModerator.ToString(), p =>
+            {
+                p.RequireAssertion(context => context.User.IsInRole("moderator") ||
+                           (context.User.IsInRole("volunteer") &&
+                           context.User.HasClaim(nameof(Volunteer.IsVerified), "True")));
+            });
+            options.AddPolicy(AuthorizationPolicies.VerifiedVolunteerOnly.ToString(), p =>
+                p.RequireRole("volunteer")
+                 .RequireClaim(nameof(Volunteer.IsVerified), "True"));
         });
 
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

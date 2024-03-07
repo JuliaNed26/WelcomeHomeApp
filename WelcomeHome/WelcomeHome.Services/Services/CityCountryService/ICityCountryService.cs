@@ -8,5 +8,5 @@ public interface ICityCountryService
 
     IEnumerable<CityOutDTO> GetAllCities();
 
-    IEnumerable<CityOutDTO> GetAllCitiesForCountry(int countryId);
+    IEnumerable<CityOutDTO> GetAllCitiesForCountry(long countryId);
 }

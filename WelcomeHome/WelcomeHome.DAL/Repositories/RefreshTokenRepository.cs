@@ -32,11 +32,15 @@ public class RefreshTokenRepository : IRefreshTokenRepository
 
     public async Task UpdateAsync(RefreshToken refreshToken)
     {
+        if (refreshToken.Id == 0)
+        {
+            throw new NotFoundException($"Refresh token with id {refreshToken.Id} was not found");
+        }
         _context.RefreshTokens.Update(refreshToken);
         await _context.SaveChangesAsync().ConfigureAwait(false);
     }
 
-    public async Task DeleteForUserAsync(int userId)
+    public async Task DeleteForUserAsync(long userId)
     {
         var foundRefreshToken = await _context.RefreshTokens
                                               .SingleOrDefaultAsync(rt => rt.UserId == userId)
@@ -48,7 +52,7 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         }
     }
 
-    public async Task DeleteAllForUserAsync(int userId)
+    public async Task DeleteAllForUserAsync(long userId)
     {
         var allTokens = await _context.RefreshTokens.ToListAsync();
 

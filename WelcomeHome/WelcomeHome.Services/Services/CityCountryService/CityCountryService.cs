@@ -27,7 +27,7 @@ public sealed class CityCountryService : ICityCountryService
         return allCities.Select(c => _mapper.Map<CityOutDTO>(c));
     }
 
-    public IEnumerable<CityOutDTO> GetAllCitiesForCountry(int countryId)
+    public IEnumerable<CityOutDTO> GetAllCitiesForCountry(long countryId)
     {
         var allCities = _unitOfWork.CityRepository.GetAll();
         return allCities

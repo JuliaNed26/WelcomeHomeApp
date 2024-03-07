@@ -67,7 +67,7 @@ namespace WelcomeHome.Services.Tests.Countries
                 .UseInMemoryDatabase(databaseName: "Test_AddAsync_Database")
                 .Options;
             // Arrange
-            var countryId = 1;
+            long countryId = 1;
             var newCountry = new Country
             {
                 Id = countryId,
@@ -98,7 +98,7 @@ namespace WelcomeHome.Services.Tests.Countries
                 .UseInMemoryDatabase(databaseName: "Test_DeleteAsync_Database")
                 .Options;
             // Arrange
-            var countryId = 1;
+            long countryId = 1;
             var newCountry = new Country
             {
                 Id = countryId,
@@ -131,7 +131,7 @@ namespace WelcomeHome.Services.Tests.Countries
                 .UseInMemoryDatabase(databaseName: "Test_UpdateAsync_Database")
                 .Options;
             // Arrange
-            var countryId = 1;
+            long countryId = 1;
             var newCountry = new Country
             {
                 Id = countryId,

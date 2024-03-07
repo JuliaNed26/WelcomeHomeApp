@@ -2,7 +2,7 @@
 {
     public record EventFullInfoDTO
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public DateTime? Date { get; set; }
 
@@ -10,10 +10,10 @@
 
         public string Description { get; set; }
 
-        public int? EstablishmentId { get; set; }
+        public long? EstablishmentId { get; set; }
 
-        public int EventTypeId { get; set; }
+        public long EventTypeId { get; set; }
 
-        public int? VolunteerId { get; set; }
+        public long? VolunteerId { get; set; }
     }
 }

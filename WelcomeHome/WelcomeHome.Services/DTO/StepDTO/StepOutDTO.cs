@@ -2,7 +2,7 @@
 {
     public class StepOutDTO
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public int SequenceNumber { get; set; }
 

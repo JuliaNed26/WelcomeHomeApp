@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories;
@@ -20,7 +21,7 @@ public sealed class CityRepository : ICityRepository
                        .Select(c => c);
     }
 
-    public async Task<City?> GetByIdAsync(int id)
+    public async Task<City?> GetByIdAsync(long id)
     {
         return await _context.Cities
                              .Include(c => c.Country)
@@ -39,13 +40,18 @@ public sealed class CityRepository : ICityRepository
 
     public async Task UpdateAsync(City city)
     {
+        if (city.Id == 0)
+        {
+            throw new NotFoundException($"City with id {city.Id} was not found");
+        }
+
         await AttachCountryAsync(city).ConfigureAwait(false);
         _context.Cities.Update(city);
 
         await _context.SaveChangesAsync().ConfigureAwait(false);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(long id)
     {
         var foundCity = await _context.Cities.SingleAsync(c => c.Id == id).ConfigureAwait(false);
 

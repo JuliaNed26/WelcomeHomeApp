@@ -39,7 +39,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOnly))]
     public async Task<IActionResult> AddAsync(EventInDTO newEvent)
     {
         await _eventService.AddAsync(newEvent).ConfigureAwait(false);
@@ -47,7 +47,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPost("psychologicalService")]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOnly))]
     public async Task<IActionResult> AddPsychologicalServiceAsync(EventInDTO newEvent)
     {
         await _eventService.AddPsychologicalServiceAsync(newEvent).ConfigureAwait(false);
@@ -55,7 +55,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPut]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOrModerator))]
     public async Task<IActionResult> UpdateAsync(EventFullInfoDTO updateEvent)
     {
         await _eventService.UpdateAsync(updateEvent).ConfigureAwait(false);
@@ -63,7 +63,7 @@ public class EventController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOrModerator))]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _eventService.DeleteAsync(id).ConfigureAwait(false);

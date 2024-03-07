@@ -4,7 +4,7 @@ namespace WelcomeHome.Services.Services.EventService
 {
     public interface IEventService
     {
-        Task<EventFullInfoDTO> GetAsync(int id);
+        Task<EventFullInfoDTO> GetAsync(long id);
 
         IEnumerable<EventFullInfoDTO> GetAll();
 
@@ -16,6 +16,6 @@ namespace WelcomeHome.Services.Services.EventService
 
         Task UpdateAsync(EventFullInfoDTO eventWithUpdateInfo);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(long id);
     }
 }

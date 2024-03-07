@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
@@ -17,7 +18,7 @@ namespace WelcomeHome.DAL.Repositories
             return _context.Courses.Select(e => e);
         }
 
-        public async Task<Course?> GetByIdAsync(int id)
+        public async Task<Course?> GetByIdAsync(long id)
         {
             return await _context.Courses.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
         }
@@ -29,7 +30,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             var existingCourse = await _context.Courses.SingleAsync(c => c.Id == id).ConfigureAwait(false);
             _context.Courses.Remove(existingCourse);
@@ -39,6 +40,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Course editedCourse)
         {
+            if (editedCourse.Id == 0)
+            {
+                throw new NotFoundException($"Course with id {editedCourse.Id} was not found");
+            }
             _context.Courses.Update(editedCourse);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);

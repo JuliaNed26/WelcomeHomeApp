@@ -19,7 +19,7 @@ namespace WelcomeHome.DAL.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             var foundVacancy = await _context.Vacancies
                                              .FindAsync(id)
@@ -37,7 +37,7 @@ namespace WelcomeHome.DAL.Repositories
                 .Select(v => v);
         }
 
-        public async Task<Vacancy?> GetByIdAsync(int id)
+        public async Task<Vacancy?> GetByIdAsync(long id)
         {
             return await _context.Vacancies
                 .Include(v => v.Establishment)
@@ -48,6 +48,10 @@ namespace WelcomeHome.DAL.Repositories
 
         public async Task UpdateAsync(Vacancy vacancy)
         {
+            if (vacancy.Id == 0)
+            {
+                throw new NotFoundException($"Vacancy with id {vacancy.Id} was not found");
+            }
             AttachEstablishment(vacancy);
             _context.Vacancies.Update(vacancy);
 

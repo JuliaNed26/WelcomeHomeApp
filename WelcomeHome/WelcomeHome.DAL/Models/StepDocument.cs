@@ -2,9 +2,9 @@
 {
 	public class StepDocument
 	{
-		public int StepId { get; set; }
+		public long StepId { get; set; }
 
-		public int DocumentId { get; set; }
+		public long DocumentId { get; set; }
 
 		public bool ToReceive { get; set; }
 

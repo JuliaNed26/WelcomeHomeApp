@@ -39,7 +39,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOnly))]
     public async Task<IActionResult> AddAsync(EstablishmentInDTO newEstablishment)
     {
         await _establishmentService.AddAsync(newEstablishment).ConfigureAwait(false);
@@ -47,7 +47,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpPut]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOrModerator))]
     public async Task<IActionResult> UpdateAsync(EstablishmentFullInfoDTO updateEstablishment)
     {
         await _establishmentService.UpdateAsync(updateEstablishment).ConfigureAwait(false);
@@ -55,7 +55,7 @@ public class EstablishmentController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOrModerator))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOrModerator))]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _establishmentService.DeleteAsync(id).ConfigureAwait(false);

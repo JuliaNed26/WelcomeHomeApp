@@ -6,11 +6,11 @@ namespace WelcomeHome.DAL.Repositories
     {
         IEnumerable<Course> GetAll();
 
-        Task<Course?> GetByIdAsync(int id);
+        Task<Course?> GetByIdAsync(long id);
 
         Task AddAsync(Course newCourse);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(long id);
 
         Task UpdateAsync(Course editedCourse);
     }

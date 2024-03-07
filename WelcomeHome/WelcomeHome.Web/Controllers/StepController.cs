@@ -38,7 +38,7 @@ public class StepController : ControllerBase
         return Ok(stepsByEstablishmentType);
     }
     [HttpPost]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOnly))]
     public async Task<IActionResult> AddAsync(StepInDTO newStep)
     {
         await _stepService.AddAsync(newStep).ConfigureAwait(false);
@@ -46,7 +46,7 @@ public class StepController : ControllerBase
     }
 
     [HttpPut]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOnly))]
     public async Task<IActionResult> UpdateAsync(StepOutDTO updateStep)
     {
         await _stepService.UpdateAsync(updateStep).ConfigureAwait(false);
@@ -54,7 +54,7 @@ public class StepController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = nameof(AuthorizationPolicies.VolunteerOnly))]
+    [Authorize(Policy = nameof(AuthorizationPolicies.VerifiedVolunteerOnly))]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         await _stepService.DeleteAsync(id).ConfigureAwait(false);

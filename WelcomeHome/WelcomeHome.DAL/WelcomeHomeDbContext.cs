@@ -5,7 +5,7 @@ using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL;
 
-public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<int>, int>
+public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<long>, long>
 {
     public WelcomeHomeDbContext(DbContextOptions<WelcomeHomeDbContext> options)
         : base(options)
@@ -101,6 +101,16 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
         modelBuilder.Entity<Volunteer>().HasOne(v => v.User)
                                         .WithOne(u => u.Volunteer)
                                         .HasForeignKey<Volunteer>(u => u.UserId);
+
+        modelBuilder.Entity<Volunteer>().HasOne(v => v.Organization)
+                                        .WithMany(org => org.VolunteersInOrganization)
+                                        .HasForeignKey(v => v.OrganizationId)
+                                        .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Volunteer>().HasMany(v => v.Establishments)
+                                        .WithOne(e => e.Creator)
+                                        .HasForeignKey(e => e.CreatorId)
+                                        .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<User>().HasOne(u => u.RefreshToken)
                                    .WithOne(rt => rt.User);

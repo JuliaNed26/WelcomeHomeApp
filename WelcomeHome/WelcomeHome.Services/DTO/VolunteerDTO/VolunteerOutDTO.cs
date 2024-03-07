@@ -2,7 +2,7 @@
 {
     public record VolunteerOutDTO
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string FullName { get; set; }
 
@@ -11,6 +11,8 @@
         public string Email { get; set; }
 
         public string SocialUrl { get; set; }
+
+        public bool IsVerified { get; set; }
 
         public EstablishmentFullInfoDTO Establishment { get; set; }
 

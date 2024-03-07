@@ -4,7 +4,7 @@ namespace WelcomeHome.DAL.Repositories
 {
     public interface IVacancyRepository
     {
-        Task<Vacancy?> GetByIdAsync(int id);
+        Task<Vacancy?> GetByIdAsync(long id);
 
         IEnumerable<Vacancy> GetAll();
 
@@ -12,6 +12,6 @@ namespace WelcomeHome.DAL.Repositories
 
         Task UpdateAsync(Vacancy vacancy);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(long id);
     }
 }

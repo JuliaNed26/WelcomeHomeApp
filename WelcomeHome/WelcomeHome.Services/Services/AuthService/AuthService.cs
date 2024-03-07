@@ -2,6 +2,7 @@
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services.DTO;
@@ -28,7 +29,10 @@ namespace WelcomeHome.Services.Services
         }
         public async Task<TokensDTO> LoginUserAsync(UserLoginDTO user)
         {
-            var existingUser = await _userManager.FindByEmailAsync(user.Email)
+            var existingUser = await _userManager.Users.Include(u => u.Volunteer)
+                                                       .Where(u => u.Email.ToLower() == user.Email)
+                                                       .SingleOrDefaultAsync()
+                                                       .ConfigureAwait(false)
                                ?? throw new BusinessException("Can not login non exist user");
 
             var result = await _userManager.CheckPasswordAsync(existingUser, user.Password);
@@ -58,7 +62,7 @@ namespace WelcomeHome.Services.Services
             {
                 if (role != null)
                 {
-                    var identityRole = new IdentityRole<int>(role);
+                    var identityRole = new IdentityRole<long>(role);
                     await _userManager.AddToRoleAsync(newUser, identityRole.Name);
                 }
 
@@ -123,7 +127,7 @@ namespace WelcomeHome.Services.Services
             };
         }
 
-        public async Task LogoutAsync(int userId)
+        public async Task LogoutAsync(long userId)
         {
             await _tokenService.UnvalidateTokensAsync(userId);
         }

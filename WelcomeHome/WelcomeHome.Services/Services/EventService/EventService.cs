@@ -36,7 +36,7 @@ namespace WelcomeHome.Services.Services.EventService
             return psychologicalServices;
         }
 
-        public async Task<EventFullInfoDTO> GetAsync(int id)
+        public async Task<EventFullInfoDTO> GetAsync(long id)
         {
             var foundEvent = await _unitOfWork.EventRepository.GetByIdAsync(id);
             return foundEvent == null
@@ -70,7 +70,7 @@ namespace WelcomeHome.Services.Services.EventService
                 .ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork.EventRepository.DeleteAsync(id))
                                    .ConfigureAwait(false);

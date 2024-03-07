@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WelcomeHome.DAL;
 
@@ -11,9 +12,11 @@ using WelcomeHome.DAL;
 namespace WelcomeHome.DAL.Migrations
 {
     [DbContext(typeof(WelcomeHomeDbContext))]
-    partial class WelcomeHomeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240211141129_VolunteerUpdated")]
+    partial class VolunteerUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -620,7 +623,10 @@ namespace WelcomeHome.DAL.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("OrganizationId")
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<long?>("OrganizationId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("SocialUrl")
@@ -722,7 +728,7 @@ namespace WelcomeHome.DAL.Migrations
                     b.HasOne("WelcomeHome.DAL.Models.Volunteer", "Creator")
                         .WithMany("Establishments")
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WelcomeHome.DAL.Models.EstablishmentType", "EstablishmentType")
@@ -839,8 +845,7 @@ namespace WelcomeHome.DAL.Migrations
                     b.HasOne("WelcomeHome.DAL.Models.Establishment", "Organization")
                         .WithMany("VolunteersInOrganization")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("WelcomeHome.DAL.Models.User", "User")
                         .WithOne("Volunteer")

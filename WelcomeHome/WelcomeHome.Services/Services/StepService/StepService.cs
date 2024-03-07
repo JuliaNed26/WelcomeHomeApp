@@ -31,7 +31,7 @@ namespace WelcomeHome.Services.Services
                 .ConfigureAwait(false);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             await _exceptionHandler.HandleAndThrowAsync(() => _unitOfWork.StepRepository.DeleteAsync(id))
                                    .ConfigureAwait(false);
@@ -53,7 +53,7 @@ namespace WelcomeHome.Services.Services
             return result;
         }
 
-        public async Task<StepOutDTO> GetAsync(int id)
+        public async Task<StepOutDTO> GetAsync(long id)
         {
             var foundStep = await _unitOfWork.StepRepository.GetByIdAsync(id);
             if (foundStep == null)
@@ -69,7 +69,7 @@ namespace WelcomeHome.Services.Services
             return stepOut;
         }
 
-        public async Task<IEnumerable<StepOutDTO>> GetByEstablishmentTypeIdAsync(int establishmentTypeId)
+        public async Task<IEnumerable<StepOutDTO>> GetByEstablishmentTypeIdAsync(long establishmentTypeId)
         {
             var steps = _unitOfWork.StepRepository.GetAll().Where(e => e.EstablishmentTypeId == establishmentTypeId);
 
@@ -136,7 +136,7 @@ namespace WelcomeHome.Services.Services
             }
         }
 
-        private void AttachEstablishmentsToDTO(StepOutDTO step, int establishmentTypeId)
+        private void AttachEstablishmentsToDTO(StepOutDTO step, long establishmentTypeId)
         {
             var establishments = _unitOfWork.EstablishmentRepository.GetAll().ToList();
             var stepEstablishments = establishments.Where(e => e.EstablishmentTypeId == establishmentTypeId);

@@ -4,18 +4,18 @@ namespace WelcomeHome.Services.Services
 {
     public interface IDocumentService
     {
-        Task<DocumentOutDTO> GetAsync(int id);
+        Task<DocumentOutDTO> GetAsync(long id);
 
         IEnumerable<DocumentOutDTO> GetAll();
 
-        IEnumerable<DocumentOutDTO> GetByStepNeeded(int stepId);
+        IEnumerable<DocumentOutDTO> GetByStepNeeded(long stepId);
 
-        IEnumerable<DocumentOutDTO> GetByStepReceived(int stepId);
+        IEnumerable<DocumentOutDTO> GetByStepReceived(long stepId);
 
         Task AddAsync(DocumentInDTO newDocument);
 
         Task UpdateAsync(DocumentOutDTO updatedDocument);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(long id);
     }
 }
