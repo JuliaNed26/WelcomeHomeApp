@@ -13,5 +13,6 @@ namespace WelcomeHome.DAL.Models
         public Establishment? Organization { get; set; }
         public ICollection<Event>? Events { get; set; }
         public ICollection<Establishment>? Establishments { get; set; }
+        public ICollection<Vacancy>? Vacancies { get; set; } 
     }
 }

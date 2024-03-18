@@ -8,8 +8,8 @@ namespace WelcomeHome.DAL.Models
     {
         [Key]
         public long Id { get; set; }
-        public string Name { get; set; } = null!;
-        public string Address { get; set; } = null!;
+        public string Name { get; set; }
+        public string Address { get; set; }
         public long EstablishmentTypeId { get; set; }
         public long CityId { get; set; }
         public string? PageURL { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Exceptions;
 using WelcomeHome.DAL.Models;
 
@@ -13,37 +14,28 @@ namespace WelcomeHome.DAL.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Vacancy vacancy)
+        public IEnumerable<VacancyWithTotalPagesCount> GetAll(PaginationOptionsDto paginationOptions)
         {
-            await _context.AddAsync(vacancy).ConfigureAwait(false);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
-        }
-
-        public async Task DeleteAsync(long id)
-        {
-            var foundVacancy = await _context.Vacancies
-                                             .FindAsync(id)
-                                             .ConfigureAwait(false)
-                               ?? throw new NotFoundException($"Vacancy with Id {id} not found for deletion.");
-            _context.Vacancies.Remove(foundVacancy);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
-        }
-
-        public IEnumerable<Vacancy> GetAll()
-        {
-            return _context.Vacancies
-                .Include(v => v.Establishment)
-                .AsNoTracking()
-                .Select(v => v);
+            var vacancies = _context.VacanciesWithTotalPagesCounts
+                                                                    .FromSqlRaw($"EXEC GetVacancyPageWithTotalVacanciesCount @page = {paginationOptions.PageNumber}," +
+                                                                                $"@countOnPage = {paginationOptions.CountOnPage}");
+            return vacancies;
         }
 
         public async Task<Vacancy?> GetByIdAsync(long id)
         {
             return await _context.Vacancies
-                .Include(v => v.Establishment)
+                .Include(v => v.City)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(v => v.Id == id)
                 .ConfigureAwait(false);
+        }
+
+        public async Task AddAsync(Vacancy vacancy)
+        {
+            await AttachRelatedEntities(vacancy).ConfigureAwait(false);
+            await _context.AddAsync(vacancy).ConfigureAwait(false);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(Vacancy vacancy)
@@ -52,16 +44,47 @@ namespace WelcomeHome.DAL.Repositories
             {
                 throw new NotFoundException($"Vacancy with id {vacancy.Id} was not found");
             }
-            AttachEstablishment(vacancy);
+            await AttachRelatedEntities(vacancy).ConfigureAwait(false);
             _context.Vacancies.Update(vacancy);
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void AttachEstablishment(Vacancy vacancy)
+        public async Task DeleteAsync(long id)
         {
-            _context.Vacancies.Attach(vacancy);
-            _context.Entry(vacancy).State = EntityState.Unchanged;
+            var foundVacancy = await _context.Vacancies
+                                   .FindAsync(id)
+                                   .ConfigureAwait(false)
+                               ?? throw new NotFoundException($"Vacancy with Id {id} not found for deletion.");
+            _context.Vacancies.Remove(foundVacancy);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        private async Task AttachRelatedEntities(Vacancy vacancy)
+        {
+            await AttachCityAsync(vacancy.CityId).ConfigureAwait(false);
+            await AttachVolunteerAsync(vacancy.VolunteerId).ConfigureAwait(false);
+            async Task AttachCityAsync(long cityId)
+            {
+                var foundCity = await _context.Cities.Where(c => c.Id == cityId)
+                                    .SingleOrDefaultAsync()
+                                    .ConfigureAwait(false)
+                                ?? throw new NotFoundException($"City with id {cityId} was not found");
+
+                _context.Cities.Attach(foundCity);
+                _context.Entry(foundCity).State = EntityState.Unchanged;
+            }
+
+            async Task AttachVolunteerAsync(long volunteerId)
+            {
+                var foundVolunteer = await _context.Volunteers.Where(v => v.UserId == volunteerId)
+                                         .SingleOrDefaultAsync()
+                                         .ConfigureAwait(false)
+                                     ?? throw new NotFoundException($"Volunteer with id {volunteerId} was not found");
+
+                _context.Volunteers.Attach(foundVolunteer);
+                _context.Entry(foundVolunteer).State = EntityState.Unchanged;
+            }
         }
     }
 }

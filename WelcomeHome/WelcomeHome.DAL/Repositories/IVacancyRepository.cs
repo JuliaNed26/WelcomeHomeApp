@@ -1,4 +1,5 @@
-﻿using WelcomeHome.DAL.Models;
+﻿using WelcomeHome.DAL.Dto;
+using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL.Repositories
 {
@@ -6,7 +7,7 @@ namespace WelcomeHome.DAL.Repositories
     {
         Task<Vacancy?> GetByIdAsync(long id);
 
-        IEnumerable<Vacancy> GetAll();
+        IEnumerable<VacancyWithTotalPagesCount> GetAll(PaginationOptionsDto paginationOptions);
 
         Task AddAsync(Vacancy vacancy);
 

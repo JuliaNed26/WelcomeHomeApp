@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WelcomeHome.DAL.Dto;
 using WelcomeHome.DAL.Models;
 
 namespace WelcomeHome.DAL;
@@ -43,6 +45,9 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
     public DbSet<PaymentStep> PaymentSteps { get; set; }
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+    [NotMapped]
+    internal DbSet<VacancyWithTotalPagesCount> VacanciesWithTotalPagesCounts { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -118,6 +123,10 @@ public sealed class WelcomeHomeDbContext : IdentityDbContext<User, IdentityRole<
         modelBuilder.Entity<RefreshToken>().HasOne(rt => rt.User)
                                            .WithOne(u => u.RefreshToken)
                                            .HasForeignKey<RefreshToken>(rt => rt.UserId);
+
+        modelBuilder.Entity<Vacancy>().HasOne(v => v.Volunteer)
+                                      .WithMany(v => v.Vacancies)
+                                      .HasForeignKey(v => v.VolunteerId);
 
         base.OnModelCreating(modelBuilder);
     }

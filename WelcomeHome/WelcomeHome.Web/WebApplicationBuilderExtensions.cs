@@ -9,9 +9,11 @@ using WelcomeHome.DAL.Models;
 using WelcomeHome.DAL.UnitOfWork;
 using WelcomeHome.Services;
 using WelcomeHome.Services.Exceptions.ExceptionHandlerMediator;
+using WelcomeHome.Services.ServiceClients.RobotaUa;
 using WelcomeHome.Services.Services;
 using WelcomeHome.Services.Services.EstablishmentService;
 using WelcomeHome.Services.Services.EventService;
+using WelcomeHome.Services.Services.VacancyService;
 
 namespace WelcomeHome.Web;
 
@@ -82,7 +84,9 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddScoped<IStepService, StepService>();
         builder.Services.AddScoped<ICityCountryService, CityCountryService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddScoped<IVacancyService, VacancyService>();
 
+        builder.Services.AddScoped<IRobotaUaServiceClient, RobotaUaServiceClient>();
 
         builder.Services.AddSingleton<ExceptionHandlerMediatorBase, ExceptionHandlerMediator>();
     }

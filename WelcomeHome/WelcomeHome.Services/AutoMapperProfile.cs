@@ -4,6 +4,7 @@ using WelcomeHome.DAL.Models;
 using WelcomeHome.Services.DTO;
 using WelcomeHome.Services.DTO.EstablishmentDTO;
 using WelcomeHome.Services.DTO.EventDto;
+using WelcomeHome.Services.DTO.VacancyDTO;
 
 namespace WelcomeHome.Services
 {
@@ -37,6 +38,25 @@ namespace WelcomeHome.Services
             CreateMap<SocialPayout, SocialPayoutOutDTO>();
             CreateMap<EstablishmentFiltersDto, EstablishmentRetrievalFiltersDto>();
             CreateMap<EstablishmentVolunteerInDTO, Establishment>();
+
+            CreateMap<PaginationOptionsDTO, PaginationOptionsDto>();
+
+            CreateMap<VacancyWithTotalPagesCount, VacancyDTO>()
+            .ForMember(vacancy => vacancy.FromRobotaUa, opt => opt.MapFrom(_ => false))
+            .ForMember(vacancy => vacancy.SalaryFrom, opt => opt.Ignore())
+            .ForMember(vacancy => vacancy.SalaryTo, opt => opt.Ignore())
+            .ForMember(vacancy => vacancy.MetroName, opt => opt.Ignore())
+            .ForMember(vacancy => vacancy.DistrictName, opt => opt.Ignore());
+
+            CreateMap<Vacancy, VacancyDTO>()
+            .ForMember(vacancy => vacancy.CityName, opt => opt.MapFrom(src => src.City.Name))
+            .ForMember(vacancy => vacancy.FromRobotaUa, opt => opt.MapFrom(_ => false))
+            .ForMember(vacancy => vacancy.SalaryFrom, opt => opt.Ignore())
+            .ForMember(vacancy => vacancy.SalaryTo, opt => opt.Ignore())
+            .ForMember(vacancy => vacancy.MetroName, opt => opt.Ignore())
+            .ForMember(vacancy => vacancy.DistrictName, opt => opt.Ignore());
+
+            CreateMap<VacancyAddUpdateDTO, Vacancy>();
         }
     }
 }

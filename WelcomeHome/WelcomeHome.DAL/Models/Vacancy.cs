@@ -6,14 +6,16 @@ namespace WelcomeHome.DAL.Models
     {
         [Key]
         public long Id { get; set; }
-        public string Name { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public string Name { get; set; }
+        public string CompanyName { get; init; }
+        public string Description { get; set; }
         public float Salary { get; set; }
-        public long EstablishmentId { get; set; }
-        public Establishment Establishment { get; set; } = null!;
-        public string PageURL { get; set; } = null!;
-        public string PhoneNumber { get; set; } = null!;
+        public string? PageURL { get; set; }
+        public string PhoneNumber { get; set; }
         public string? OtherContacts { get; set; }
-
+        public long CityId { get; set; }
+        public City City { get; set; }
+        public long VolunteerId { get; set; }
+        public Volunteer Volunteer { get; set; }
     }
 }

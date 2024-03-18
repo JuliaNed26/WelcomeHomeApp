@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WelcomeHome.DAL;
 
@@ -11,9 +12,11 @@ using WelcomeHome.DAL;
 namespace WelcomeHome.DAL.Migrations
 {
     [DbContext(typeof(WelcomeHomeDbContext))]
-    partial class WelcomeHomeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240303102705_VacanciesWithTotalPagesCountProcedureAdded")]
+    partial class VacanciesWithTotalPagesCountProcedureAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,54 +171,6 @@ namespace WelcomeHome.DAL.Migrations
                     b.HasIndex("UserCategoriesId");
 
                     b.ToTable("SocialPayoutUserCategory");
-                });
-
-            modelBuilder.Entity("WelcomeHome.DAL.Dto.VacancyWithTotalPagesCount", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OtherContacts")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PageURL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Salary")
-                        .HasColumnType("real");
-
-                    b.Property<int>("TotalPagesCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("VacanciesWithTotalPagesCounts");
                 });
 
             modelBuilder.Entity("WelcomeHome.DAL.Models.City", b =>
@@ -659,14 +614,9 @@ namespace WelcomeHome.DAL.Migrations
                     b.Property<float>("Salary")
                         .HasColumnType("real");
 
-                    b.Property<long>("VolunteerId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
-
-                    b.HasIndex("VolunteerId");
 
                     b.ToTable("Vacancies");
                 });
@@ -890,15 +840,7 @@ namespace WelcomeHome.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WelcomeHome.DAL.Models.Volunteer", "Volunteer")
-                        .WithMany("Vacancies")
-                        .HasForeignKey("VolunteerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("City");
-
-                    b.Navigation("Volunteer");
                 });
 
             modelBuilder.Entity("WelcomeHome.DAL.Models.Volunteer", b =>
@@ -978,8 +920,6 @@ namespace WelcomeHome.DAL.Migrations
                     b.Navigation("Establishments");
 
                     b.Navigation("Events");
-
-                    b.Navigation("Vacancies");
                 });
 #pragma warning restore 612, 618
         }

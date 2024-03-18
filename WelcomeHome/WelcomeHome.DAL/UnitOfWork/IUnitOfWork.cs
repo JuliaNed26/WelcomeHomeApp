@@ -27,4 +27,6 @@ public interface IUnitOfWork
 	public IUserCategoryRepository UserCategoryRepository { get; }
 
 	public IRefreshTokenRepository RefreshTokenRepository { get; }
+
+	public IVacancyRepository VacancyRepository { get; }
 }
